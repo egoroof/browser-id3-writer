@@ -1,14 +1,16 @@
 {
   "name": "browser-id3-writer",
-  "version": "1.0.0",
+  "version": "0.0.0-semantically-released",
   "description": "This is a library for writing ID3 tag to audio files in browsers.",
   "scripts": {
+    "build": "gulp build",
+    "commit": "git-cz",
     "test": "karma start --single-run",
-    "build": "gulp build"
+    "semantic-release": "semantic-release pre && npm publish && semantic-release post"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/egoroof/browser-id3-writer.git"
+    "url": "https://github.com/egoroof/browser-id3-writer.git"
   },
   "keywords": [
     "browser",
@@ -23,6 +25,8 @@
   "homepage": "https://github.com/egoroof/browser-id3-writer#readme",
   "devDependencies": {
     "chai": "3.4.1",
+    "commitizen": "2.4.6",
+    "cz-conventional-changelog": "1.1.5",
     "gulp": "3.9.0",
     "gulp-jshint": "2.0.0",
     "gulp-rename": "1.2.2",
@@ -37,6 +41,12 @@
     "karma-firefox-launcher": "0.1.7",
     "karma-ie-launcher": "0.2.0",
     "karma-mocha": "0.2.1",
-    "mocha": "2.3.4"
+    "mocha": "2.3.4",
+    "semantic-release": "4.3.5"
+  },
+  "config": {
+    "commitizen": {
+      "path": "node_modules/cz-conventional-changelog"
+    }
   }
 }
