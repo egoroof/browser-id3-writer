@@ -72,6 +72,16 @@ For example you can save file using [FileSaver.js](https://github.com/eligrey/Fi
 saveAs(blob, 'song with tags.mp3');
 ```
 
+If you are writing chromium extension you can save file using
+[Downloads API](https://developer.chrome.com/extensions/downloads):
+
+```js
+chrome.downloads.download({
+    url: url,
+    filename: 'song with tags.mp3'
+});
+```
+
 ## Memory control
 
 When you generate URLs via `writer.getURL()` you should know
