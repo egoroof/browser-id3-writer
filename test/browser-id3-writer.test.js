@@ -111,7 +111,6 @@ describe('ID3Writer', function () {
                         .setFrame('TPOS', '1/2')
                         .setFrame('TCON', ['Soundtrack'])
                         .setFrame('APIC', coverArrayBuffer);
-                    document.dispatchEvent();
                     writer.addTag();
                     writer.addTag(); // test removing existing frame
                     musicmetadata(writer.getBlob(), function (err, tag) {
