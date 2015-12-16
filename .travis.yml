@@ -9,6 +9,14 @@ branches:
     - master
 notifications:
   email: false
+env:
+  - CXX=g++-4.8
+addons:
+  apt:
+    sources:
+      - ubuntu-toolchain-r-test
+    packages:
+      - g++-4.8
 before_install:
   - export DISPLAY=:99.0
   - sh -e /etc/init.d/xvfb start
