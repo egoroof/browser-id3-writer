@@ -1,4 +1,6 @@
 module.exports = function (config) {
+    var CI = process.env.CI;
+
     config.set({
         basePath: '',
         frameworks: ['mocha', 'chai'],
@@ -14,28 +16,20 @@ module.exports = function (config) {
             'test/**/*.test.js'
         ],
         exclude: [],
-        preprocessors: {
-            'src/**/*.js': ['coverage']
-        },
-        reporters: ['progress', 'coverage'],
-        coverageReporter: {
-            type: 'text-summary'
-        },
+        preprocessors: {'src/**/*.js': ['coverage']},
+        reporters: [CI ? 'dots' : 'progress', 'coverage'],
+        coverageReporter: {type: 'text-summary'},
         port: 9876,
         browserDisconnectTimeout: 4000,
         colors: true,
-        logLevel: config.LOG_INFO,
+        logLevel: CI ? config.LOG_ERROR : config.LOG_INFO,
         autoWatch: true,
-        browsers: [
-            'Chrome',
-            'Firefox',
-            'IE'
-        ],
+        browsers: CI ? ['PhantomJS', 'Firefox'] : ['Chrome', 'Firefox', 'IE'],
         singleRun: false,
         concurrency: Infinity,
         client: {
             mocha: {
-                timeout : 10000
+                timeout: 10000
             }
         }
     });
