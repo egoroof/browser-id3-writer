@@ -24,7 +24,7 @@ module.exports = function (config) {
         colors: true,
         logLevel: config.LOG_INFO,
         autoWatch: true,
-        browsers: CI ? ['PhantomJS', 'Firefox'] : ['Chrome', 'Firefox', 'IE'],
+        browsers: CI ? ['Firefox'] : ['Chrome', 'Firefox', 'IE'],
         singleRun: false,
         concurrency: Infinity,
         client: {

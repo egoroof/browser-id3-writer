@@ -48,8 +48,8 @@ describe('ID3Writer', function () {
     it('should be playable via Audio and has valid duration', function (done) {
         var songDurationSec = 47;
         var audio = new Audio();
-        audio.onerror = function () {
-            throw new Error('Song node error');
+        audio.onerror = function (e) {
+            throw new Error('Song node error', e.currentTarget.error.code);
         };
         audio.oncanplaythrough = function () {
             var durationSec = parseInt(this.duration);
@@ -62,7 +62,6 @@ describe('ID3Writer', function () {
                 .setFrame('TPE1', ['artist1', 'artist2']);
             writer.addTag();
             audio.src = writer.getURL();
-            console.log('src', audio.src);
         });
     });
 

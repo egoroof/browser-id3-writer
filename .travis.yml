@@ -22,7 +22,6 @@ before_install:
   - sh -e /etc/init.d/xvfb start
 before_script:
   - npm prune
-  - npm install phantomjs
 script:
   - npm run build
 after_success:
