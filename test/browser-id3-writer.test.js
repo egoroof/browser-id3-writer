@@ -49,7 +49,7 @@ describe('ID3Writer', function () {
         var songDurationSec = 47;
         var audio = new Audio();
         audio.onerror = function (e) {
-            throw new Error('Song node error', e.currentTarget.error.code);
+            throw new Error('Song node error >' + e.currentTarget.error.code + '<|>' + e.target.error.code + '<');
         };
         audio.oncanplaythrough = function () {
             var durationSec = parseInt(this.duration);
