@@ -45,7 +45,7 @@ describe('ID3Writer', function () {
         });
     });
 
-    it.skip('should be playable via Audio and has valid duration', function (done) {
+    it('should be playable via Audio and has valid duration', function (done) {
         var songDurationSec = 47;
         var audio = new Audio();
         audio.onerror = function () {
@@ -62,6 +62,7 @@ describe('ID3Writer', function () {
                 .setFrame('TPE1', ['artist1', 'artist2']);
             writer.addTag();
             audio.src = writer.getURL();
+            console.log('src', audio.src);
         });
     });
 

@@ -70,7 +70,6 @@
         if (!arrayBuffer || arrayBuffer.constructor !== ArrayBuffer) {
             throw new Error('First argument should be an instance of ArrayBuffer');
         }
-        console.log('Writer was called');
         this.arrayBuffer = arrayBuffer;
         this.padding = 4096;
         this.frames = [];
