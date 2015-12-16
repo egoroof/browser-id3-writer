@@ -45,7 +45,7 @@ describe('ID3Writer', function () {
         });
     });
 
-    it('should be playable via Audio and has valid duration', function (done) {
+    it.skip('should be playable via Audio and has valid duration', function (done) {
         var songDurationSec = 47;
         var audio = new Audio();
         audio.onerror = function () {
