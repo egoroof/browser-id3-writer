@@ -45,26 +45,6 @@ describe('ID3Writer', function () {
         });
     });
 
-    it('should be playable via Audio and has valid duration', function (done) {
-        var songDurationSec = 47;
-        var audio = new Audio();
-        audio.onerror = function (e) {
-            throw new Error('Song node error ' + e.target.error.code);
-        };
-        audio.oncanplaythrough = function () {
-            var durationSec = parseInt(this.duration);
-            expect(durationSec).to.be.equal(songDurationSec);
-            done();
-        };
-        ajax(assetsPath + 'the_decant_session.mp3', function (arrayBuffer) {
-            var writer = new ID3Writer(arrayBuffer);
-            writer.setFrame('TIT2', 'song name')
-                .setFrame('TPE1', ['artist1', 'artist2']);
-            writer.addTag();
-            audio.src = writer.getURL();
-        });
-    });
-
     it('wrong frame value type should throw an exception', function () {
         var frames = ['TPE1', 'TCOM', 'TCON'];
         var buffer = new ArrayBuffer(0);
