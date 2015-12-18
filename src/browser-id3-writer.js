@@ -80,7 +80,7 @@
         var that = this;
 
         function setIntegerFrame(frameName, frameValue) {
-            var integer = parseInt(frameValue);
+            var integer = parseInt(frameValue, 10);
             that.frames.push({
                 name: frameName,
                 value: integer,
