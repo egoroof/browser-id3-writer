@@ -17,6 +17,10 @@ It can not read tag so use another lib to do it.
 - [URL](https://developer.mozilla.org/en-US/docs/Web/API/URL)
 - [TextEncoder](https://developer.mozilla.org/en-US/docs/Web/API/TextEncoder)
 
+## Demo
+
+Demonstration is available here: https://egoroof.github.io/browser-id3-writer/
+
 ## Install
 
 You can include library via [npmcdn](https://npmcdn.com/):
