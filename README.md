@@ -26,7 +26,7 @@ Demonstration is available here: https://egoroof.github.io/browser-id3-writer/
 You can include library via [npmcdn](https://npmcdn.com/):
 
 ```html
-<script type="text/javascript" src="https://npmcdn.com/browser-id3-writer/dist/browser-id3-writer.min.js">
+<script type="text/javascript" src="//npmcdn.com/browser-id3-writer/dist/browser-id3-writer.min.js"></script>
 ```
 
 Or you can install via [npm](https://www.npmjs.com/) and get it from `dist` folder:
@@ -39,7 +39,26 @@ npm install browser-id3-writer
 
 You should first get **arrayBuffer** of the song you would like to add ID3 tag.
 
-For example you can do it with `XMLHttpRequest`:
+For example you can create file input and use `FileReader`:
+
+```html
+<input type="file" id="file" accept="audio/mpeg">
+<script>
+var songFile = document.getElementById('file').files[0];
+var reader = new FileReader();
+reader.onload = function () {
+    var arrayBuffer = reader.result;
+    // go next
+};
+reader.onerror = function () {
+    // handle error
+    console.error('Reader error', reader.error);
+};
+reader.readAsArrayBuffer(songFile);
+</script>
+```
+
+To get arrayBuffer from remote server you can use `XMLHttpRequest`:
 
 ```js
 var xhr = new XMLHttpRequest();
@@ -48,8 +67,16 @@ xhr.responseType = 'arraybuffer';
 xhr.onload = function () {
     if (xhr.status === 200) {
         var arrayBuffer = xhr.response;
+        // go next
+    } else {
+        // handle error
+        console.error(xhr.statusText + ' (' + xhr.status + ')');
     }
 };
+xhr.onerror = function() {
+    // handle error
+    console.error('Network error');
+}
 xhr.send();
 ```
 
