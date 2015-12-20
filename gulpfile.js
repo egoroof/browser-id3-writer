@@ -4,6 +4,7 @@ var sourcemaps = require('gulp-sourcemaps');
 var uglify = require('gulp-uglify');
 var rename = require('gulp-rename');
 var Server = require('karma').Server;
+var path = require('path');
 
 gulp.task('build', function (done) {
     gulp.src('src/*.js')
@@ -19,7 +20,7 @@ gulp.task('build', function (done) {
         .pipe(gulp.dest('dist'))
         .on('end', function () {
             new Server({
-                configFile: __dirname + '/karma.conf.js',
+                configFile: path.join(__dirname, 'karma.conf.js'),
                 singleRun: true,
                 concurrency: 1
             }, done).start();
