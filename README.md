@@ -29,7 +29,7 @@ Demonstration is available here: https://egoroof.github.io/browser-id3-writer/
 You can include library via [npmcdn](https://npmcdn.com/):
 
 ```html
-<script type="text/javascript" src="//npmcdn.com/browser-id3-writer/dist/browser-id3-writer.min.js"></script>
+<script src="//npmcdn.com/browser-id3-writer/dist/browser-id3-writer.min.js"></script>
 ```
 
 Or you can install via [npm](https://www.npmjs.com/) and get it from `dist` folder:
@@ -47,17 +47,21 @@ For example you can create file input and use `FileReader`:
 ```html
 <input type="file" id="file" accept="audio/mpeg">
 <script>
-var songFile = document.getElementById('file').files[0];
-var reader = new FileReader();
-reader.onload = function () {
-    var arrayBuffer = reader.result;
-    // go next
-};
-reader.onerror = function () {
-    // handle error
-    console.error('Reader error', reader.error);
-};
-reader.readAsArrayBuffer(songFile);
+    document.getElementById('file').addEventListener('change', function () {
+        if (!this.files.length) {
+            return;
+        }
+        var reader = new FileReader();
+        reader.onload = function () {
+            var arrayBuffer = reader.result;
+            // go next
+        };
+        reader.onerror = function () {
+            // handle error
+            console.error('Reader error', reader.error);
+        };
+        reader.readAsArrayBuffer(this.files[0]);
+    });
 </script>
 ```
 
@@ -125,9 +129,12 @@ chrome.downloads.download({
 When you generate URLs via `writer.getURL()` you should know
 that whole file is kept in memory until you close the page or move to another one.
 So if you generate lots of URLs in a single page you should manually free memory
-calling `writer.revokeURL()` after you have done with that URL
-when you have access to `writer` otherwise do it via `URL.revokeObjectURL(url)`
-when you know URL.
+after you finish downloading file:
+
+```js
+URL.revokeObjectURL(url); // if you know url or
+writer.revokeURL(); // if you have access to writer
+```
 
 ## Supported frames
 
