@@ -32,6 +32,9 @@ You can include library via [npmcdn](https://npmcdn.com/):
 <script src="//npmcdn.com/browser-id3-writer/dist/browser-id3-writer.min.js"></script>
 ```
 
+**Note:** Don't forget to select exact version otherwise you'll get latest version which
+may has breaking changes. See [npmcdn](https://npmcdn.com/) how to do it.
+
 Or you can install via [npm](https://www.npmjs.com/) and get it from `dist` folder:
 
 ```
