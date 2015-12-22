@@ -28,7 +28,7 @@ It can not read tag so use another lib to do it.
 
 Demonstration is available here: [egoroof.github.io/browser-id3-writer](https://egoroof.github.io/browser-id3-writer/)
 
-## Install
+## Installation
 
 You can include library via [npmcdn](https://npmcdn.com/):
 
