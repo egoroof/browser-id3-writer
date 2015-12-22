@@ -22,7 +22,7 @@ It can not read tag so use another lib to do it.
 
 ## Demo
 
-Demonstration is available here: https://egoroof.github.io/browser-id3-writer/
+Demonstration is available here: [egoroof.github.io/browser-id3-writer](https://egoroof.github.io/browser-id3-writer/)
 
 ## Install
 
