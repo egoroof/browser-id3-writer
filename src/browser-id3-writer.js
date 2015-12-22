@@ -66,6 +66,37 @@
         return headerSize + encodingSize + mimeTypeSize + nullSize + pictureTypeSize + nullSize + frameSize;
     }
 
+    function getBufferMimeType(buf) {
+        // https://github.com/sindresorhus/file-type
+        if (!buf || !buf.length) {
+            return null;
+        }
+        if (buf[0] === 0xff && buf[1] === 0xd8 && buf[2] === 0xff) {
+            return 'image/jpeg';
+        }
+        if (buf[0] === 0x89 && buf[1] === 0x50 && buf[2] === 0x4e && buf[3] === 0x47) {
+            return 'image/png';
+        }
+        if (buf[0] === 0x47 && buf[1] === 0x49 && buf[2] === 0x46) {
+            return 'image/gif';
+        }
+        if (buf[8] === 0x57 && buf[9] === 0x45 && buf[10] === 0x42 && buf[11] === 0x50) {
+            return 'image/webp';
+        }
+        var isLeTiff = (buf[0] === 0x49 && buf[1] === 0x49 && buf[2] === 0x2a && buf[3] === 0);
+        var isBeTiff = (buf[0] === 0x4d && buf[1] === 0x4d && buf[2] === 0 && buf[3] === 0x2a);
+        if (isLeTiff || isBeTiff) {
+            return 'image/tiff';
+        }
+        if (buf[0] === 0x42 && buf[1] === 0x4d) {
+            return 'image/bmp';
+        }
+        if (buf[0] === 0 && buf[1] === 0 && buf[2] === 1 && buf[3] === 0) {
+            return 'image/x-icon';
+        }
+        return null;
+    }
+
     function Writer(arrayBuffer) {
         if (!arrayBuffer || arrayBuffer.constructor !== ArrayBuffer) {
             throw new Error('First argument should be an instance of ArrayBuffer');
@@ -97,7 +128,11 @@
             });
         }
 
-        function setPictureFrame(frameName, picArrayBuffer, mimeType) {
+        function setPictureFrame(frameName, picArrayBuffer) {
+            var mimeType = getBufferMimeType(new Uint8Array(picArrayBuffer), 0, 12);
+            if (!mimeType) {
+                throw new Error('Unknown picture MIME type');
+            }
             that.frames.push({
                 name: frameName,
                 value: picArrayBuffer,
@@ -140,9 +175,7 @@
                 setIntegerFrame(frameName, frameValue);
                 break;
             case 'APIC': // song cover
-                // todo add different pic types and mime types
-                var mimeType = 'image/jpeg';
-                setPictureFrame(frameName, frameValue, mimeType);
+                setPictureFrame(frameName, frameValue);
                 break;
             default:
                 throw new Error('Unsupported frame ' + frameName);
