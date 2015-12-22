@@ -18,7 +18,11 @@ module.exports = function (config) {
         exclude: [],
         preprocessors: {'src/**/*.js': ['coverage']},
         reporters: ['progress', 'coverage'],
-        coverageReporter: {type: 'text-summary'},
+        coverageReporter: {
+            type: 'lcovonly',
+            dir : 'coverage/',
+            subdir: '.'
+        },
         port: 9876,
         browserDisconnectTimeout: 4000,
         colors: true,
