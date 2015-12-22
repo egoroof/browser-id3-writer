@@ -164,4 +164,4 @@ Currently you can set next frames:
 
 **arrayBuffer**
 
-- APIC (song cover)
+- APIC (song cover): works with jpeg, png, gif, webp, tiff, bmp and ico
