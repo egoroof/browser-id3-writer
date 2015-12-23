@@ -65,6 +65,86 @@ describe('ID3Writer', function () {
         }).to.throw(Error, 'Unsupported frame');
     });
 
+    describe('APIC', function () {
+
+        it('should throw error when mime type is not detected', function () {
+            var writer = new ID3Writer(new ArrayBuffer(0));
+            expect(function () {
+                writer.setFrame('APIC', new ArrayBuffer(20));
+            }).to.throw(Error, 'Unknown picture MIME type');
+        });
+
+        it('should throw error when buffer is empty', function () {
+            var writer = new ID3Writer(new ArrayBuffer(0));
+            expect(function () {
+                writer.setFrame('APIC', new ArrayBuffer(0));
+            }).to.throw(Error, 'Unknown picture MIME type');
+        });
+
+        it('should accept various image types', function () {
+            var types = [
+                { // jpeg
+                    signature: [0xff, 0xd8, 0xff],
+                    mime: [105, 109, 97, 103, 101, 47, 106, 112, 101, 103]
+                },
+                { // png
+                    signature: [0x89, 0x50, 0x4e, 0x47],
+                    mime: [105, 109, 97, 103, 101, 47, 112, 110, 103]
+                },
+                { // gif
+                    signature: [0x47, 0x49, 0x46],
+                    mime: [105, 109, 97, 103, 101, 47, 103, 105, 102]
+                },
+                { // webp
+                    signature: [0, 0, 0, 0, 0, 0, 0, 0, 0x57, 0x45, 0x42, 0x50],
+                    mime: [105, 109, 97, 103, 101, 47, 119, 101, 98, 112]
+                },
+                { // tiff LE
+                    signature: [0x49, 0x49, 0x2a, 0],
+                    mime: [105, 109, 97, 103, 101, 47, 116, 105, 102, 102]
+                },
+                { // tiff BE
+                    signature: [0x4d, 0x4d, 0, 0x2a],
+                    mime: [105, 109, 97, 103, 101, 47, 116, 105, 102, 102]
+                },
+                { // bmp
+                    signature: [0x42, 0x4d],
+                    mime: [105, 109, 97, 103, 101, 47, 98, 109, 112]
+                },
+                { // ico
+                    signature: [0, 0, 1, 0],
+                    mime: [105, 109, 97, 103, 101, 47, 120, 45, 105, 99, 111, 110]
+                }
+            ];
+
+            var content = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+            types.forEach(function (type) {
+                var coverBuffer = new ArrayBuffer(type.signature.length + content.length);
+                var coverUint8 = new Uint8Array(coverBuffer);
+                coverUint8.set(type.signature);
+                coverUint8.set(content, type.signature.length);
+
+                var writer = new ID3Writer(new ArrayBuffer(0));
+                writer.setFrame('APIC', coverBuffer);
+                var buffer = writer.addTag();
+                var frameTotalSize = type.mime.length + type.signature.length + content.length + 14;
+                var bufferUint8 = new Uint8Array(buffer, 10, frameTotalSize);
+
+                expect(bufferUint8).to.eql(new Uint8Array([
+                        65, 80, 73, 67, // 'APIC'
+                        0, 0, 0, frameTotalSize - 10, // size without header (should be less than 128)
+                        0, 0, // flags
+                        0 // encoding
+                    ].concat(type.mime)
+                    .concat([0, 3, 0]) // delemiter, pic type, delemiter
+                    .concat(type.signature)
+                    .concat(content)
+                ));
+            });
+        });
+
+    });
+
     describe('musicmetadata', function () {
 
         it('should return an error if there is no tag', function (done) {
