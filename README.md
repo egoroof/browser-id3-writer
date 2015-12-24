@@ -106,6 +106,7 @@ writer.setFrame('TIT2', 'Home')
     .setFrame('TRCK', '6/8')
     .setFrame('TPOS', '1/2')
     .setFrame('TCON', ['Soundtrack'])
+    .setFrame('USLT', 'This is unsychronised lyrics')
     .setFrame('APIC', coverArrayBuffer);
 writer.addTag();
 
@@ -160,6 +161,7 @@ Currently you can set next frames:
 - TPE2 (album artist)
 - TRCK (song number in album): 5 or '5/10'
 - TPOS (album disc number): 1 or '1/3'
+- USLT (unsychronised lyrics)
 
 **integer**
 
