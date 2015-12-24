@@ -17,6 +17,10 @@ function ajax(url, onSuccess, onError) {
     xhr.send();
 }
 
+function typedArray2Array(typedArray) {
+    return Array.prototype.slice.call(typedArray);
+}
+
 describe('ID3Writer', function () {
 
     it('should be possible to create an instance', function () {
@@ -63,6 +67,27 @@ describe('ID3Writer', function () {
         expect(function () {
             writer.setFrame('wrongFrameName', 'val');
         }).to.throw(Error, 'Unsupported frame');
+    });
+
+    it('should set USLT frame', function () {
+        var lyrics = 'Вышел заяц на крыльцо. Rabbit went out.';
+        var writer = new ID3Writer(new ArrayBuffer(0));
+        writer.setFrame('USLT', lyrics);
+        var buffer = writer.addTag();
+
+        var coder16 = new TextEncoder('utf-16le');
+        var frameTotalSize = lyrics.length * 2 + 16;
+        var bufferUint8 = new Uint8Array(buffer, 10, frameTotalSize);
+
+        expect(bufferUint8).to.eql(new Uint8Array([
+                85, 83, 76, 84, // 'USLT'
+                0, 0, 0, frameTotalSize - 10, // size without header (should be less than 128)
+                0, 0, // flags
+                1, // encoding
+                101, 110, 103, // language
+                0, 0 // content descriptor
+            ].concat(typedArray2Array(coder16.encode(lyrics)))
+        ));
     });
 
     describe('APIC', function () {
