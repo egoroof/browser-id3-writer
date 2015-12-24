@@ -58,6 +58,15 @@
         return headerSize + encodingSize + bomSize + frameUtf16Size;
     }
 
+    function getLyricsFrameSize(lyricsSize) {
+        var headerSize = 10;
+        var encodingSize = 1;
+        var languageSize = 3;
+        var contentDescriptorSize = 2;
+        var lyricsUtf16Size = lyricsSize * 2;
+        return headerSize + encodingSize + languageSize + contentDescriptorSize + lyricsUtf16Size;
+    }
+
     function getPictureFrameSize(frameSize, mimeTypeSize) {
         var headerSize = 10;
         var encodingSize = 1;
@@ -141,6 +150,15 @@
             });
         }
 
+        function setLyricsFrame(frameName, lyrics) {
+            var stringValue = lyrics.toString();
+            that.frames.push({
+                name: frameName,
+                value: stringValue,
+                size: getLyricsFrameSize(stringValue.length)
+            });
+        }
+
         switch (frameName) {
             case 'TPE1': // song artists
             case 'TCOM': // song composers
@@ -173,6 +191,9 @@
             case 'TLEN': // song duration
             case 'TYER': // album release year
                 setIntegerFrame(frameName, frameValue);
+                break;
+            case 'USLT': // unsychronised lyrics
+                setLyricsFrame(frameName, frameValue);
                 break;
             case 'APIC': // song cover
                 setPictureFrame(frameName, frameValue);
@@ -250,6 +271,18 @@
                     writeBytes = [1, 0xff, 0xfe]; // encoding and BOM
                     bufferWriter.set(writeBytes, offset);
                     offset += writeBytes.length;
+
+                    writeBytes = coder16.encode(frame.value); // frame value
+                    bufferWriter.set(writeBytes, offset);
+                    offset += writeBytes.length;
+                    break;
+                case 'USLT':
+                    var langEng = [101, 110, 103];
+                    writeBytes = [1].concat(langEng); // encoding and language
+                    bufferWriter.set(writeBytes, offset);
+                    offset += writeBytes.length;
+
+                    offset += 2; // content descriptor
 
                     writeBytes = coder16.encode(frame.value); // frame value
                     bufferWriter.set(writeBytes, offset);
