@@ -33,13 +33,19 @@ Demonstration is available here: [egoroof.github.io/browser-id3-writer](https://
 You can include library via [npmcdn](https://npmcdn.com/):
 
 ```html
-<script src="//npmcdn.com/browser-id3-writer@1.2.0/dist/browser-id3-writer.min.js"></script>
+<script src="//npmcdn.com/browser-id3-writer@1.3.0/dist/browser-id3-writer.min.js"></script>
 ```
 
 Or you can install via [npm](https://www.npmjs.com/) and get it from `dist` folder:
 
 ```
 npm install browser-id3-writer
+```
+
+Or you can include it using browser module loaders like webpack or browserify:
+
+```js
+var ID3Writer = require('browser-id3-writer');
 ```
 
 ## Usage
