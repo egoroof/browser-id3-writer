@@ -1,9 +1,6 @@
 sudo: false
 language: node_js
 node_js: stable
-cache:
-  directories:
-    - node_modules
 branches:
   only:
     - master
@@ -22,7 +19,6 @@ before_install:
   - export DISPLAY=:99.0
   - sh -e /etc/init.d/xvfb start
 before_script:
-  - npm prune
   - npm install -g codeclimate-test-reporter
 script:
   - npm run build
