@@ -1,4 +1,4 @@
-(function () {
+(function ($) {
     'use strict';
 
     function uint32ToUint8Array(uint32) {
@@ -334,6 +334,10 @@
         URL.revokeObjectURL(this.url);
     };
 
-    window.ID3Writer = Writer;
+    if (typeof module === 'object' && 'exports' in module) {
+        module.exports = Writer;
+    } else {
+        $.ID3Writer = Writer;
+    }
 
-})();
+})(this);
