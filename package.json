@@ -25,7 +25,7 @@
   },
   "homepage": "https://github.com/egoroof/browser-id3-writer#readme",
   "devDependencies": {
-    "chai": "3.4.1",
+    "chai": "3.5.0",
     "commitizen": "2.5.0",
     "cz-conventional-changelog": "1.1.5",
     "gulp": "3.9.0",
