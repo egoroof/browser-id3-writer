@@ -149,7 +149,7 @@ module.exports = {
         "jsx-quotes": 2, // specify whether double or single quotes should be used in JSX attributes
         "key-spacing": 2, // enforce spacing between keys and values in object literal properties
         "keyword-spacing": 2, // enforce spacing before and after keywords
-        "linebreak-style": [2, "windows"], // disallow mixed 'LF' and 'CRLF' as linebreaks
+        "linebreak-style": 0, // disallow mixed 'LF' and 'CRLF' as linebreaks
         "lines-around-comment": 2, // enforce empty lines around comments
         "max-depth": 2, // specify the maximum depth that blocks can be nested
         "max-len": [1, 120], // specify the maximum length of a line in your program
