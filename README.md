@@ -1,12 +1,8 @@
 # Browser ID3 Writer
 
 [![npm](https://img.shields.io/npm/v/browser-id3-writer.svg?style=flat-square)](https://www.npmjs.com/package/browser-id3-writer)
-[![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg?style=flat-square)](https://github.com/semantic-release/semantic-release)
-[![npm](https://img.shields.io/npm/l/browser-id3-writer.svg?style=flat-square)](https://github.com/egoroof/browser-id3-writer/blob/master/LICENSE.md)
-
 [![Travis](https://img.shields.io/travis/egoroof/browser-id3-writer.svg?style=flat-square)](https://travis-ci.org/egoroof/browser-id3-writer)
 [![Code Climate](https://img.shields.io/codeclimate/coverage/github/egoroof/browser-id3-writer.svg?style=flat-square)](https://codeclimate.com/github/egoroof/browser-id3-writer/coverage)
-[![Code Climate](https://img.shields.io/codeclimate/github/egoroof/browser-id3-writer.svg?style=flat-square)](https://codeclimate.com/github/egoroof/browser-id3-writer)
 
 [![David](https://img.shields.io/david/egoroof/browser-id3-writer.svg?style=flat-square)](https://david-dm.org/egoroof/browser-id3-writer)
 [![David](https://img.shields.io/david/dev/egoroof/browser-id3-writer.svg?style=flat-square)](https://david-dm.org/egoroof/browser-id3-writer#info=devDependencies)
