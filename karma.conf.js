@@ -15,26 +15,24 @@ module.exports = function (config) {
             'src/**/*.js',
             'test/**/*.test.js'
         ],
-        exclude: [],
-        preprocessors: {'src/**/*.js': ['coverage']},
+        preprocessors: {'src/**/*.js': ['webpack', 'coverage']},
         reporters: ['progress', 'coverage'],
-        coverageReporter: {
+        coverageReporter: CI ? {
             type: 'lcovonly',
-            dir : 'coverage/',
+            dir: 'coverage/',
             subdir: '.'
+        } : {
+            type: 'text-summary'
         },
-        port: 9876,
-        browserDisconnectTimeout: 4000,
-        colors: true,
-        logLevel: config.LOG_INFO,
         autoWatch: true,
-        browsers: CI ? ['Firefox'] : ['Chrome', 'Firefox', 'IE'],
+        colors: true,
         singleRun: false,
+        logLevel: config.LOG_INFO,
+        browsers: CI ? ['Firefox'] : ['Chrome', 'Firefox', 'IE'],
         concurrency: Infinity,
-        client: {
-            mocha: {
-                timeout: 10000
-            }
+        webpack: require('./webpack.config'),
+        webpackServer: {
+            noInfo: true
         }
     });
 };

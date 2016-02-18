@@ -21,6 +21,8 @@ before_install:
 before_script:
   - npm install -g codeclimate-test-reporter
 script:
+  - npm run lint
+  - npm run test
   - npm run build
   - codeclimate-test-reporter < coverage/lcov.info
 after_success:

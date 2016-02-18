@@ -4,7 +4,8 @@
   "description": "This is a library for writing ID3 tag to audio files in browsers.",
   "main": "src/browser-id3-writer.js",
   "scripts": {
-    "build": "gulp build",
+    "build": "webpack",
+    "lint": "eslint src/**/*.js",
     "commit": "git-cz",
     "test": "karma start --single-run",
     "semantic-release": "semantic-release pre && npm publish && semantic-release post"
@@ -25,16 +26,14 @@
   },
   "homepage": "https://github.com/egoroof/browser-id3-writer#readme",
   "devDependencies": {
+    "babel-core": "6.5.2",
+    "babel-loader": "6.2.3",
+    "babel-preset-es2015": "6.5.0",
     "chai": "3.5.0",
     "commitizen": "2.5.0",
     "cz-conventional-changelog": "1.1.5",
-    "gulp": "3.9.1",
-    "gulp-jshint": "2.0.0",
-    "gulp-rename": "1.2.2",
-    "gulp-sourcemaps": "1.6.0",
-    "gulp-uglify": "1.5.2",
+    "eslint": "2.1.0",
     "istanbul": "0.4.2",
-    "jshint": "2.9.1",
     "karma": "0.13.21",
     "karma-chai": "0.1.0",
     "karma-chrome-launcher": "0.2.2",
@@ -42,8 +41,10 @@
     "karma-firefox-launcher": "0.1.7",
     "karma-ie-launcher": "0.2.0",
     "karma-mocha": "0.2.2",
+    "karma-webpack": "1.7.0",
     "mocha": "2.4.5",
-    "semantic-release": "4.3.5"
+    "semantic-release": "4.3.5",
+    "webpack": "1.12.13"
   },
   "config": {
     "commitizen": {
