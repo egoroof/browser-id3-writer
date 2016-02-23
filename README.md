@@ -2,10 +2,6 @@
 
 [![npm](https://img.shields.io/npm/v/browser-id3-writer.svg?style=flat-square)](https://www.npmjs.com/package/browser-id3-writer)
 [![Travis](https://img.shields.io/travis/egoroof/browser-id3-writer.svg?style=flat-square)](https://travis-ci.org/egoroof/browser-id3-writer)
-[![Code Climate](https://img.shields.io/codeclimate/coverage/github/egoroof/browser-id3-writer.svg?style=flat-square)](https://codeclimate.com/github/egoroof/browser-id3-writer/coverage)
-
-[![David](https://img.shields.io/david/egoroof/browser-id3-writer.svg?style=flat-square)](https://david-dm.org/egoroof/browser-id3-writer)
-[![David](https://img.shields.io/david/dev/egoroof/browser-id3-writer.svg?style=flat-square)](https://david-dm.org/egoroof/browser-id3-writer#info=devDependencies)
 
 This is a library for writing [ID3v2.3](http://id3.org/id3v2.3.0)
 tag to audio files in browsers.

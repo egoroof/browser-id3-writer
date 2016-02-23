@@ -1,5 +1,5 @@
-module.exports = function (config) {
-    var CI = process.env.CI;
+module.exports = (config) => {
+    const CI = process.env.CI;
 
     config.set({
         basePath: '',
@@ -12,25 +12,35 @@ module.exports = function (config) {
                 included: false,
                 served: true
             },
-            'src/**/*.js',
+            {
+                pattern: 'dist/browser-id3-writer.min.js.map',
+                included: false,
+                served: true
+            },
+            'dist/browser-id3-writer.min.js',
             'test/**/*.test.js'
         ],
-        preprocessors: {'src/**/*.js': ['webpack', 'coverage']},
-        reporters: ['progress', 'coverage'],
-        coverageReporter: CI ? {
-            type: 'lcovonly',
-            dir: 'coverage/',
-            subdir: '.'
-        } : {
-            type: 'text-summary'
+        preprocessors: {
+            'test/**/*.js': ['webpack']
         },
+        reporters: ['dots'],
         autoWatch: true,
         colors: true,
         singleRun: false,
         logLevel: config.LOG_INFO,
         browsers: CI ? ['Firefox'] : ['Chrome', 'Firefox', 'IE'],
         concurrency: Infinity,
-        webpack: require('./webpack.config'),
+        webpack: {
+            module: {
+                loaders: [
+                    {
+                        test: /\.js$/,
+                        exclude: /node_modules/,
+                        loader: 'babel-loader'
+                    }
+                ]
+            }
+        },
         webpackServer: {
             noInfo: true
         }
