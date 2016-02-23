@@ -6,12 +6,6 @@ module.exports = (config) => {
         frameworks: ['mocha', 'chai'],
         files: [
             'https://npmcdn.com/text-encoding@0.5.2/lib/encoding.js',
-            'https://npmcdn.com/musicmetadata@2.0.2/dist/musicmetadata.js',
-            {
-                pattern: 'test/assets/*',
-                included: false,
-                served: true
-            },
             {
                 pattern: 'dist/browser-id3-writer.min.js.map',
                 included: false,
