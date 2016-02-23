@@ -1,52 +1,56 @@
-var assetsPath = '/base/test/assets/';
-
 function typedArray2Array(typedArray) {
     return Array.prototype.slice.call(typedArray);
 }
 
-describe('ID3Writer', function () {
+describe('ID3Writer', () => {
 
-    it('should be possible to create an instance', function () {
-        var buffer = new ArrayBuffer(0);
-        var writer = new ID3Writer(buffer);
+    it('should be possible to create an instance', () => {
+        const buffer = new ArrayBuffer(0);
+        const writer = new ID3Writer(buffer);
+
         expect(writer).to.be.instanceof(ID3Writer);
     });
 
-    it('should throw an exception if no argument passed to constructor', function () {
-        expect(function () {
-            var writer = new ID3Writer();
+    it('should throw an exception if no argument passed to constructor', () => {
+        expect(() => {
+            const writer = new ID3Writer();
+
+            writer.setFrame('USLT', 'Lyrics');
         }).to.throw(Error, 'First argument should be an instance of ArrayBuffer');
     });
 
-    it('wrong frame value type should throw an exception', function () {
-        var frames = ['TPE1', 'TCOM', 'TCON'];
-        var buffer = new ArrayBuffer(0);
-        var writer = new ID3Writer(buffer);
-        frames.forEach(function (frameName) {
-            expect(function () {
+    it('wrong frame value type should throw an exception', () => {
+        const frames = ['TPE1', 'TCOM', 'TCON'];
+        const buffer = new ArrayBuffer(0);
+        const writer = new ID3Writer(buffer);
+
+        frames.forEach((frameName) => {
+            expect(() => {
                 writer.setFrame(frameName, '');
             }).to.throw(Error, 'frame value should be an array of strings');
             expect(writer.setFrame(frameName, [])).to.be.instanceof(ID3Writer);
         });
     });
 
-    it('set incorrect frame name should throw an exception', function () {
-        var buffer = new ArrayBuffer(0);
-        var writer = new ID3Writer(buffer);
-        expect(function () {
+    it('set incorrect frame name should throw an exception', () => {
+        const buffer = new ArrayBuffer(0);
+        const writer = new ID3Writer(buffer);
+
+        expect(() => {
             writer.setFrame('wrongFrameName', 'val');
         }).to.throw(Error, 'Unsupported frame');
     });
 
-    it('should set USLT frame', function () {
-        var lyrics = 'Вышел заяц на крыльцо. Rabbit went out.';
-        var writer = new ID3Writer(new ArrayBuffer(0));
-        writer.setFrame('USLT', lyrics);
-        var buffer = writer.addTag();
+    it('should set USLT frame', () => {
+        const lyrics = 'Вышел заяц на крыльцо. Rabbit went out.';
+        const writer = new ID3Writer(new ArrayBuffer(0));
 
-        var coder16 = new TextEncoder('utf-16le');
-        var frameTotalSize = lyrics.length * 2 + 16;
-        var bufferUint8 = new Uint8Array(buffer, 10, frameTotalSize);
+        writer.setFrame('USLT', lyrics);
+
+        const buffer = writer.addTag();
+        const coder16 = new TextEncoder('utf-16le');
+        const frameTotalSize = lyrics.length * 2 + 16;
+        const bufferUint8 = new Uint8Array(buffer, 10, frameTotalSize);
 
         expect(bufferUint8).to.eql(new Uint8Array([
                 85, 83, 76, 84, // 'USLT'
@@ -59,24 +63,26 @@ describe('ID3Writer', function () {
         ));
     });
 
-    describe('APIC', function () {
+    describe('APIC', () => {
 
-        it('should throw error when mime type is not detected', function () {
-            var writer = new ID3Writer(new ArrayBuffer(0));
-            expect(function () {
+        it('should throw error when mime type is not detected', () => {
+            const writer = new ID3Writer(new ArrayBuffer(0));
+
+            expect(() => {
                 writer.setFrame('APIC', new ArrayBuffer(20));
             }).to.throw(Error, 'Unknown picture MIME type');
         });
 
-        it('should throw error when buffer is empty', function () {
-            var writer = new ID3Writer(new ArrayBuffer(0));
-            expect(function () {
+        it('should throw error when buffer is empty', () => {
+            const writer = new ID3Writer(new ArrayBuffer(0));
+
+            expect(() => {
                 writer.setFrame('APIC', new ArrayBuffer(0));
             }).to.throw(Error, 'Unknown picture MIME type');
         });
 
-        it('should accept various image types', function () {
-            var types = [
+        it('should accept various image types', () => {
+            const types = [
                 { // jpeg
                     signature: [0xff, 0xd8, 0xff],
                     mime: [105, 109, 97, 103, 101, 47, 106, 112, 101, 103]
@@ -110,19 +116,22 @@ describe('ID3Writer', function () {
                     mime: [105, 109, 97, 103, 101, 47, 120, 45, 105, 99, 111, 110]
                 }
             ];
+            const content = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
-            var content = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-            types.forEach(function (type) {
-                var coverBuffer = new ArrayBuffer(type.signature.length + content.length);
-                var coverUint8 = new Uint8Array(coverBuffer);
+            types.forEach((type) => {
+                const coverBuffer = new ArrayBuffer(type.signature.length + content.length);
+                const coverUint8 = new Uint8Array(coverBuffer);
+
                 coverUint8.set(type.signature);
                 coverUint8.set(content, type.signature.length);
 
-                var writer = new ID3Writer(new ArrayBuffer(0));
+                const writer = new ID3Writer(new ArrayBuffer(0));
+
                 writer.setFrame('APIC', coverBuffer);
-                var buffer = writer.addTag();
-                var frameTotalSize = type.mime.length + type.signature.length + content.length + 14;
-                var bufferUint8 = new Uint8Array(buffer, 10, frameTotalSize);
+
+                const buffer = writer.addTag();
+                const frameTotalSize = type.mime.length + type.signature.length + content.length + 14;
+                const bufferUint8 = new Uint8Array(buffer, 10, frameTotalSize);
 
                 expect(bufferUint8).to.eql(new Uint8Array([
                         65, 80, 73, 67, // 'APIC'
