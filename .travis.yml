@@ -4,7 +4,7 @@ node_js: stable
 branches:
   only:
     - master
-	- dev
+    - dev
 notifications:
   email: false
 env:
