@@ -2,7 +2,12 @@ module.exports = {
     "env": {
         "es6": true,
         "browser": true,
-        "commonjs": true
+        "node": true,
+        "mocha": true
+    },
+    "globals": {
+        ID3Writer: false,
+        expect: false
     },
     "rules": { // http://eslint.org/docs/rules/
 
@@ -80,7 +85,7 @@ module.exports = {
         "no-octal-escape": 2, // disallow use of octal escape sequences in string literals, such as var foo = "Copyright \251";
         "no-octal": 2, // disallow use of octal literals
         "no-param-reassign": 2, // disallow reassignment of function parameters
-        "no-process-env": 2, // disallow use of process.env
+        "no-process-env": 1, // disallow use of process.env
         "no-proto": 2, // disallow usage of __proto__ property
         "no-redeclare": 2, // disallow declaring the same variable more than once
         "no-return-assign": 2, // disallow use of assignment in return statement
