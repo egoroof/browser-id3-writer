@@ -2,10 +2,13 @@ const path = require('path');
 const webpack = require('webpack');
 
 module.exports = {
-    entry: './src/browser-id3-writer.js',
+    entry: {
+        'browser-id3-writer': './src/browser-id3-writer.js',
+        'browser-id3-writer.min': './src/browser-id3-writer.js'
+    },
     output: {
         path: path.join(__dirname, 'dist'),
-        filename: 'browser-id3-writer.min.js',
+        filename: '[name].js',
         library: 'ID3Writer',
         libraryTarget: 'umd',
         umdNamedDefine: true
@@ -21,6 +24,8 @@ module.exports = {
         ]
     },
     plugins: [
-        new webpack.optimize.UglifyJsPlugin()
+        new webpack.optimize.UglifyJsPlugin({
+            include: /\.min.js$/
+        })
     ]
 };
