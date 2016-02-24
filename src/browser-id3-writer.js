@@ -97,8 +97,8 @@ function getBufferMimeType(buf) {
     if (buf[8] === 0x57 && buf[9] === 0x45 && buf[10] === 0x42 && buf[11] === 0x50) {
         return 'image/webp';
     }
-    const isLeTiff = Boolean(buf[0] === 0x49 && buf[1] === 0x49 && buf[2] === 0x2a && buf[3] === 0);
-    const isBeTiff = Boolean(buf[0] === 0x4d && buf[1] === 0x4d && buf[2] === 0 && buf[3] === 0x2a);
+    const isLeTiff = buf[0] === 0x49 && buf[1] === 0x49 && buf[2] === 0x2a && buf[3] === 0;
+    const isBeTiff = buf[0] === 0x4d && buf[1] === 0x4d && buf[2] === 0 && buf[3] === 0x2a;
 
     if (isLeTiff || isBeTiff) {
         return 'image/tiff';
@@ -114,11 +114,20 @@ function getBufferMimeType(buf) {
 
 class Writer {
 
-    constructor(arrayBuffer) {
-        if (!arrayBuffer || arrayBuffer.constructor !== ArrayBuffer) {
+    constructor(buffer) {
+        if (!buffer || buffer.constructor !== ArrayBuffer) {
             throw new Error('First argument should be an instance of ArrayBuffer');
         }
-        this.arrayBuffer = arrayBuffer;
+
+        const firstThreeBytes = new Uint8Array(buffer, 0, 3);
+        const isMp3File = firstThreeBytes[0] === 0xff && firstThreeBytes[1] === 0xfb;
+        const isMp3Id3File = firstThreeBytes[0] === 0x49 && firstThreeBytes[1] === 0x44 && firstThreeBytes[2] === 0x33;
+
+        if (!isMp3File && !isMp3Id3File) {
+            throw new Error('ArrayBuffer is not an mp3 file or it is corrupted');
+        }
+
+        this.arrayBuffer = buffer;
         this.padding = 4096;
         this.frames = [];
         this.url = '';
@@ -235,9 +244,9 @@ class Writer {
             return;
         }
         const firstTenBytes = new Uint8Array(this.arrayBuffer, 0, headerLength);
-        const isID3tag = Boolean(firstTenBytes[0] === 0x49 && firstTenBytes[1] === 0x44 && firstTenBytes[2] === 0x33);
+        const isId3tag = firstTenBytes[0] === 0x49 && firstTenBytes[1] === 0x44 && firstTenBytes[2] === 0x33;
 
-        if (!isID3tag) {
+        if (!isId3tag) {
             return;
         }
         const version = firstTenBytes[3];
