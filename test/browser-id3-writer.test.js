@@ -1,28 +1,65 @@
+function getMp3file() {
+    const buffer = new ArrayBuffer(10);
+    const uint8 = new Uint8Array(buffer);
+
+    uint8.set([0xff, 0xfb, 0, 1, 2, 3, 4, 5, 6, 7]);
+
+    return buffer;
+}
+
+function getMp3fileWithId3() {
+    const buffer = new ArrayBuffer(10);
+    const uint8 = new Uint8Array(buffer);
+
+    uint8.set([0x49, 0x44, 0x33, 0, 1, 2, 3, 4, 5, 6]);
+
+    return buffer;
+}
+
+function getNonMp3File() {
+    const buffer = new ArrayBuffer(10);
+    const uint8 = new Uint8Array(buffer);
+
+    uint8.set([0, 1, 2, 3, 4, 5, 6, 7, 8, 9]);
+
+    return buffer;
+}
+
 function typedArray2Array(typedArray) {
     return Array.prototype.slice.call(typedArray);
 }
 
+const files = {
+    mp3: getMp3file(),
+    mp3WithId3: getMp3fileWithId3(),
+    nonMp3: getNonMp3File()
+};
+
 describe('ID3Writer', () => {
 
     it('should be possible to create an instance', () => {
-        const buffer = new ArrayBuffer(0);
-        const writer = new ID3Writer(buffer);
+        const writer = new ID3Writer(files.mp3);
+        const writer2 = new ID3Writer(files.mp3WithId3);
 
         expect(writer).to.be.instanceof(ID3Writer);
+        expect(writer2).to.be.instanceof(ID3Writer);
+    });
+
+    it('should throw an exception if non mp3 file is given', () => {
+        expect(() => {
+            new ID3Writer(files.nonMp3);
+        }).to.throw(Error, 'ArrayBuffer is not an mp3 file or it is corrupted');
     });
 
     it('should throw an exception if no argument passed to constructor', () => {
         expect(() => {
-            const writer = new ID3Writer();
-
-            writer.setFrame('USLT', 'Lyrics');
+            new ID3Writer();
         }).to.throw(Error, 'First argument should be an instance of ArrayBuffer');
     });
 
     it('wrong frame value type should throw an exception', () => {
         const frames = ['TPE1', 'TCOM', 'TCON'];
-        const buffer = new ArrayBuffer(0);
-        const writer = new ID3Writer(buffer);
+        const writer = new ID3Writer(files.mp3);
 
         frames.forEach((frameName) => {
             expect(() => {
@@ -33,8 +70,7 @@ describe('ID3Writer', () => {
     });
 
     it('set incorrect frame name should throw an exception', () => {
-        const buffer = new ArrayBuffer(0);
-        const writer = new ID3Writer(buffer);
+        const writer = new ID3Writer(files.mp3);
 
         expect(() => {
             writer.setFrame('wrongFrameName', 'val');
@@ -43,7 +79,7 @@ describe('ID3Writer', () => {
 
     it('should set USLT frame', () => {
         const lyrics = 'Вышел заяц на крыльцо. Rabbit went out.';
-        const writer = new ID3Writer(new ArrayBuffer(0));
+        const writer = new ID3Writer(files.mp3);
 
         writer.setFrame('USLT', lyrics);
 
@@ -66,7 +102,7 @@ describe('ID3Writer', () => {
     describe('APIC', () => {
 
         it('should throw error when mime type is not detected', () => {
-            const writer = new ID3Writer(new ArrayBuffer(0));
+            const writer = new ID3Writer(files.mp3);
 
             expect(() => {
                 writer.setFrame('APIC', new ArrayBuffer(20));
@@ -74,7 +110,7 @@ describe('ID3Writer', () => {
         });
 
         it('should throw error when buffer is empty', () => {
-            const writer = new ID3Writer(new ArrayBuffer(0));
+            const writer = new ID3Writer(files.mp3);
 
             expect(() => {
                 writer.setFrame('APIC', new ArrayBuffer(0));
@@ -125,7 +161,7 @@ describe('ID3Writer', () => {
                 coverUint8.set(type.signature);
                 coverUint8.set(content, type.signature.length);
 
-                const writer = new ID3Writer(new ArrayBuffer(0));
+                const writer = new ID3Writer(files.mp3);
 
                 writer.setFrame('APIC', coverBuffer);
 
