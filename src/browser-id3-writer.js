@@ -225,6 +225,9 @@ class Writer {
             }
             case 'APIC': // song cover
             {
+                if (frameValue.constructor !== ArrayBuffer) {
+                    throw new Error('APIC frame value should be an instance of ArrayBuffer');
+                }
                 this._setPictureFrame(frameName, frameValue);
                 break;
             }

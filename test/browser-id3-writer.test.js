@@ -100,6 +100,14 @@ describe('ID3Writer', () => {
 
     describe('APIC', () => {
 
+        it('should throw error when value is not a buffer', () => {
+            const writer = new ID3Writer(files.mp3);
+
+            expect(() => {
+                writer.setFrame('APIC', 4512);
+            }).to.throw(Error, 'APIC frame value should be an instance of ArrayBuffer');
+        });
+
         it('should throw error when mime type is not detected', () => {
             const writer = new ID3Writer(files.mp3);
 
