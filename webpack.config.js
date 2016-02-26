@@ -10,8 +10,7 @@ module.exports = {
         path: path.join(__dirname, 'dist'),
         filename: '[name].js',
         library: 'ID3Writer',
-        libraryTarget: 'umd',
-        umdNamedDefine: true
+        libraryTarget: 'umd'
     },
     devtool: 'source-map',
     module: {
