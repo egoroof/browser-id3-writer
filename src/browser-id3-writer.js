@@ -114,6 +114,50 @@ function getBufferMimeType(buf) {
 
 class Writer {
 
+    _setIntegerFrame(name, value) {
+        const integer = parseInt(value, 10);
+
+        this.frames.push({
+            name,
+            value: integer,
+            size: getNumericFrameSize(integer.toString().length)
+        });
+    }
+
+    _setStringFrame(name, value) {
+        const stringValue = value.toString();
+
+        this.frames.push({
+            name,
+            value: stringValue,
+            size: getStringFrameSize(stringValue.length)
+        });
+    }
+
+    _setPictureFrame(name, buffer) {
+        const mimeType = getBufferMimeType(new Uint8Array(buffer), 0, 12);
+
+        if (!mimeType) {
+            throw new Error('Unknown picture MIME type');
+        }
+        this.frames.push({
+            name,
+            value: buffer,
+            mimeType,
+            size: getPictureFrameSize(buffer.byteLength, mimeType.length)
+        });
+    }
+
+    _setLyricsFrame(name, lyrics) {
+        const stringValue = lyrics.toString();
+
+        this.frames.push({
+            name,
+            value: stringValue,
+            size: getLyricsFrameSize(stringValue.length)
+        });
+    }
+
     constructor(buffer) {
         if (!buffer || buffer.constructor !== ArrayBuffer) {
             throw new Error('First argument should be an instance of ArrayBuffer');
@@ -135,50 +179,6 @@ class Writer {
 
 
     setFrame(frameName, frameValue) {
-        const setIntegerFrame = (name, value) => {
-            const integer = parseInt(value, 10);
-
-            this.frames.push({
-                name,
-                value: integer,
-                size: getNumericFrameSize(integer.toString().length)
-            });
-        };
-
-        const setStringFrame = (name, value) => {
-            const stringValue = value.toString();
-
-            this.frames.push({
-                name,
-                value: stringValue,
-                size: getStringFrameSize(stringValue.length)
-            });
-        };
-
-        const setPictureFrame = (name, buffer) => {
-            const mimeType = getBufferMimeType(new Uint8Array(buffer), 0, 12);
-
-            if (!mimeType) {
-                throw new Error('Unknown picture MIME type');
-            }
-            this.frames.push({
-                name,
-                value: buffer,
-                mimeType,
-                size: getPictureFrameSize(buffer.byteLength, mimeType.length)
-            });
-        };
-
-        const setLyricsFrame = (name, lyrics) => {
-            const stringValue = lyrics.toString();
-
-            this.frames.push({
-                name,
-                value: stringValue,
-                size: getLyricsFrameSize(stringValue.length)
-            });
-        };
-
         switch (frameName) {
             case 'TPE1': // song artists
             case 'TCOM': // song composers
@@ -189,7 +189,7 @@ class Writer {
                 const artists = frameValue.map((artist) => artist.toString());
                 const artistsStr = artistsToStr(artists);
 
-                setStringFrame(frameName, artistsStr);
+                this._setStringFrame(frameName, artistsStr);
                 break;
             }
             case 'TCON': // song genre
@@ -200,7 +200,7 @@ class Writer {
                 const frames = frameValue.map((frame) => frame.toString());
                 const genresStr = genresToStr(frames);
 
-                setStringFrame(frameName, genresStr);
+                this._setStringFrame(frameName, genresStr);
                 break;
             }
             case 'TIT2': // song title
@@ -209,23 +209,23 @@ class Writer {
             case 'TRCK': // song number in album: 5 or 5/10
             case 'TPOS': // album disc number: 1 or 1/3
             {
-                setStringFrame(frameName, frameValue);
+                this._setStringFrame(frameName, frameValue);
                 break;
             }
             case 'TLEN': // song duration
             case 'TYER': // album release year
             {
-                setIntegerFrame(frameName, frameValue);
+                this._setIntegerFrame(frameName, frameValue);
                 break;
             }
             case 'USLT': // unsychronised lyrics
             {
-                setLyricsFrame(frameName, frameValue);
+                this._setLyricsFrame(frameName, frameValue);
                 break;
             }
             case 'APIC': // song cover
             {
-                setPictureFrame(frameName, frameValue);
+                this._setPictureFrame(frameName, frameValue);
                 break;
             }
             default:

@@ -65,11 +65,10 @@ describe('ID3Writer', () => {
             expect(() => {
                 writer.setFrame(frameName, '');
             }).to.throw(Error, 'frame value should be an array of strings');
-            expect(writer.setFrame(frameName, [])).to.be.instanceof(ID3Writer);
         });
     });
 
-    it('set incorrect frame name should throw an exception', () => {
+    it('should throw an exception with wrong frame name', () => {
         const writer = new ID3Writer(files.mp3);
 
         expect(() => {
@@ -118,41 +117,33 @@ describe('ID3Writer', () => {
         });
 
         it('should accept various image types', () => {
-            const types = [
-                { // jpeg
-                    signature: [0xff, 0xd8, 0xff],
-                    mime: [105, 109, 97, 103, 101, 47, 106, 112, 101, 103]
-                },
-                { // png
-                    signature: [0x89, 0x50, 0x4e, 0x47],
-                    mime: [105, 109, 97, 103, 101, 47, 112, 110, 103]
-                },
-                { // gif
-                    signature: [0x47, 0x49, 0x46],
-                    mime: [105, 109, 97, 103, 101, 47, 103, 105, 102]
-                },
-                { // webp
-                    signature: [0, 0, 0, 0, 0, 0, 0, 0, 0x57, 0x45, 0x42, 0x50],
-                    mime: [105, 109, 97, 103, 101, 47, 119, 101, 98, 112]
-                },
-                { // tiff LE
-                    signature: [0x49, 0x49, 0x2a, 0],
-                    mime: [105, 109, 97, 103, 101, 47, 116, 105, 102, 102]
-                },
-                { // tiff BE
-                    signature: [0x4d, 0x4d, 0, 0x2a],
-                    mime: [105, 109, 97, 103, 101, 47, 116, 105, 102, 102]
-                },
-                { // bmp
-                    signature: [0x42, 0x4d],
-                    mime: [105, 109, 97, 103, 101, 47, 98, 109, 112]
-                },
-                { // ico
-                    signature: [0, 0, 1, 0],
-                    mime: [105, 109, 97, 103, 101, 47, 120, 45, 105, 99, 111, 110]
-                }
-            ];
+            const types = [{
+                signature: [0xff, 0xd8, 0xff],
+                mime: 'image/jpeg'
+            }, {
+                signature: [0x89, 0x50, 0x4e, 0x47],
+                mime: 'image/png'
+            }, {
+                signature: [0x47, 0x49, 0x46],
+                mime: 'image/gif'
+            }, {
+                signature: [0, 0, 0, 0, 0, 0, 0, 0, 0x57, 0x45, 0x42, 0x50],
+                mime: 'image/webp'
+            }, {
+                signature: [0x49, 0x49, 0x2a, 0],
+                mime: 'image/tiff'
+            }, {
+                signature: [0x4d, 0x4d, 0, 0x2a],
+                mime: 'image/tiff'
+            }, {
+                signature: [0x42, 0x4d],
+                mime: 'image/bmp'
+            }, {
+                signature: [0, 0, 1, 0],
+                mime: 'image/x-icon'
+            }];
             const content = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+            const coder8 = new TextEncoder('utf-8');
 
             types.forEach((type) => {
                 const coverBuffer = new ArrayBuffer(type.signature.length + content.length);
@@ -174,7 +165,7 @@ describe('ID3Writer', () => {
                         0, 0, 0, frameTotalSize - 10, // size without header (should be less than 128)
                         0, 0, // flags
                         0 // encoding
-                    ].concat(type.mime)
+                    ].concat(typedArray2Array(coder8.encode(type.mime)))
                     .concat([0, 3, 0]) // delemiter, pic type, delemiter
                     .concat(type.signature)
                     .concat(content)
