@@ -24,8 +24,10 @@ Demonstration is available here: [egoroof.github.io/browser-id3-writer](https://
 
 You can include library via [npmcdn](https://npmcdn.com/):
 
+**Warning**: better use exact version to protect yourself against breaking changes.
+
 ```html
-<script src="//npmcdn.com/browser-id3-writer@2.0.0/dist/browser-id3-writer.min.js"></script>
+<script src="//npmcdn.com/browser-id3-writer@^2.0.0/dist/browser-id3-writer.min.js"></script>
 ```
 
 Or you can install via [npm](https://www.npmjs.com/) and get it from `dist` folder:
