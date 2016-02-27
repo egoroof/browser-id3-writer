@@ -1,6 +1,6 @@
 {
   "name": "browser-id3-writer",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "This is a library for writing ID3 tag to audio files in browsers.",
   "main": "dist/browser-id3-writer.js",
   "scripts": {
