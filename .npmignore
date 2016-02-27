@@ -9,3 +9,4 @@ todo.md
 .travis.yml
 karma.conf.js
 webpack.config.js
+npm-debug.log
