@@ -1,3 +1,11 @@
 .idea/
-coverage/
+src/
+test/
 todo.md
+.babelrc
+.eslintignore
+.eslintrc.js
+.gitattributes
+.travis.yml
+karma.conf.js
+webpack.config.js
