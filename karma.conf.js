@@ -15,7 +15,7 @@ module.exports = (config) => {
             'test/**/*.test.js'
         ],
         preprocessors: {
-            'test/**/*.js': ['webpack']
+            'test/**/*.js': ['babel']
         },
         reporters: ['dots'],
         autoWatch: true,
@@ -23,20 +23,6 @@ module.exports = (config) => {
         singleRun: false,
         logLevel: config.LOG_INFO,
         browsers: CI ? ['Firefox'] : ['Chrome', 'Firefox', 'IE'],
-        concurrency: Infinity,
-        webpack: {
-            module: {
-                loaders: [
-                    {
-                        test: /\.js$/,
-                        exclude: /node_modules/,
-                        loader: 'babel-loader'
-                    }
-                ]
-            }
-        },
-        webpackServer: {
-            noInfo: true
-        }
+        concurrency: Infinity
     });
 };
