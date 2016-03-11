@@ -159,6 +159,7 @@ Currently you can set next frames:
 - TRCK (song number in album): 5 or '5/10'
 - TPOS (album disc number): 1 or '1/3'
 - USLT (unsychronised lyrics)
+- TPUB (label name)
 
 **integer**
 
