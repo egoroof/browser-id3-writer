@@ -3,8 +3,7 @@
 [![npm](https://img.shields.io/npm/v/browser-id3-writer.svg?style=flat-square)](https://www.npmjs.com/package/browser-id3-writer)
 [![Travis](https://img.shields.io/travis/egoroof/browser-id3-writer.svg?style=flat-square)](https://travis-ci.org/egoroof/browser-id3-writer)
 
-This is a library for writing [ID3v2.3](http://id3.org/id3v2.3.0)
-tag to audio files in browsers.
+A pure JS library for writing [ID3v2.3](http://id3.org/id3v2.3.0) tag to MP3 files in browsers.
 It can not read tag so use another lib to do it.
 
 **Note**: the library removes existing ID3 tag (v2.2, v2.3 and v2.4).
