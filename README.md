@@ -148,15 +148,15 @@ Currently you can set next frames:
 
 - TPE1 (song artists)
 - TCOM (song composers)
-- TCON (song genre)
+- TCON (song genres)
 
 **string**
 
 - TIT2 (song title)
 - TALB (album title)
 - TPE2 (album artist)
-- TRCK (song number in album): 5 or '5/10'
-- TPOS (album disc number): 1 or '1/3'
+- TRCK (song number in album): '5' or '5/10'
+- TPOS (album disc number): '1' or '1/3'
 - USLT (unsychronised lyrics)
 - TPUB (label name)
 
