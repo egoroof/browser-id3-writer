@@ -6,7 +6,7 @@
   "scripts": {
     "lint": "eslint src/**/*.js",
     "build": "webpack",
-    "test": "npm run build && karma start --single-run"
+    "test": "webpack && karma start --single-run"
   },
   "repository": {
     "type": "git",
