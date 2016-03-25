@@ -5,12 +5,7 @@ module.exports = (config) => {
         basePath: '',
         frameworks: ['mocha', 'chai'],
         files: [
-            'https://npmcdn.com/text-encoding@0.5.2/lib/encoding.js',
-            {
-                pattern: 'dist/browser-id3-writer.min.js.map',
-                included: false,
-                served: true
-            },
+            'node_modules/text-encoding/lib/encoding.js',
             'dist/browser-id3-writer.min.js',
             'test/**/*.test.js'
         ],
