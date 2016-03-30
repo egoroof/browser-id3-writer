@@ -11,7 +11,6 @@ function uint32ToUint8Array(uint32) {
 function uint28ToUint7Array(uint28) {
     const uint7array = [];
     const sevenBitMask = (1 << 7) - 1;
-
     for (let i = 21; i >= 0; i -= 7) {
         uint7array.push((uint28 >>> i) & sevenBitMask);
     }
@@ -20,11 +19,18 @@ function uint28ToUint7Array(uint28) {
 
 function uint7ArrayToUint28(uint7Array) {
     let uint28 = 0;
-
     for (let i = 0, pow = 21; pow >= 0; pow -= 7, i++) {
         uint28 += uint7Array[i] << pow;
     }
     return uint28;
+}
+
+function isMp3WithoutId3(buffer) {
+    return buffer[0] === 0xff && buffer[1] === 0xfb;
+}
+
+function isMp3WithId3(buffer) {
+    return buffer[0] === 0x49 && buffer[1] === 0x44 && buffer[2] === 0x33;
 }
 
 function artistsToStr(artists) {
@@ -164,10 +170,8 @@ class Writer {
         }
 
         const firstThreeBytes = new Uint8Array(buffer, 0, 3);
-        const isMp3File = firstThreeBytes[0] === 0xff && firstThreeBytes[1] === 0xfb;
-        const isMp3Id3File = firstThreeBytes[0] === 0x49 && firstThreeBytes[1] === 0x44 && firstThreeBytes[2] === 0x33;
 
-        if (!isMp3File && !isMp3Id3File) {
+        if (!isMp3WithoutId3(firstThreeBytes) && !isMp3WithId3(firstThreeBytes)) {
             throw new Error('ArrayBuffer is not an mp3 file or it is corrupted');
         }
 
@@ -248,27 +252,22 @@ class Writer {
             return;
         }
         const firstTenBytes = new Uint8Array(this.arrayBuffer, 0, headerLength);
-        const isId3tag = firstTenBytes[0] === 0x49 && firstTenBytes[1] === 0x44 && firstTenBytes[2] === 0x33;
-
-        if (!isId3tag) {
-            return;
-        }
         const version = firstTenBytes[3];
-
-        if (version < 2 || version > 4) {
-            return;
-        }
         const tagSize = uint7ArrayToUint28([
             firstTenBytes[6], firstTenBytes[7],
             firstTenBytes[8], firstTenBytes[9]
         ]);
 
+        if (!isMp3WithId3(firstTenBytes) || version < 2 || version > 4) {
+            return;
+        }
+
         this.arrayBuffer = this.arrayBuffer.slice(tagSize + headerLength);
     }
 
     addTag() {
-        this.removeTag(); // to be sure there is no other tags
-        let offset = 0;
+        this.removeTag();
+
         const headerSize = 10;
         const totalFrameSize = getTotalFrameSize(this.frames);
         const totalTagSize = headerSize + totalFrameSize + this.padding;
@@ -277,8 +276,10 @@ class Writer {
         const coder8 = new TextEncoder('utf-8');
         const coder16 = new TextEncoder('utf-16le');
 
-        let writeBytes = [0x49, 0x44, 0x33, 3]; // ID3 tag and version
+        let offset = 0;
+        let writeBytes = [];
 
+        writeBytes = [0x49, 0x44, 0x33, 3]; // ID3 tag and version
         bufferWriter.set(writeBytes, offset);
         offset += writeBytes.length;
 
