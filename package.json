@@ -1,6 +1,6 @@
 {
   "name": "browser-id3-writer",
-  "version": "2.1.1",
+  "version": "2.1.2",
   "description": "Browser ID3 tag writer in pure JS",
   "main": "dist/browser-id3-writer.js",
   "scripts": {
