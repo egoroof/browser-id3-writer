@@ -11,6 +11,7 @@ function uint32ToUint8Array(uint32) {
 function uint28ToUint7Array(uint28) {
     const uint7array = [];
     const sevenBitMask = (1 << 7) - 1;
+
     for (let i = 21; i >= 0; i -= 7) {
         uint7array.push((uint28 >>> i) & sevenBitMask);
     }
@@ -19,6 +20,7 @@ function uint28ToUint7Array(uint28) {
 
 function uint7ArrayToUint28(uint7Array) {
     let uint28 = 0;
+
     for (let i = 0, pow = 21; pow >= 0; pow -= 7, i++) {
         uint28 += uint7Array[i] << pow;
     }
@@ -26,7 +28,7 @@ function uint7ArrayToUint28(uint7Array) {
 }
 
 function isMp3WithoutId3(buffer) {
-    return buffer[0] === 0xff && buffer[1] === 0xfb;
+    return buffer[0] === 0xff && (buffer[1] === 0xfb || buffer[1] === 0xfa);
 }
 
 function isMp3WithId3(buffer) {
