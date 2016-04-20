@@ -97,6 +97,84 @@ describe('ID3Writer', () => {
         }).to.throw(Error, 'Unsupported frame');
     });
 
+    describe('integer frames', () => {
+
+        it('should correctly set TLEN frame', () => {
+            const writer = new ID3Writer(files.mp3);
+            writer.setFrame('TLEN', 7200000);
+
+            const buffer = writer.addTag();
+            const frameTotalSize = 18;
+            const bufferUint8 = new Uint8Array(buffer, 10, frameTotalSize);
+
+            expect(bufferUint8).to.eql(new Uint8Array([
+                84, 76, 69, 78, // 'TLEN'
+                0, 0, 0, frameTotalSize - 10, // size without header (should be less than 128)
+                0, 0, // flags
+                0, // encoding
+                55, 50, 48, 48, 48, 48, 48 // frame value - 7200000
+            ]));
+        });
+
+        it('should correctly set TYER frame', () => {
+            const writer = new ID3Writer(files.mp3);
+            writer.setFrame('TYER', 2011);
+
+            const buffer = writer.addTag();
+            const frameTotalSize = 15;
+            const bufferUint8 = new Uint8Array(buffer, 10, frameTotalSize);
+
+            expect(bufferUint8).to.eql(new Uint8Array([
+                84, 89, 69, 82, // 'TYER'
+                0, 0, 0, frameTotalSize - 10, // size without header (should be less than 128)
+                0, 0, // flags
+                0, // encoding
+                50, 48, 49, 49 // 2011
+            ]));
+        });
+    });
+
+
+    describe('array of strings frames', () => {
+        it('should correctly set TPE1 frame', () => {
+            const writer = new ID3Writer(files.mp3);
+            writer.setFrame('TPE1', ['Eminem', '50 Cent']);
+
+            const buffer = writer.addTag();
+            const frameTotalSize = 41;
+            const bufferUint8 = new Uint8Array(buffer, 10, frameTotalSize);
+
+            expect(bufferUint8).to.eql(new Uint8Array([
+                84, 80, 69, 49, // 'TPE1'
+                0, 0, 0, frameTotalSize - 10, // size without header (should be less than 128)
+                0, 0, // flags
+                1, 0xff, 0xfe, // encoding, BOM
+                69, 0, 109, 0, 105, 0, 110, 0, 101, 0, 109, 0, 47, 0, // Eminem/
+                53, 0, 48, 0, 32, 0, 67, 0, 101, 0, 110, 0, 116, 0 // 50 Cent
+            ]));
+        });
+    });
+
+    describe('string frames', () => {
+        it('should correctly set TIT2 frame', () => {
+            const writer = new ID3Writer(files.mp3);
+            writer.setFrame('TIT2', 'Емеля - forge');
+
+            const buffer = writer.addTag();
+            const frameTotalSize = 39;
+            const bufferUint8 = new Uint8Array(buffer, 10, frameTotalSize);
+
+            expect(bufferUint8).to.eql(new Uint8Array([
+                84, 73, 84, 50, // 'TIT2'
+                0, 0, 0, frameTotalSize - 10, // size without header (should be less than 128)
+                0, 0, // flags
+                1, 0xff, 0xfe, // encoding, BOM
+                21, 4, 60, 4, 53, 4, 59, 4, 79, 4, 32, 0, 45, 0, 32, 0, // Емеля -
+                102, 0, 111, 0, 114, 0, 103, 0, 101, 0 // forge
+            ]));
+        });
+    });
+
     it('should set USLT frame', () => {
         const lyrics = 'Вышел заяц на крыльцо. Rabbit went out.';
         const writer = new ID3Writer(files.mp3);
