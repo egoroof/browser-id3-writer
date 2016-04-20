@@ -19,6 +19,11 @@
     "mp3"
   ],
   "author": "egoroof",
+  "files": [
+    "LICENSE.md",
+    "README.md",
+    "dist"
+  ],
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/egoroof/browser-id3-writer/issues"
