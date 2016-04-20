@@ -69,9 +69,10 @@ function getLyricsFrameSize(lyricsSize) {
     const encodingSize = 1;
     const languageSize = 3;
     const contentDescriptorSize = 2;
+    const bomSize = 2;
     const lyricsUtf16Size = lyricsSize * 2;
 
-    return headerSize + encodingSize + languageSize + contentDescriptorSize + lyricsUtf16Size;
+    return headerSize + encodingSize + languageSize + bomSize + contentDescriptorSize + bomSize + lyricsUtf16Size;
 }
 
 function getPictureFrameSize(frameSize, mimeTypeSize) {
@@ -233,6 +234,7 @@ class Writer {
     addTag() {
         this.removeTag();
 
+        const BOM = [0xff, 0xfe];
         const headerSize = 10;
         const totalFrameSize = getTotalFrameSize(this.frames);
         const totalTagSize = headerSize + totalFrameSize + this.padding;
@@ -275,7 +277,7 @@ class Writer {
                 case 'TPOS':
                 case 'TPUB':
                 {
-                    writeBytes = [1, 0xff, 0xfe]; // encoding and BOM
+                    writeBytes = [1].concat(BOM); // encoding, BOM
                     bufferWriter.set(writeBytes, offset);
                     offset += writeBytes.length;
 
@@ -288,11 +290,15 @@ class Writer {
                 {
                     const langEng = [101, 110, 103];
 
-                    writeBytes = [1].concat(langEng); // encoding and language
+                    writeBytes = [1].concat(langEng, BOM); // encoding, language, BOM for content descriptor
                     bufferWriter.set(writeBytes, offset);
                     offset += writeBytes.length;
-
+                    
                     offset += 2; // content descriptor
+
+                    writeBytes = BOM; // BOM for frame value
+                    bufferWriter.set(writeBytes, offset);
+                    offset += writeBytes.length;
 
                     writeBytes = encoding.encodeUtf16le(frame.value); // frame value
                     bufferWriter.set(writeBytes, offset);

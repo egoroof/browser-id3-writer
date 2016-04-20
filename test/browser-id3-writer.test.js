@@ -104,7 +104,7 @@ describe('ID3Writer', () => {
         writer.setFrame('USLT', lyrics);
 
         const buffer = writer.addTag();
-        const frameTotalSize = lyrics.length * 2 + 16;
+        const frameTotalSize = lyrics.length * 2 + 20;
         const bufferUint8 = new Uint8Array(buffer, 10, frameTotalSize);
 
         expect(bufferUint8).to.eql(new Uint8Array([
@@ -113,7 +113,9 @@ describe('ID3Writer', () => {
                 0, 0, // flags
                 1, // encoding
                 101, 110, 103, // language
-                0, 0 // content descriptor
+                0xff, 0xfe, // BOM
+                0, 0, // content descriptor
+                0xff, 0xfe // BOM
             ].concat(typedArray2Array(encodeUtf16le(lyrics)))
         ));
     });
@@ -193,9 +195,9 @@ describe('ID3Writer', () => {
                         0, 0, // flags
                         0 // encoding
                     ].concat(typedArray2Array(encodeUtf8Ascii(type.mime)))
-                    .concat([0, 3, 0]) // delemiter, pic type, delemiter
-                    .concat(type.signature)
-                    .concat(content)
+                        .concat([0, 3, 0]) // delemiter, pic type, delemiter
+                        .concat(type.signature)
+                        .concat(content)
                 ));
             });
         });
