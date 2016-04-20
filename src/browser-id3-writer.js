@@ -1,3 +1,6 @@
+const encoding = require('./encoding');
+const signatures = require('./signatures');
+
 function uint32ToUint8Array(uint32) {
     const uint8array = [];
     const eightBitMask = (1 << 8) - 1;
@@ -25,14 +28,6 @@ function uint7ArrayToUint28(uint7Array) {
         uint28 += uint7Array[i] << pow;
     }
     return uint28;
-}
-
-function isMp3WithoutId3(buffer) {
-    return buffer[0] === 0xff && (buffer[1] === 0xfb || buffer[1] === 0xfa);
-}
-
-function isMp3WithId3(buffer) {
-    return buffer[0] === 0x49 && buffer[1] === 0x44 && buffer[2] === 0x33;
 }
 
 function artistsToStr(artists) {
@@ -88,38 +83,6 @@ function getPictureFrameSize(frameSize, mimeTypeSize) {
     return headerSize + encodingSize + mimeTypeSize + nullSize + pictureTypeSize + nullSize + frameSize;
 }
 
-function getBufferMimeType(buf) {
-    // https://github.com/sindresorhus/file-type
-    if (!buf || !buf.length) {
-        return null;
-    }
-    if (buf[0] === 0xff && buf[1] === 0xd8 && buf[2] === 0xff) {
-        return 'image/jpeg';
-    }
-    if (buf[0] === 0x89 && buf[1] === 0x50 && buf[2] === 0x4e && buf[3] === 0x47) {
-        return 'image/png';
-    }
-    if (buf[0] === 0x47 && buf[1] === 0x49 && buf[2] === 0x46) {
-        return 'image/gif';
-    }
-    if (buf[8] === 0x57 && buf[9] === 0x45 && buf[10] === 0x42 && buf[11] === 0x50) {
-        return 'image/webp';
-    }
-    const isLeTiff = buf[0] === 0x49 && buf[1] === 0x49 && buf[2] === 0x2a && buf[3] === 0;
-    const isBeTiff = buf[0] === 0x4d && buf[1] === 0x4d && buf[2] === 0 && buf[3] === 0x2a;
-
-    if (isLeTiff || isBeTiff) {
-        return 'image/tiff';
-    }
-    if (buf[0] === 0x42 && buf[1] === 0x4d) {
-        return 'image/bmp';
-    }
-    if (buf[0] === 0 && buf[1] === 0 && buf[2] === 1 && buf[3] === 0) {
-        return 'image/x-icon';
-    }
-    return null;
-}
-
 class Writer {
 
     _setIntegerFrame(name, value) {
@@ -143,7 +106,7 @@ class Writer {
     }
 
     _setPictureFrame(name, buffer) {
-        const mimeType = getBufferMimeType(new Uint8Array(buffer), 0, 12);
+        const mimeType = signatures.getMimeType(new Uint8Array(buffer), 0, 12);
 
         if (!mimeType) {
             throw new Error('Unknown picture MIME type');
@@ -173,7 +136,7 @@ class Writer {
 
         const firstThreeBytes = new Uint8Array(buffer, 0, 3);
 
-        if (!isMp3WithoutId3(firstThreeBytes) && !isMp3WithId3(firstThreeBytes)) {
+        if (!signatures.isMp3WithoutId3(firstThreeBytes) && !signatures.isMp3WithId3(firstThreeBytes)) {
             throw new Error('ArrayBuffer is not an mp3 file or it is corrupted');
         }
 
@@ -260,7 +223,7 @@ class Writer {
             firstTenBytes[8], firstTenBytes[9]
         ]);
 
-        if (!isMp3WithId3(firstTenBytes) || version < 2 || version > 4) {
+        if (!signatures.isMp3WithId3(firstTenBytes) || version < 2 || version > 4) {
             return;
         }
 
@@ -275,8 +238,6 @@ class Writer {
         const totalTagSize = headerSize + totalFrameSize + this.padding;
         const buffer = new ArrayBuffer(this.arrayBuffer.byteLength + totalTagSize);
         const bufferWriter = new Uint8Array(buffer);
-        const coder8 = new TextEncoder('utf-8');
-        const coder16 = new TextEncoder('utf-16le');
 
         let offset = 0;
         let writeBytes = [];
@@ -293,7 +254,7 @@ class Writer {
         offset += writeBytes.length;
 
         this.frames.forEach((frame) => {
-            writeBytes = coder8.encode(frame.name); // frame name
+            writeBytes = encoding.encodeUtf8Ascii(frame.name); // frame name
             bufferWriter.set(writeBytes, offset);
             offset += writeBytes.length;
 
@@ -318,7 +279,7 @@ class Writer {
                     bufferWriter.set(writeBytes, offset);
                     offset += writeBytes.length;
 
-                    writeBytes = coder16.encode(frame.value); // frame value
+                    writeBytes = encoding.encodeUtf16le(frame.value); // frame value
                     bufferWriter.set(writeBytes, offset);
                     offset += writeBytes.length;
                     break;
@@ -333,7 +294,7 @@ class Writer {
 
                     offset += 2; // content descriptor
 
-                    writeBytes = coder16.encode(frame.value); // frame value
+                    writeBytes = encoding.encodeUtf16le(frame.value); // frame value
                     bufferWriter.set(writeBytes, offset);
                     offset += writeBytes.length;
                     break;
@@ -343,7 +304,7 @@ class Writer {
                 {
                     offset++; // encoding
 
-                    writeBytes = coder8.encode(frame.value); // frame value
+                    writeBytes = encoding.encodeUtf8Ascii(frame.value); // frame value
                     bufferWriter.set(writeBytes, offset);
                     offset += writeBytes.length;
                     break;
@@ -352,7 +313,7 @@ class Writer {
                 {
                     offset++; // encoding
 
-                    writeBytes = coder8.encode(frame.mimeType); // MIME type
+                    writeBytes = encoding.encodeUtf8Ascii(frame.mimeType); // MIME type
                     bufferWriter.set(writeBytes, offset);
                     offset += writeBytes.length;
 

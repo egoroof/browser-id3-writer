@@ -29,6 +29,27 @@ function typedArray2Array(typedArray) {
     return Array.prototype.slice.call(typedArray);
 }
 
+function encodeUtf8Ascii(str) {
+    const codePoints = str.split('').map((c) => {
+        const charCode = c.charCodeAt(0);
+        if (charCode > 0x7F) {
+            throw new Error('Trying to encode not ASCII symbol');
+        }
+        return charCode;
+    });
+
+    return new Uint8Array(codePoints);
+}
+
+function encodeUtf16le(str) {
+    const codePoints = str.split('').map((c) => c.charCodeAt(0));
+    const output = new Uint8Array(str.length * 2);
+
+    new Uint16Array(output.buffer).set(codePoints);
+
+    return output;
+}
+
 const files = {
     mp3: getMp3file(),
     mp3WithId3: getMp3fileWithId3(),
@@ -83,7 +104,6 @@ describe('ID3Writer', () => {
         writer.setFrame('USLT', lyrics);
 
         const buffer = writer.addTag();
-        const coder16 = new TextEncoder('utf-16le');
         const frameTotalSize = lyrics.length * 2 + 16;
         const bufferUint8 = new Uint8Array(buffer, 10, frameTotalSize);
 
@@ -94,7 +114,7 @@ describe('ID3Writer', () => {
                 1, // encoding
                 101, 110, 103, // language
                 0, 0 // content descriptor
-            ].concat(typedArray2Array(coder16.encode(lyrics)))
+            ].concat(typedArray2Array(encodeUtf16le(lyrics)))
         ));
     });
 
@@ -151,7 +171,6 @@ describe('ID3Writer', () => {
                 mime: 'image/x-icon'
             }];
             const content = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-            const coder8 = new TextEncoder('utf-8');
 
             types.forEach((type) => {
                 const coverBuffer = new ArrayBuffer(type.signature.length + content.length);
@@ -173,7 +192,7 @@ describe('ID3Writer', () => {
                         0, 0, 0, frameTotalSize - 10, // size without header (should be less than 128)
                         0, 0, // flags
                         0 // encoding
-                    ].concat(typedArray2Array(coder8.encode(type.mime)))
+                    ].concat(typedArray2Array(encodeUtf8Ascii(type.mime)))
                     .concat([0, 3, 0]) // delemiter, pic type, delemiter
                     .concat(type.signature)
                     .concat(content)

@@ -9,11 +9,9 @@ It can not read tag so use another lib to do it.
 **Note**: the library removes existing ID3 tag (v2.2, v2.3 and v2.4).
 
 ## Browser requirements
-- [ArrayBuffer](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer)
-- [Uint8Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array)
+- [Typed Arrays](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Typed_arrays)
 - [Blob](https://developer.mozilla.org/en-US/docs/Web/API/Blob)
 - [URL](https://developer.mozilla.org/en-US/docs/Web/API/URL)
-- [TextEncoder](https://developer.mozilla.org/en-US/docs/Web/API/TextEncoder)
 
 ## Demo
 
