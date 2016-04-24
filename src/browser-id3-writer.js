@@ -1,4 +1,4 @@
-const encoding = require('./encoding');
+const encoder = require('./encoder');
 const signatures = require('./signatures');
 
 function uint32ToUint8Array(uint32) {
@@ -131,8 +131,8 @@ class Writer {
     }
 
     constructor(buffer) {
-        if (!buffer || buffer.constructor !== ArrayBuffer) {
-            throw new Error('First argument should be an instance of ArrayBuffer');
+        if (!buffer || typeof buffer !== 'object' || !('byteLength' in buffer)) {
+            throw new Error('First argument should be an instance of ArrayBuffer or Buffer');
         }
 
         const firstThreeBytes = new Uint8Array(buffer, 0, 3);
@@ -196,8 +196,8 @@ class Writer {
             }
             case 'APIC': // song cover
             {
-                if (frameValue.constructor !== ArrayBuffer) {
-                    throw new Error('APIC frame value should be an instance of ArrayBuffer');
+                if (typeof frameValue !== 'object' || !('byteLength' in frameValue)) {
+                    throw new Error('APIC frame value should be an instance of ArrayBuffer or Buffer');
                 }
                 this._setPictureFrame(frameName, frameValue);
                 break;
@@ -220,15 +220,15 @@ class Writer {
         const firstTenBytes = new Uint8Array(this.arrayBuffer, 0, headerLength);
         const version = firstTenBytes[3];
         const tagSize = uint7ArrayToUint28([
-            firstTenBytes[6], firstTenBytes[7],
-            firstTenBytes[8], firstTenBytes[9]
-        ]);
+                firstTenBytes[6], firstTenBytes[7],
+                firstTenBytes[8], firstTenBytes[9]
+            ]) + headerLength;
 
         if (!signatures.isMp3WithId3(firstTenBytes) || version < 2 || version > 4) {
             return;
         }
 
-        this.arrayBuffer = this.arrayBuffer.slice(tagSize + headerLength);
+        this.arrayBuffer = this.arrayBuffer.slice(tagSize);
     }
 
     addTag() {
@@ -256,7 +256,7 @@ class Writer {
         offset += writeBytes.length;
 
         this.frames.forEach((frame) => {
-            writeBytes = encoding.encodeUtf8Ascii(frame.name); // frame name
+            writeBytes = encoder.encodeUtf8Ascii(frame.name); // frame name
             bufferWriter.set(writeBytes, offset);
             offset += writeBytes.length;
 
@@ -281,7 +281,7 @@ class Writer {
                     bufferWriter.set(writeBytes, offset);
                     offset += writeBytes.length;
 
-                    writeBytes = encoding.encodeUtf16le(frame.value); // frame value
+                    writeBytes = encoder.encodeUtf16le(frame.value); // frame value
                     bufferWriter.set(writeBytes, offset);
                     offset += writeBytes.length;
                     break;
@@ -293,14 +293,14 @@ class Writer {
                     writeBytes = [1].concat(langEng, BOM); // encoding, language, BOM for content descriptor
                     bufferWriter.set(writeBytes, offset);
                     offset += writeBytes.length;
-                    
+
                     offset += 2; // content descriptor
 
                     writeBytes = BOM; // BOM for frame value
                     bufferWriter.set(writeBytes, offset);
                     offset += writeBytes.length;
 
-                    writeBytes = encoding.encodeUtf16le(frame.value); // frame value
+                    writeBytes = encoder.encodeUtf16le(frame.value); // frame value
                     bufferWriter.set(writeBytes, offset);
                     offset += writeBytes.length;
                     break;
@@ -310,7 +310,7 @@ class Writer {
                 {
                     offset++; // encoding
 
-                    writeBytes = encoding.encodeUtf8Ascii(frame.value); // frame value
+                    writeBytes = encoder.encodeUtf8Ascii(frame.value); // frame value
                     bufferWriter.set(writeBytes, offset);
                     offset += writeBytes.length;
                     break;
@@ -319,7 +319,7 @@ class Writer {
                 {
                     offset++; // encoding
 
-                    writeBytes = encoding.encodeUtf8Ascii(frame.mimeType); // MIME type
+                    writeBytes = encoder.encodeUtf8Ascii(frame.mimeType); // MIME type
                     bufferWriter.set(writeBytes, offset);
                     offset += writeBytes.length;
 
