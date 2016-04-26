@@ -3,21 +3,28 @@
 [![npm](https://img.shields.io/npm/v/browser-id3-writer.svg?style=flat-square)](https://www.npmjs.com/package/browser-id3-writer)
 [![Travis](https://img.shields.io/travis/egoroof/browser-id3-writer.svg?style=flat-square)](https://travis-ci.org/egoroof/browser-id3-writer)
 
-A pure JS library for writing [ID3 (v2.3)](http://id3.org/id3v2.3.0) tag to MP3 files in browsers.
-It can not read tag so use another lib to do it.
+A pure JS library for writing [ID3 (v2.3)](http://id3.org/id3v2.3.0) tag to MP3 files in browsers and Node.js.
+It can not read the tag so use another lib to do it.
 
 **Note**: the library removes existing ID3 tag (v2.2, v2.3 and v2.4).
 
-## Browser requirements
-- [Typed Arrays](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Typed_arrays)
-- [Blob](https://developer.mozilla.org/en-US/docs/Web/API/Blob)
-- [URL](https://developer.mozilla.org/en-US/docs/Web/API/URL)
+## Requirements
+
+For browsers:
+[Typed Arrays](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Typed_arrays),
+[Blob](https://developer.mozilla.org/en-US/docs/Web/API/Blob),
+[URL](https://developer.mozilla.org/en-US/docs/Web/API/URL).
+Tested in latest Chrome, Firefox and IE11 (IE10 doesn't work).
+
+Node.js 4+ is tested and works well.
 
 ## Demo
 
 Demonstration is available here: [egoroof.ru/browser-id3-writer/](https://egoroof.ru/browser-id3-writer/)
 
 ## Installation
+
+### Browser
 
 You can include library via [npmcdn](https://npmcdn.com/):
 
@@ -39,7 +46,15 @@ Or you can include it using browser module loaders like webpack or browserify:
 var ID3Writer = require('browser-id3-writer');
 ```
 
+### Node.js
+
+```
+npm install browser-id3-writer --save
+```
+
 ## Usage
+
+### Browser
 
 You should first get **arrayBuffer** of the song you would like to add ID3 tag.
 
@@ -126,7 +141,34 @@ chrome.downloads.download({
 });
 ```
 
-## Memory control
+### Node.js
+
+
+```js
+var ID3Writer = require('browser-id3-writer');
+var fs = require('fs');
+
+var songBuffer = fs.readFileSync('path_to_song.mp3');
+var coverBuffer = fs.readFileSync('path_to_cover.jpg');
+
+var writer = new ID3Writer(songBuffer);
+writer.setFrame('TIT2', 'Home')
+    .setFrame('TPE1', ['Eminem', '50 Cent'])
+    .setFrame('TPE2', 'Eminem')
+    .setFrame('TALB', 'Friday Night Lights')
+    .setFrame('TYER', 2004)
+    .setFrame('TRCK', '6/8')
+    .setFrame('TPOS', '1/2')
+    .setFrame('TCON', ['Soundtrack'])
+    .setFrame('USLT', 'This is unsychronised lyrics')
+    .setFrame('APIC', coverBuffer);
+writer.addTag();
+
+var taggedSongBuffer = new Buffer(writer.arrayBuffer);
+fs.writeFileSync('song_with_tags.mp3', taggedSongBuffer);
+```
+
+## Browser memory control
 
 When you generate URLs via `writer.getURL()` you should know
 that whole file is kept in memory until you close the page or move to another one.
