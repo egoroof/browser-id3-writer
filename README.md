@@ -16,7 +16,7 @@ For browsers:
 [URL](https://developer.mozilla.org/en-US/docs/Web/API/URL).
 Tested in latest Chrome, Firefox and IE11 (IE10 doesn't work).
 
-Node.js 4+ is tested and works well.
+Node.js 4, 5 and 6 are tested and works well.
 
 ## Demo
 
@@ -37,7 +37,7 @@ You can include library via [npmcdn](https://npmcdn.com/):
 Or you can install via [npm](https://www.npmjs.com/) and get it from `dist` folder:
 
 ```
-npm install browser-id3-writer
+npm install browser-id3-writer --save
 ```
 
 Or you can include it using browser module loaders like webpack or browserify:
