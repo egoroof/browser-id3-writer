@@ -1,7 +1,7 @@
 {
   "name": "browser-id3-writer",
   "version": "2.3.0",
-  "description": "Browser and Node.js ID3 tag writer in pure JS",
+  "description": "Browser & Node.js ID3 tag writer in pure JS",
   "main": "dist/browser-id3-writer.js",
   "scripts": {
     "lint": "eslint src/**/*.js",

@@ -5,7 +5,12 @@ module.exports = (config) => {
         frameworks: ['mocha', 'chai'],
         files: [
             'dist/browser-id3-writer.min.js',
-            'test/browser.js'
+            'test/browser.js',
+            {
+                pattern: 'test/assets/song.mp3',
+                included: false,
+                served: true
+            }
         ],
         preprocessors: {
             'test/browser.js': ['webpack']
