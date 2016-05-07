@@ -135,12 +135,6 @@ class Writer {
             throw new Error('First argument should be an instance of ArrayBuffer or Buffer');
         }
 
-        const firstThreeBytes = new Uint8Array(buffer, 0, 3);
-
-        if (!signatures.isMp3WithoutId3(firstThreeBytes) && !signatures.isMp3WithId3(firstThreeBytes)) {
-            throw new Error('ArrayBuffer is not an mp3 file or it is corrupted');
-        }
-
         this.arrayBuffer = buffer;
         this.padding = 4096;
         this.frames = [];
@@ -224,7 +218,7 @@ class Writer {
                 firstTenBytes[8], firstTenBytes[9]
             ]) + headerLength;
 
-        if (!signatures.isMp3WithId3(firstTenBytes) || version < 2 || version > 4) {
+        if (!signatures.isId3v2(firstTenBytes) || version < 2 || version > 4) {
             return;
         }
 

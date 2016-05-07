@@ -18,23 +18,13 @@ function getMp3fileWithId3() {
     return buffer;
 }
 
-function getNonMp3File() {
-    const buffer = new ArrayBuffer(10);
-    const uint8 = new Uint8Array(buffer);
-
-    uint8.set([0, 1, 2, 3, 4, 5, 6, 7, 8, 9]);
-
-    return buffer;
-}
-
 function typedArray2Array(typedArray) {
     return Array.prototype.slice.call(typedArray);
 }
 
 const files = {
     mp3: getMp3file(),
-    mp3WithId3: getMp3fileWithId3(),
-    nonMp3: getNonMp3File()
+    mp3WithId3: getMp3fileWithId3()
 };
 
 const tests = [{
@@ -47,13 +37,6 @@ const tests = [{
 
             expect(writer).to.be.instanceof(ID3Writer);
             expect(writer2).to.be.instanceof(ID3Writer);
-        }
-    }, {
-        describe: 'should throw an exception if non mp3 file is given',
-        test: (ID3Writer, expect) => {
-            expect(() => {
-                new ID3Writer(files.nonMp3);
-            }).to.throw(Error, 'ArrayBuffer is not an mp3 file or it is corrupted');
         }
     }, {
         describe: 'should throw an exception if no argument passed to constructor',

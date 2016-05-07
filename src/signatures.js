@@ -1,8 +1,4 @@
-function isMp3WithoutId3(buf) {
-    return buf[0] === 0xff && (buf[1] === 0xfb || buf[1] === 0xfa);
-}
-
-function isMp3WithId3(buf) {
+function isId3v2(buf) {
     return buf[0] === 0x49 && buf[1] === 0x44 && buf[2] === 0x33;
 }
 
@@ -39,7 +35,6 @@ function getMimeType(buf) {
 }
 
 module.exports = {
-    isMp3WithoutId3,
-    isMp3WithId3,
+    isId3v2,
     getMimeType
 };
