@@ -56,9 +56,13 @@ npm install browser-id3-writer --save
 
 ### Browser
 
-You should first get **arrayBuffer** of the song you would like to add ID3 tag.
+You should first get
+[ArrayBuffer](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer)
+of the song you would like to add ID3 tag.
 
-For example you can create file input and use `FileReader`:
+For example you can create file input and use
+[FileReader](https://developer.mozilla.org/en/docs/Web/API/FileReader)
+:
 
 ```html
 <input type="file" id="file" accept="audio/mpeg">
@@ -81,7 +85,9 @@ For example you can create file input and use `FileReader`:
 </script>
 ```
 
-To get arrayBuffer from remote server you can use `XMLHttpRequest`:
+To get arrayBuffer from remote server you can use
+[XMLHttpRequest](https://developer.mozilla.org/en/docs/Web/API/XMLHttpRequest)
+:
 
 ```js
 var xhr = new XMLHttpRequest();
