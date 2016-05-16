@@ -51,10 +51,5 @@
   },
   "engines": {
     "node": ">=4.0.0"
-  },
-  "babel": {
-    "presets": [
-      "es2015"
-    ]
   }
 }
