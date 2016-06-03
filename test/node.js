@@ -2,6 +2,8 @@ const tests = require('./common');
 const expect = require('chai').expect;
 const ID3Writer = require('../dist/browser-id3-writer.min');
 const fs = require('fs');
+const path = require('path');
+const assetFolder = path.join(__dirname, 'assets');
 
 tests.forEach((testPack) => {
     describe(testPack.describe, () => {
@@ -13,8 +15,8 @@ tests.forEach((testPack) => {
 
 describe('node usage', () => {
     it('should read assets and write tagged song', () => {
-        const songBuffer = fs.readFileSync(`${__dirname}/assets/song.mp3`);
-        const coverBuffer = fs.readFileSync(`${__dirname}/assets/cover.jpg`);
+        const songBuffer = fs.readFileSync(path.join(assetFolder, 'song.mp3'));
+        const coverBuffer = fs.readFileSync(path.join(assetFolder, 'cover.jpg'));
         expect(songBuffer.byteLength).to.be.equal(613772);
         expect(coverBuffer.byteLength).to.be.equal(50490);
 
@@ -34,6 +36,6 @@ describe('node usage', () => {
 
         const taggedSongBuffer = new Buffer(writer.arrayBuffer);
         expect(taggedSongBuffer.byteLength).to.be.equal(668692);
-        fs.writeFileSync(`${__dirname}/assets/song_with_tags.mp3`, taggedSongBuffer);
+        fs.writeFileSync(path.join(assetFolder, 'song_with_tags.mp3'), taggedSongBuffer);
     });
 });

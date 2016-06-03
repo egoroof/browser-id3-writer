@@ -114,15 +114,15 @@ Then init `ID3Writer` object, set frames and add a tag:
 ```js
 var writer = new ID3Writer(arrayBuffer);
 writer.setFrame('TIT2', 'Home')
-    .setFrame('TPE1', ['Eminem', '50 Cent'])
-    .setFrame('TPE2', 'Eminem')
-    .setFrame('TALB', 'Friday Night Lights')
-    .setFrame('TYER', 2004)
-    .setFrame('TRCK', '6/8')
-    .setFrame('TPOS', '1/2')
-    .setFrame('TCON', ['Soundtrack'])
-    .setFrame('USLT', 'This is unsychronised lyrics')
-    .setFrame('APIC', coverArrayBuffer);
+      .setFrame('TPE1', ['Eminem', '50 Cent'])
+      .setFrame('TPE2', 'Eminem')
+      .setFrame('TALB', 'Friday Night Lights')
+      .setFrame('TYER', 2004)
+      .setFrame('TRCK', '6/8')
+      .setFrame('TPOS', '1/2')
+      .setFrame('TCON', ['Soundtrack'])
+      .setFrame('USLT', 'This is unsychronised lyrics')
+      .setFrame('APIC', coverArrayBuffer);
 writer.addTag();
 
 // now you can save it to file as you wish
@@ -159,15 +159,15 @@ var coverBuffer = fs.readFileSync('path_to_cover.jpg');
 
 var writer = new ID3Writer(songBuffer);
 writer.setFrame('TIT2', 'Home')
-    .setFrame('TPE1', ['Eminem', '50 Cent'])
-    .setFrame('TPE2', 'Eminem')
-    .setFrame('TALB', 'Friday Night Lights')
-    .setFrame('TYER', 2004)
-    .setFrame('TRCK', '6/8')
-    .setFrame('TPOS', '1/2')
-    .setFrame('TCON', ['Soundtrack'])
-    .setFrame('USLT', 'This is unsychronised lyrics')
-    .setFrame('APIC', coverBuffer);
+      .setFrame('TPE1', ['Eminem', '50 Cent'])
+      .setFrame('TPE2', 'Eminem')
+      .setFrame('TALB', 'Friday Night Lights')
+      .setFrame('TYER', 2004)
+      .setFrame('TRCK', '6/8')
+      .setFrame('TPOS', '1/2')
+      .setFrame('TCON', ['Soundtrack'])
+      .setFrame('USLT', 'This is unsychronised lyrics')
+      .setFrame('APIC', coverBuffer);
 writer.addTag();
 
 var taggedSongBuffer = new Buffer(writer.arrayBuffer);
