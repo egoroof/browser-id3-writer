@@ -7,23 +7,21 @@ module.exports = {
         'browser-id3-writer.min': './src/browser-id3-writer.js'
     },
     output: {
-        path: path.join(__dirname, 'dist'),
+        path: path.join(path.dirname(__dirname), 'dist'),
         filename: '[name].js',
         library: 'ID3Writer',
         libraryTarget: 'umd'
     },
     devtool: 'source-map',
     module: {
-        loaders: [
-            {
-                test: /\.js$/,
-                exclude: /node_modules/,
-                loader: 'babel-loader',
-                query: {
-                    presets: ['es2015']
-                }
+        loaders: [{
+            test: /\.js$/,
+            exclude: /node_modules/,
+            loader: 'babel-loader',
+            query: {
+                presets: ['es2015']
             }
-        ]
+        }]
     },
     plugins: [
         new webpack.optimize.UglifyJsPlugin({

@@ -2,6 +2,7 @@ module.exports = (config) => {
     const CI = process.env.CI;
 
     config.set({
+        basePath: '../',
         frameworks: ['mocha', 'chai'],
         files: [
             'dist/browser-id3-writer.min.js',
