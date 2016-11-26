@@ -24,6 +24,8 @@ describe('node usage', () => {
         writer.setFrame('TIT2', 'Home')
             .setFrame('TPE1', ['Eminem', '50 Cent'])
             .setFrame('TPE2', 'Eminem')
+            .setFrame('TPE3', 'FooComposer')
+            .setFrame('TPE4', 'Daft Punk')
             .setFrame('TALB', 'Friday Night Lights')
             .setFrame('TYER', 2004)
             .setFrame('TRCK', '6/8')
@@ -34,10 +36,10 @@ describe('node usage', () => {
             .setFrame('USLT', 'This is unsychronised lyrics')
             .setFrame('APIC', coverBuffer);
         writer.addTag();
-        expect(writer.arrayBuffer.byteLength).to.be.equal(668730);
+        expect(writer.arrayBuffer.byteLength).to.be.equal(668796);
 
         const taggedSongBuffer = new Buffer(writer.arrayBuffer);
-        expect(taggedSongBuffer.byteLength).to.be.equal(668730);
+        expect(taggedSongBuffer.byteLength).to.be.equal(668796);
         fs.writeFileSync(path.join(assetFolder, 'song_with_tags.mp3'), taggedSongBuffer);
     });
 });
