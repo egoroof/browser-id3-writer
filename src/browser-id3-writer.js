@@ -167,6 +167,18 @@ class Writer {
                 this._setStringFrame(frameName, genresStr);
                 break;
             }
+            case 'TKEY': // musical key in which the sound starts
+            {
+                if(!/^([A-G][#b]?m?|o)$/.test(frameValue)) {
+                    //specs: The ground keys are represented with "A","B","C","D","E",
+                    //"F" and "G" and halfkeys represented with "b" and "#". Minor is
+                    //represented as "m", e.g. "Dbm". Off key is represented with an
+                    //"o" only.
+                    throw new Error(`${frameName} frame value should be like Dbm, C#, B or o`);
+                }
+                this._setStringFrame(frameName, frameValue);
+                break;
+            }
             case 'TIT2': // song title
             case 'TALB': // album title
             case 'TPE2': // album artist // spec doesn't say anything about separator, so it is a string, not array
@@ -272,6 +284,7 @@ class Writer {
                 case 'TPOS':
                 case 'TPUB':
                 case 'TBPM':
+                case 'TKEY':
                 {
                     writeBytes = [1].concat(BOM); // encoding, BOM
                     bufferWriter.set(writeBytes, offset);

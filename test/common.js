@@ -174,6 +174,14 @@ const tests = [{
                 27, 4, 56, 4, 64, 4, 56, 4, 58, 4, 48, 4 // Лирика
             ]));
         }
+    }, {
+        describe: 'should throw an exception with wrong value for TKEY frame',
+        test: (ID3Writer, expect) => {
+            const writer = new ID3Writer(files.mp3);
+            expect(() => {
+                writer.setFrame('TKEY', 'C minor');
+            }).to.throw(Error, 'TKEY frame value should be like Dbm, C#, B or o');
+        }
     }]
 }, {
     describe: 'APIC',
