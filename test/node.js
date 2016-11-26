@@ -28,14 +28,15 @@ describe('node usage', () => {
             .setFrame('TYER', 2004)
             .setFrame('TRCK', '6/8')
             .setFrame('TPOS', '1/2')
+            .setFrame('TBPM', '128')
             .setFrame('TCON', ['Soundtrack'])
             .setFrame('USLT', 'This is unsychronised lyrics')
             .setFrame('APIC', coverBuffer);
         writer.addTag();
-        expect(writer.arrayBuffer.byteLength).to.be.equal(668692);
+        expect(writer.arrayBuffer.byteLength).to.be.equal(668711);
 
         const taggedSongBuffer = new Buffer(writer.arrayBuffer);
-        expect(taggedSongBuffer.byteLength).to.be.equal(668692);
+        expect(taggedSongBuffer.byteLength).to.be.equal(668711);
         fs.writeFileSync(path.join(assetFolder, 'song_with_tags.mp3'), taggedSongBuffer);
     });
 });

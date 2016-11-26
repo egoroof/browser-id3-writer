@@ -173,6 +173,7 @@ class Writer {
             case 'TRCK': // song number in album: 5 or 5/10
             case 'TPOS': // album disc number: 1 or 1/3
             case 'TPUB': // label name
+            case 'TBPM': // number of beats per minute //specs say it is an int and represented as a numerical string
             {
                 this._setStringFrame(frameName, frameValue);
                 break;
@@ -270,6 +271,7 @@ class Writer {
                 case 'TRCK':
                 case 'TPOS':
                 case 'TPUB':
+                case 'TBPM':
                 {
                     writeBytes = [1].concat(BOM); // encoding, BOM
                     bufferWriter.set(writeBytes, offset);
