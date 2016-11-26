@@ -176,6 +176,40 @@ const tests = [{
         }
     }]
 }, {
+    describe: 'TXXX',
+    it: [{
+        describe: 'should throw an exception when used with simple string',
+        test: (ID3Writer, expect) => {
+            const writer = new ID3Writer(files.mp3);
+
+            expect(() => {
+                writer.setFrame('TXXX', 'foobar');
+            }).to.throw(Error, 'TXXX frame value should be an object with keys description and value');
+        }
+    }, {
+        describe: 'should throw an exception when no description provided',
+        test: (ID3Writer, expect) => {
+            const writer = new ID3Writer(files.mp3);
+
+            expect(() => {
+                writer.setFrame('TXXX', {
+                    value: 'foobar'
+                });
+            }).to.throw(Error, 'TXXX frame value should be an object with keys description and value');
+        }
+    }, {
+        describe: 'should throw an exception when no value provided',
+        test: (ID3Writer, expect) => {
+            const writer = new ID3Writer(files.mp3);
+
+            expect(() => {
+                writer.setFrame('TXXX', {
+                    description: 'foobar'
+                });
+            }).to.throw(Error, 'TXXX frame value should be an object with keys description and value');
+        }
+    }]
+}, {
     describe: 'APIC',
     it: [{
         describe: 'should throw error when value is not a buffer',
