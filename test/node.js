@@ -39,12 +39,16 @@ describe('node usage', () => {
             .setFrame('TSOP', 'Eminem')
             .setFrame('TSOT', 'Home')
             .setFrame('USLT', 'This is unsychronised lyrics')
+            .setFrame('TXXX', {
+                description: 'Release Info',
+                value: 'Double vinyl version was limited to 2500 copies'
+            })
             .setFrame('APIC', coverBuffer);
         writer.addTag();
-        expect(writer.arrayBuffer.byteLength).to.be.equal(668939);
+        expect(writer.arrayBuffer.byteLength).to.be.equal(669072);
 
         const taggedSongBuffer = new Buffer(writer.arrayBuffer);
-        expect(taggedSongBuffer.byteLength).to.be.equal(668939);
+        expect(taggedSongBuffer.byteLength).to.be.equal(669072);
         fs.writeFileSync(path.join(assetFolder, 'song_with_tags.mp3'), taggedSongBuffer);
     });
 });

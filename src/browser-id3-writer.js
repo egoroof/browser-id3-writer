@@ -64,6 +64,17 @@ function getStringFrameSize(frameSize) {
     return headerSize + encodingSize + bomSize + frameUtf16Size;
 }
 
+function getUserStringFrameSize(descriptionSize, valueSize) {
+    const headerSize = 10;
+    const encodingSize = 1;
+    const bomSize = 2;
+    const descriptionUtf16Size = descriptionSize * 2;
+    const separatorSize = 2;
+    const valueUtf16Size = valueSize * 2;
+
+    return headerSize + encodingSize + bomSize + descriptionUtf16Size + separatorSize + valueUtf16Size;
+}
+
 function getLyricsFrameSize(lyricsSize) {
     const headerSize = 10;
     const encodingSize = 1;
@@ -127,6 +138,18 @@ class Writer {
             name,
             value: stringValue,
             size: getLyricsFrameSize(stringValue.length)
+        });
+    }
+
+    _setUserStringFrame(name, description, value) {
+        const stringDescription= description.toString();
+        const stringValue = value.toString();
+
+        this.frames.push({
+            name,
+            description: stringDescription,
+            value: stringValue,
+            size: getUserStringFrameSize(stringDescription.length, stringValue.length)
         });
     }
 
@@ -206,6 +229,14 @@ class Writer {
             case 'USLT': // unsychronised lyrics
             {
                 this._setLyricsFrame(frameName, frameValue);
+                break;
+            }
+            case 'TXXX': // user defined text information
+            {
+                if (typeof frameValue !== 'object' || !('description' in frameValue) || !('value' in frameValue)) {
+                    throw new Error('TXXX frame value should be an object with keys description and value');
+                }
+                this._setUserStringFrame(frameName, frameValue.description, frameValue.value);
                 break;
             }
             case 'APIC': // song cover
@@ -305,6 +336,25 @@ class Writer {
                     offset += writeBytes.length;
 
                     writeBytes = encoder.encodeUtf16le(frame.value); // frame value
+                    bufferWriter.set(writeBytes, offset);
+                    offset += writeBytes.length;
+                    break;
+                }
+                case 'TXXX':
+                {
+                    writeBytes = [1].concat(BOM); // encoding, BOM
+                    bufferWriter.set(writeBytes, offset);
+                    offset += writeBytes.length;
+
+                    writeBytes = encoder.encodeUtf16le(frame.description); // frame value (description part)
+                    bufferWriter.set(writeBytes, offset);
+                    offset += writeBytes.length;
+
+                    writeBytes = [0x00, 0x00]; // separator
+                    bufferWriter.set(writeBytes, offset);
+                    offset += writeBytes.length;
+
+                    writeBytes = encoder.encodeUtf16le(frame.value); // frame value (value part)
                     bufferWriter.set(writeBytes, offset);
                     offset += writeBytes.length;
                     break;

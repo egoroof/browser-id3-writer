@@ -122,6 +122,10 @@ writer.setFrame('TIT2', 'Home')
       .setFrame('TPOS', '1/2')
       .setFrame('TCON', ['Soundtrack'])
       .setFrame('USLT', 'This is unsychronised lyrics')
+      .setFrame('TXXX', {
+          description: 'Release Info',
+          value: 'Double vinyl version was limited to 2500 copies'
+      })
       .setFrame('APIC', coverArrayBuffer);
 writer.addTag();
 
@@ -167,6 +171,10 @@ writer.setFrame('TIT2', 'Home')
       .setFrame('TPOS', '1/2')
       .setFrame('TCON', ['Soundtrack'])
       .setFrame('USLT', 'This is unsychronised lyrics')
+      .setFrame('TXXX', {
+          description: 'Release Info',
+          value: 'Double vinyl version was limited to 2500 copies'
+      })
       .setFrame('APIC', coverBuffer);
 writer.addTag();
 
@@ -210,6 +218,10 @@ Currently you can set next frames:
 
 - TLEN (song duration in milliseconds)
 - TYER (album release year)
+
+**user defined**
+
+- TXXX (user defined text): {description: 'description here', value: 'value here'}
 
 **arrayBuffer**
 
