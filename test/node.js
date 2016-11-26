@@ -30,12 +30,16 @@ describe('node usage', () => {
             .setFrame('TPOS', '1/2')
             .setFrame('TCON', ['Soundtrack'])
             .setFrame('USLT', 'This is unsychronised lyrics')
+            .setFrame('TXXX', {
+                description: 'Release Info',
+                value: 'Double vinyl version was limited to 2500 copies'
+            })
             .setFrame('APIC', coverBuffer);
         writer.addTag();
-        expect(writer.arrayBuffer.byteLength).to.be.equal(668692);
+        expect(writer.arrayBuffer.byteLength).to.be.equal(668825);
 
         const taggedSongBuffer = new Buffer(writer.arrayBuffer);
-        expect(taggedSongBuffer.byteLength).to.be.equal(668692);
+        expect(taggedSongBuffer.byteLength).to.be.equal(668825);
         fs.writeFileSync(path.join(assetFolder, 'song_with_tags.mp3'), taggedSongBuffer);
     });
 });
