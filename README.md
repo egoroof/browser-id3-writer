@@ -121,6 +121,8 @@ writer.setFrame('TIT2', 'Home')
       .setFrame('TRCK', '6/8')
       .setFrame('TPOS', '1/2')
       .setFrame('TCON', ['Soundtrack'])
+      .setFrame('TBPM', '128')
+      .setFrame('TKEY', 'Fbm')
       .setFrame('USLT', 'This is unsychronised lyrics')
       .setFrame('TXXX', {
           description: 'Release Info',
@@ -170,6 +172,8 @@ writer.setFrame('TIT2', 'Home')
       .setFrame('TRCK', '6/8')
       .setFrame('TPOS', '1/2')
       .setFrame('TCON', ['Soundtrack'])
+      .setFrame('TBPM', '128')
+      .setFrame('TKEY', 'Fbm')
       .setFrame('USLT', 'This is unsychronised lyrics')
       .setFrame('TXXX', {
           description: 'Release Info',
@@ -209,8 +213,17 @@ Currently you can set next frames:
 - TIT2 (song title)
 - TALB (album title)
 - TPE2 (album artist)
+- TPE3 (conductor)
+- TPE4 (people behind a remix and similar interpretations)
 - TRCK (song number in album): '5' or '5/10'
 - TPOS (album disc number): '1' or '1/3'
+- TSOA (album name for sorting)
+- TSOP (performer/artist for sorting)
+- TSOT (title for sorting)
+- TBPM (beats per minute)
+- TKEY (initial musical key): like 'C', 'B#', 'Fbm' or 'o' (off key)
+- TMOO (description of mood)
+- TMED (media song originated from): like 'DIG', 'CD', 'TT/33' etc
 - USLT (unsychronised lyrics)
 - TPUB (label name)
 
