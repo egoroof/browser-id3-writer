@@ -35,13 +35,16 @@ describe('node usage', () => {
             .setFrame('TCON', ['Soundtrack'])
             .setFrame('TMED', 'TT/45')
             .setFrame('TMOO', 'Happy')
+            .setFrame('TSOA', 'Friday Night Lights')
+            .setFrame('TSOP', 'Eminem')
+            .setFrame('TSOT', 'Home')
             .setFrame('USLT', 'This is unsychronised lyrics')
             .setFrame('APIC', coverBuffer);
         writer.addTag();
-        expect(writer.arrayBuffer.byteLength).to.be.equal(668842);
+        expect(writer.arrayBuffer.byteLength).to.be.equal(668939);
 
         const taggedSongBuffer = new Buffer(writer.arrayBuffer);
-        expect(taggedSongBuffer.byteLength).to.be.equal(668842);
+        expect(taggedSongBuffer.byteLength).to.be.equal(668939);
         fs.writeFileSync(path.join(assetFolder, 'song_with_tags.mp3'), taggedSongBuffer);
     });
 });

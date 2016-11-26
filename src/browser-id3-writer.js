@@ -190,6 +190,9 @@ class Writer {
             case 'TBPM': // number of beats per minute //specs say it is an int and represented as a numerical string
             case 'TMED': // media the sound originated from (e.g. DIG, CD, TT/33, VID/PAL, RAD/FM, etc)
             case 'TMOO': // reflect the mood of the audio with a few keywords, e.g. "Romantic" or "Sad".
+            case 'TSOA': // string which should be used instead of the album name (TALB) for sorting purposes
+            case 'TSOP': // string which should be used instead of the performer (TPE2) for sorting purposes
+            case 'TSOT': // string which should be used instead of the title (TIT2) for sorting purposes
             {
                 this._setStringFrame(frameName, frameValue);
                 break;
@@ -293,6 +296,9 @@ class Writer {
                 case 'TKEY':
                 case 'TMED':
                 case 'TMOO':
+                case 'TSOA':
+                case 'TSOP':
+                case 'TSOT':
                 {
                     writeBytes = [1].concat(BOM); // encoding, BOM
                     bufferWriter.set(writeBytes, offset);
