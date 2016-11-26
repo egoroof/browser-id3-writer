@@ -188,6 +188,7 @@ class Writer {
             case 'TPOS': // album disc number: 1 or 1/3
             case 'TPUB': // label name
             case 'TBPM': // number of beats per minute //specs say it is an int and represented as a numerical string
+            case 'TMED': // media the sound originated from (eg. DIG, CD, TT/33, VID/PAL, RAD/FM, etc)
             {
                 this._setStringFrame(frameName, frameValue);
                 break;
@@ -289,6 +290,7 @@ class Writer {
                 case 'TPUB':
                 case 'TBPM':
                 case 'TKEY':
+                case 'TMED':
                 {
                     writeBytes = [1].concat(BOM); // encoding, BOM
                     bufferWriter.set(writeBytes, offset);
