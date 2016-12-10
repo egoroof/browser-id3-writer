@@ -4,7 +4,7 @@
 [![Travis](https://img.shields.io/travis/egoroof/browser-id3-writer.svg?style=flat-square)](https://travis-ci.org/egoroof/browser-id3-writer)
 
 Pure JS library for writing [ID3 (v2.3)](http://id3.org/id3v2.3.0) tag to MP3 files in browsers and Node.js.
-It can not read the tag so use another lib to do it.
+It can't read the tag so use another lib to do it.
 
 **Note**: the library removes existing ID3 tag (v2.2, v2.3 and v2.4).
 
@@ -134,7 +134,8 @@ xhr.send();
 
 ##### Fetch
 
-If you ok with [browser support of Fetch](http://caniuse.com/#search=fetch) or you are using
+If you are ok with [browser support](http://caniuse.com/#search=fetch) of
+[Fetch](https://developer.mozilla.org/en/docs/Web/API/Fetch_API) or you are using a
 [polyfill](https://github.com/github/fetch) then getting arrayBuffer from remote server will look like this:
 
 ```js
