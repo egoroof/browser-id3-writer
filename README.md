@@ -3,10 +3,29 @@
 [![npm](https://img.shields.io/npm/v/browser-id3-writer.svg?style=flat-square)](https://www.npmjs.com/package/browser-id3-writer)
 [![Travis](https://img.shields.io/travis/egoroof/browser-id3-writer.svg?style=flat-square)](https://travis-ci.org/egoroof/browser-id3-writer)
 
-A pure JS library for writing [ID3 (v2.3)](http://id3.org/id3v2.3.0) tag to MP3 files in browsers and Node.js.
+Pure JS library for writing [ID3 (v2.3)](http://id3.org/id3v2.3.0) tag to MP3 files in browsers and Node.js.
 It can not read the tag so use another lib to do it.
 
 **Note**: the library removes existing ID3 tag (v2.2, v2.3 and v2.4).
+
+## Table of Contents
+
+- [Requirements](#requirements)
+- [Demo](#demo)
+- [Installation](#installation)
+  - [Browser](#browser)
+  - [Node.js](#node.js)
+- [Usage](#usage)
+  - [Browser](#browser)
+    1. [Get ArrayBuffer of song](#get-arraybuffer-of-song)
+      - [FileReader](#filereader)
+      - [XMLHttpRequest](#xmlhttprequest)
+      - [Fetch](#fetch)
+    2. [Add a tag](#add-a-tag)
+    3. [Save file](#save-file)
+  - [Node.js](#node.js)
+- [Browser memory control](#browser-memory-control)
+- [Supported frames](#supported-frames)
 
 ## Requirements
 
@@ -16,7 +35,7 @@ For browsers:
 [URL](https://developer.mozilla.org/en-US/docs/Web/API/URL).
 Tested in latest Chrome, Firefox and IE11 (IE10 doesn't work).
 
-Node.js 4, 5 and 6 are tested and works well.
+Node.js 4 - 7 are tested and works well.
 
 ## Demo
 
@@ -43,7 +62,7 @@ npm install browser-id3-writer --save
 Or you can include it using browser module loaders like webpack or browserify:
 
 ```js
-var ID3Writer = require('browser-id3-writer');
+const ID3Writer = require('browser-id3-writer');
 ```
 
 ### Node.js
@@ -56,13 +75,16 @@ npm install browser-id3-writer --save
 
 ### Browser
 
+#### Get ArrayBuffer of song
+
 You should first get
 [ArrayBuffer](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer)
 of the song you would like to add ID3 tag.
 
+##### FileReader
+
 For example you can create file input and use
-[FileReader](https://developer.mozilla.org/en/docs/Web/API/FileReader)
-:
+[FileReader](https://developer.mozilla.org/en/docs/Web/API/FileReader):
 
 ```html
 <input type="file" id="file" accept="audio/mpeg">
@@ -71,9 +93,9 @@ For example you can create file input and use
         if (!this.files.length) {
             return;
         }
-        var reader = new FileReader();
+        const reader = new FileReader();
         reader.onload = function () {
-            var arrayBuffer = reader.result;
+            const arrayBuffer = reader.result;
             // go next
         };
         reader.onerror = function () {
@@ -85,17 +107,18 @@ For example you can create file input and use
 </script>
 ```
 
+##### XMLHttpRequest
+
 To get arrayBuffer from remote server you can use
-[XMLHttpRequest](https://developer.mozilla.org/en/docs/Web/API/XMLHttpRequest)
-:
+[XMLHttpRequest](https://developer.mozilla.org/en/docs/Web/API/XMLHttpRequest):
 
 ```js
-var xhr = new XMLHttpRequest();
+const xhr = new XMLHttpRequest();
 xhr.open('GET', urlToSongFile, true);
 xhr.responseType = 'arraybuffer';
 xhr.onload = function () {
     if (xhr.status === 200) {
-        var arrayBuffer = xhr.response;
+        const arrayBuffer = xhr.response;
         // go next
     } else {
         // handle error
@@ -105,14 +128,39 @@ xhr.onload = function () {
 xhr.onerror = function() {
     // handle error
     console.error('Network error');
-}
+};
 xhr.send();
 ```
 
-Then init `ID3Writer` object, set frames and add a tag:
+##### Fetch
+
+If you ok with [browser support of Fetch](http://caniuse.com/#search=fetch) or you are using
+[polyfill](https://github.com/github/fetch) then getting arrayBuffer from remote server will look like this:
 
 ```js
-var writer = new ID3Writer(arrayBuffer);
+fetch(urlToSongFile)
+    .then(function (response) {
+        if (!response.ok) {
+            throw new Error(response.statusText + ' (' + response.status + ')');
+        }
+
+        return response.arrayBuffer();
+    })
+    .then(function (arrayBuffer) {
+        // go next
+    })
+    .catch(function (error) {
+        // handle error
+        console.error('Request failed', error);
+    });
+```
+
+#### Add a tag
+
+Initialize `ID3Writer` object, set frames and add a tag:
+
+```js
+const writer = new ID3Writer(arrayBuffer);
 writer.setFrame('TIT2', 'Home')
       .setFrame('TPE1', ['Eminem', '50 Cent'])
       .setFrame('TPE2', 'Eminem')
@@ -124,11 +172,15 @@ writer.setFrame('TIT2', 'Home')
       .setFrame('USLT', 'This is unsychronised lyrics')
       .setFrame('APIC', coverArrayBuffer);
 writer.addTag();
+```
 
+#### Save file
+
+```js
 // now you can save it to file as you wish
-var arrayBuffer = writer.arrayBuffer;
-var blob = writer.getBlob();
-var url = writer.getURL();
+const taggedSongBuffer = writer.arrayBuffer;
+const blob = writer.getBlob();
+const url = writer.getURL();
 ```
 
 For example you can save file using [FileSaver.js](https://github.com/eligrey/FileSaver.js/):
@@ -151,13 +203,13 @@ chrome.downloads.download({
 
 
 ```js
-var ID3Writer = require('browser-id3-writer');
-var fs = require('fs');
+const ID3Writer = require('browser-id3-writer');
+const fs = require('fs');
 
-var songBuffer = fs.readFileSync('path_to_song.mp3');
-var coverBuffer = fs.readFileSync('path_to_cover.jpg');
+const songBuffer = fs.readFileSync('path_to_song.mp3');
+const coverBuffer = fs.readFileSync('path_to_cover.jpg');
 
-var writer = new ID3Writer(songBuffer);
+const writer = new ID3Writer(songBuffer);
 writer.setFrame('TIT2', 'Home')
       .setFrame('TPE1', ['Eminem', '50 Cent'])
       .setFrame('TPE2', 'Eminem')
@@ -170,7 +222,7 @@ writer.setFrame('TIT2', 'Home')
       .setFrame('APIC', coverBuffer);
 writer.addTag();
 
-var taggedSongBuffer = new Buffer(writer.arrayBuffer);
+const taggedSongBuffer = new Buffer(writer.arrayBuffer);
 fs.writeFileSync('song_with_tags.mp3', taggedSongBuffer);
 ```
 
