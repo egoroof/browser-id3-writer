@@ -2,10 +2,10 @@
   "name": "browser-id3-writer",
   "version": "2.3.1",
   "description": "Pure JS library for writing ID3 tag to MP3 files in browsers and Node.js",
-  "main": "dist/browser-id3-writer.js",
+  "main": "dist/browser-id3-writer.min.js",
   "scripts": {
     "lint": "eslint -c tools/.eslintrc.js src/**/*.js",
-    "build": "webpack --config tools/webpack.config.js",
+    "build": "webpack -p --config tools/webpack.config.js",
     "test": "npm run lint && npm run build && npm run test:node && npm run test:browser",
     "test:browser": "karma start tools/karma.conf.js --single-run",
     "test:node": "mocha -c test/node.js",
@@ -39,9 +39,9 @@
   "devDependencies": {
     "babel-core": "6.20.0",
     "babel-loader": "6.2.9",
-    "babel-preset-latest": "6.16.0",
+    "babel-preset-env": "1.1.1",
     "chai": "3.5.0",
-    "eslint": "3.12.0",
+    "eslint": "3.12.2",
     "karma": "1.3.0",
     "karma-chai": "0.1.0",
     "karma-chrome-launcher": "2.0.0",
@@ -50,7 +50,7 @@
     "karma-mocha": "1.3.0",
     "karma-webpack": "1.8.0",
     "mocha": "3.2.0",
-    "webpack": "1.14.0"
+    "webpack": "2.2.0-rc.0"
   },
   "engines": {
     "node": ">=4.0.0"

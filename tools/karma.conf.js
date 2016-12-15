@@ -1,6 +1,6 @@
-module.exports = (config) => {
-    const CI = process.env.CI;
+const babelConfig = require('./.babelrc.json');
 
+module.exports = (config) => {
     config.set({
         basePath: '../',
         frameworks: ['mocha', 'chai'],
@@ -18,16 +18,14 @@ module.exports = (config) => {
         },
         reporters: ['dots'],
         logLevel: config.LOG_INFO,
-        browsers: CI ? ['Firefox'] : ['Chrome', 'Firefox', 'IE'],
+        browsers: process.env.CI ? ['Firefox'] : ['Chrome', 'Firefox', 'IE'],
         webpack: {
             module: {
                 loaders: [{
                     test: /\.js$/,
                     exclude: /node_modules/,
                     loader: 'babel-loader',
-                    query: {
-                        presets: ['latest']
-                    }
+                    query: babelConfig
                 }]
             }
         },

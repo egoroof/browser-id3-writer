@@ -1,31 +1,19 @@
-const path = require('path');
-const webpack = require('webpack');
+const babelConfig = require('./.babelrc.json');
 
 module.exports = {
-    entry: {
-        'browser-id3-writer': './src/browser-id3-writer.js',
-        'browser-id3-writer.min': './src/browser-id3-writer.js'
-    },
+    entry: './src/browser-id3-writer.js',
     output: {
-        path: path.join(path.dirname(__dirname), 'dist'),
-        filename: '[name].js',
+        path: './dist',
+        filename: 'browser-id3-writer.min.js',
         library: 'ID3Writer',
         libraryTarget: 'umd'
     },
-    devtool: 'source-map',
     module: {
         loaders: [{
             test: /\.js$/,
             exclude: /node_modules/,
             loader: 'babel-loader',
-            query: {
-                presets: ['latest']
-            }
+            query: babelConfig
         }]
-    },
-    plugins: [
-        new webpack.optimize.UglifyJsPlugin({
-            include: /\.min.js$/
-        })
-    ]
+    }
 };

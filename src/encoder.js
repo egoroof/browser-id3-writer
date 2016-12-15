@@ -1,11 +1,5 @@
 function encodeUtf8Ascii(str) {
-    const codePoints = String(str).split('').map((c) => {
-        const charCode = c.charCodeAt(0);
-        if (charCode > 0x7F) {
-            throw new Error('Trying to encode not ASCII symbol');
-        }
-        return charCode;
-    });
+    const codePoints = String(str).split('').map((c) => c.charCodeAt(0)); // up to 0x7F
 
     return new Uint8Array(codePoints);
 }
