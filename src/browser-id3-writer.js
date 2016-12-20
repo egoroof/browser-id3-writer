@@ -64,6 +64,17 @@ function getStringFrameSize(frameSize) {
     return headerSize + encodingSize + bomSize + frameUtf16Size;
 }
 
+function getUserStringFrameSize(descriptionSize, valueSize) {
+    const headerSize = 10;
+    const encodingSize = 1;
+    const bomSize = 2;
+    const descriptionUtf16Size = descriptionSize * 2;
+    const separatorSize = 2;
+    const valueUtf16Size = valueSize * 2;
+
+    return headerSize + encodingSize + bomSize + descriptionUtf16Size + separatorSize + valueUtf16Size;
+}
+
 function getLyricsFrameSize(lyricsSize) {
     const headerSize = 10;
     const encodingSize = 1;
@@ -130,6 +141,18 @@ class Writer {
         });
     }
 
+    _setUserStringFrame(name, description, value) {
+        const stringDescription= description.toString();
+        const stringValue = value.toString();
+
+        this.frames.push({
+            name,
+            description: stringDescription,
+            value: stringValue,
+            size: getUserStringFrameSize(stringDescription.length, stringValue.length)
+        });
+    }
+
     constructor(buffer) {
         if (!buffer || typeof buffer !== 'object' || !('byteLength' in buffer)) {
             throw new Error('First argument should be an instance of ArrayBuffer or Buffer');
@@ -167,12 +190,32 @@ class Writer {
                 this._setStringFrame(frameName, genresStr);
                 break;
             }
+            case 'TKEY': // musical key in which the sound starts
+            {
+                if(!/^([A-G][#b]?m?|o)$/.test(frameValue)) {
+                    //specs: The ground keys are represented with "A","B","C","D","E",
+                    //"F" and "G" and halfkeys represented with "b" and "#". Minor is
+                    //represented as "m", e.g. "Dbm". Off key is represented with an
+                    //"o" only.
+                    throw new Error(`${frameName} frame value should be like Dbm, C#, B or o`);
+                }
+                this._setStringFrame(frameName, frameValue);
+                break;
+            }
             case 'TIT2': // song title
             case 'TALB': // album title
             case 'TPE2': // album artist // spec doesn't say anything about separator, so it is a string, not array
+            case 'TPE3': // name of the conductor
+            case 'TPE4': // people behind a remix and similar interpretations
             case 'TRCK': // song number in album: 5 or 5/10
             case 'TPOS': // album disc number: 1 or 1/3
             case 'TPUB': // label name
+            case 'TBPM': // number of beats per minute //specs say it is an int and represented as a numerical string
+            case 'TMED': // media the sound originated from (e.g. DIG, CD, TT/33, VID/PAL, RAD/FM, etc)
+            case 'TMOO': // reflect the mood of the audio with a few keywords, e.g. "Romantic" or "Sad".
+            case 'TSOA': // string which should be used instead of the album name (TALB) for sorting purposes
+            case 'TSOP': // string which should be used instead of the performer (TPE2) for sorting purposes
+            case 'TSOT': // string which should be used instead of the title (TIT2) for sorting purposes
             {
                 this._setStringFrame(frameName, frameValue);
                 break;
@@ -186,6 +229,14 @@ class Writer {
             case 'USLT': // unsychronised lyrics
             {
                 this._setLyricsFrame(frameName, frameValue);
+                break;
+            }
+            case 'TXXX': // user defined text information
+            {
+                if (typeof frameValue !== 'object' || !('description' in frameValue) || !('value' in frameValue)) {
+                    throw new Error('TXXX frame value should be an object with keys description and value');
+                }
+                this._setUserStringFrame(frameName, frameValue.description, frameValue.value);
                 break;
             }
             case 'APIC': // song cover
@@ -267,15 +318,43 @@ class Writer {
                 case 'TIT2':
                 case 'TALB':
                 case 'TPE2':
+                case 'TPE3':
+                case 'TPE4':
                 case 'TRCK':
                 case 'TPOS':
                 case 'TPUB':
+                case 'TBPM':
+                case 'TKEY':
+                case 'TMED':
+                case 'TMOO':
+                case 'TSOA':
+                case 'TSOP':
+                case 'TSOT':
                 {
                     writeBytes = [1].concat(BOM); // encoding, BOM
                     bufferWriter.set(writeBytes, offset);
                     offset += writeBytes.length;
 
                     writeBytes = encoder.encodeUtf16le(frame.value); // frame value
+                    bufferWriter.set(writeBytes, offset);
+                    offset += writeBytes.length;
+                    break;
+                }
+                case 'TXXX':
+                {
+                    writeBytes = [1].concat(BOM); // encoding, BOM
+                    bufferWriter.set(writeBytes, offset);
+                    offset += writeBytes.length;
+
+                    writeBytes = encoder.encodeUtf16le(frame.description); // frame value (description part)
+                    bufferWriter.set(writeBytes, offset);
+                    offset += writeBytes.length;
+
+                    writeBytes = [0x00, 0x00]; // separator
+                    bufferWriter.set(writeBytes, offset);
+                    offset += writeBytes.length;
+
+                    writeBytes = encoder.encodeUtf16le(frame.value); // frame value (value part)
                     bufferWriter.set(writeBytes, offset);
                     offset += writeBytes.length;
                     break;

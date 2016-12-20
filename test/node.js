@@ -24,18 +24,31 @@ describe('node usage', () => {
         writer.setFrame('TIT2', 'Home')
             .setFrame('TPE1', ['Eminem', '50 Cent'])
             .setFrame('TPE2', 'Eminem')
+            .setFrame('TPE3', 'FooComposer')
+            .setFrame('TPE4', 'Daft Punk')
             .setFrame('TALB', 'Friday Night Lights')
             .setFrame('TYER', 2004)
             .setFrame('TRCK', '6/8')
             .setFrame('TPOS', '1/2')
+            .setFrame('TBPM', '128')
+            .setFrame('TKEY', 'Fbm')
             .setFrame('TCON', ['Soundtrack'])
+            .setFrame('TMED', 'TT/45')
+            .setFrame('TMOO', 'Happy')
+            .setFrame('TSOA', 'Friday Night Lights')
+            .setFrame('TSOP', 'Eminem')
+            .setFrame('TSOT', 'Home')
             .setFrame('USLT', 'This is unsychronised lyrics')
+            .setFrame('TXXX', {
+                description: 'Release Info',
+                value: 'Double vinyl version was limited to 2500 copies'
+            })
             .setFrame('APIC', coverBuffer);
         writer.addTag();
-        expect(writer.arrayBuffer.byteLength).to.be.equal(668692);
+        expect(writer.arrayBuffer.byteLength).to.be.equal(669072);
 
         const taggedSongBuffer = new Buffer(writer.arrayBuffer);
-        expect(taggedSongBuffer.byteLength).to.be.equal(668692);
+        expect(taggedSongBuffer.byteLength).to.be.equal(669072);
         fs.writeFileSync(path.join(assetFolder, 'song_with_tags.mp3'), taggedSongBuffer);
     });
 });
