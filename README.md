@@ -42,7 +42,7 @@ Demonstration is available here: [egoroof.ru/browser-id3-writer/](https://egoroo
 
 ### Browser
 
-You can include library via [unpkg](https://unpkg.com/):
+You can include library via [unpkg](https://unpkg.com/) or save it to local machine:
 
 **Warning**: better use exact version to protect yourself against breaking changes.
 
@@ -50,13 +50,13 @@ You can include library via [unpkg](https://unpkg.com/):
 <script src="//unpkg.com/browser-id3-writer@^2.0.0/dist/browser-id3-writer.min.js"></script>
 ```
 
-Or you can install via [npm](https://www.npmjs.com/) and get it from `dist` folder:
+If you are using browser module loaders like `webpack` or `browserify` install it via [npm](https://www.npmjs.com/):
 
 ```
 npm install browser-id3-writer --save
 ```
 
-Or you can include it using browser module loaders like webpack or browserify:
+Then you will be able to use it:
 
 ```js
 const ID3Writer = require('browser-id3-writer');
