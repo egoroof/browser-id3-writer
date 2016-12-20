@@ -18,9 +18,6 @@ It can't read the tag so use another lib to do it.
 - [Usage](#usage)
   - [Browser](#browser-1)
     1. [Get ArrayBuffer of song](#get-arraybuffer-of-song)
-      - [FileReader](#filereader)
-      - [XMLHttpRequest](#xmlhttprequest)
-      - [Fetch](#fetch)
     2. [Add a tag](#add-a-tag)
     3. [Save file](#save-file)
   - [Node.js](#nodejs-1)
@@ -33,7 +30,7 @@ For browsers:
 [Typed Arrays](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Typed_arrays),
 [Blob](https://developer.mozilla.org/en-US/docs/Web/API/Blob),
 [URL](https://developer.mozilla.org/en-US/docs/Web/API/URL).
-Tested in latest Chrome, Firefox and IE11 (IE10 doesn't work).
+Tested in latest Chrome, Firefox, Edge and IE11 (IE10 doesn't work).
 
 Node.js 4 - 7 are tested and works well.
 
