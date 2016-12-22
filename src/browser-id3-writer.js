@@ -3,15 +3,6 @@ const signatures = require('./signatures');
 const transform = require('./transform');
 const sizes = require('./sizes');
 
-function artistsToStr(artists) {
-    return artists.join('/') || 'Unknown Artist';
-}
-
-function genresToStr(genres) {
-    // this delimiter works fine in Windows Explorer but nothing said about it in the spec
-    return genres.join(';');
-}
-
 class Writer {
 
     _setIntegerFrame(name, value) {
@@ -78,10 +69,11 @@ class Writer {
                 if (!Array.isArray(frameValue)) {
                     throw new Error(`${frameName} frame value should be an array of strings`);
                 }
-                const artists = frameValue.map((artist) => artist.toString());
-                const artistsStr = artistsToStr(artists);
+                const artists = frameValue
+                    .map((artist) => artist.toString())
+                    .join('/');
 
-                this._setStringFrame(frameName, artistsStr);
+                this._setStringFrame(frameName, artists);
                 break;
             }
             case 'TCON': // song genre
@@ -89,10 +81,11 @@ class Writer {
                 if (!Array.isArray(frameValue)) {
                     throw new Error(`${frameName} frame value should be an array of strings`);
                 }
-                const frames = frameValue.map((frame) => frame.toString());
-                const genresStr = genresToStr(frames);
+                const genres = frameValue
+                    .map((frame) => frame.toString())
+                    .join(';');
 
-                this._setStringFrame(frameName, genresStr);
+                this._setStringFrame(frameName, genres);
                 break;
             }
             case 'TIT2': // song title
