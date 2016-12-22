@@ -26,7 +26,7 @@ class Writer {
     }
 
     _setPictureFrame(name, buffer) {
-        const mimeType = signatures.getMimeType(new Uint8Array(buffer), 0, 12);
+        const mimeType = signatures.getMimeType(new Uint8Array(buffer));
 
         if (!mimeType) {
             throw new Error('Unknown picture MIME type');
