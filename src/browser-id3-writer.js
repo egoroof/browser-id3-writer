@@ -1,34 +1,7 @@
 const encoder = require('./encoder');
 const signatures = require('./signatures');
-
-function uint32ToUint8Array(uint32) {
-    const uint8array = [];
-    const eightBitMask = (1 << 8) - 1;
-
-    for (let i = 24; i >= 0; i -= 8) {
-        uint8array.push((uint32 >>> i) & eightBitMask);
-    }
-    return uint8array;
-}
-
-function uint28ToUint7Array(uint28) {
-    const uint7array = [];
-    const sevenBitMask = (1 << 7) - 1;
-
-    for (let i = 21; i >= 0; i -= 7) {
-        uint7array.push((uint28 >>> i) & sevenBitMask);
-    }
-    return uint7array;
-}
-
-function uint7ArrayToUint28(uint7Array) {
-    let uint28 = 0;
-
-    for (let i = 0, pow = 21; pow >= 0; pow -= 7, i++) {
-        uint28 += uint7Array[i] << pow;
-    }
-    return uint28;
-}
+const transform = require('./transform');
+const sizes = require('./sizes');
 
 function artistsToStr(artists) {
     return artists.join('/') || 'Unknown Artist';
@@ -39,51 +12,6 @@ function genresToStr(genres) {
     return genres.join(';');
 }
 
-function getTotalFrameSize(frames) {
-    let size = 0;
-
-    frames.forEach((frame) => {
-        size += frame.size;
-    });
-    return size;
-}
-
-function getNumericFrameSize(frameSize) {
-    const headerSize = 10;
-    const encodingSize = 1;
-
-    return headerSize + encodingSize + frameSize;
-}
-
-function getStringFrameSize(frameSize) {
-    const headerSize = 10;
-    const encodingSize = 1;
-    const bomSize = 2;
-    const frameUtf16Size = frameSize * 2;
-
-    return headerSize + encodingSize + bomSize + frameUtf16Size;
-}
-
-function getLyricsFrameSize(lyricsSize) {
-    const headerSize = 10;
-    const encodingSize = 1;
-    const languageSize = 3;
-    const contentDescriptorSize = 2;
-    const bomSize = 2;
-    const lyricsUtf16Size = lyricsSize * 2;
-
-    return headerSize + encodingSize + languageSize + bomSize + contentDescriptorSize + bomSize + lyricsUtf16Size;
-}
-
-function getPictureFrameSize(frameSize, mimeTypeSize) {
-    const headerSize = 10;
-    const encodingSize = 1;
-    const nullSize = 1;
-    const pictureTypeSize = 1;
-
-    return headerSize + encodingSize + mimeTypeSize + nullSize + pictureTypeSize + nullSize + frameSize;
-}
-
 class Writer {
 
     _setIntegerFrame(name, value) {
@@ -92,7 +20,7 @@ class Writer {
         this.frames.push({
             name,
             value: integer,
-            size: getNumericFrameSize(integer.toString().length)
+            size: sizes.getNumericFrameSize(integer.toString().length)
         });
     }
 
@@ -102,7 +30,7 @@ class Writer {
         this.frames.push({
             name,
             value: stringValue,
-            size: getStringFrameSize(stringValue.length)
+            size: sizes.getStringFrameSize(stringValue.length)
         });
     }
 
@@ -116,7 +44,7 @@ class Writer {
             name,
             value: buffer,
             mimeType,
-            size: getPictureFrameSize(buffer.byteLength, mimeType.length)
+            size: sizes.getPictureFrameSize(buffer.byteLength, mimeType.length)
         });
     }
 
@@ -126,7 +54,7 @@ class Writer {
         this.frames.push({
             name,
             value: stringValue,
-            size: getLyricsFrameSize(stringValue.length)
+            size: sizes.getLyricsFrameSize(stringValue.length)
         });
     }
 
@@ -213,7 +141,7 @@ class Writer {
         }
         const firstTenBytes = new Uint8Array(this.arrayBuffer, 0, headerLength);
         const version = firstTenBytes[3];
-        const tagSize = uint7ArrayToUint28([
+        const tagSize = transform.uint7ArrayToUint28([
                 firstTenBytes[6], firstTenBytes[7],
                 firstTenBytes[8], firstTenBytes[9]
             ]) + headerLength;
@@ -230,7 +158,7 @@ class Writer {
 
         const BOM = [0xff, 0xfe];
         const headerSize = 10;
-        const totalFrameSize = getTotalFrameSize(this.frames);
+        const totalFrameSize = sizes.getTotalFrameSize(this.frames);
         const totalTagSize = headerSize + totalFrameSize + this.padding;
         const buffer = new ArrayBuffer(this.arrayBuffer.byteLength + totalTagSize);
         const bufferWriter = new Uint8Array(buffer);
@@ -245,7 +173,7 @@ class Writer {
         offset++; // version revision
         offset++; // flags
 
-        writeBytes = uint28ToUint7Array(totalTagSize - headerSize); // tag size (without header)
+        writeBytes = transform.uint28ToUint7Array(totalTagSize - headerSize); // tag size (without header)
         bufferWriter.set(writeBytes, offset);
         offset += writeBytes.length;
 
@@ -254,7 +182,7 @@ class Writer {
             bufferWriter.set(writeBytes, offset);
             offset += writeBytes.length;
 
-            writeBytes = uint32ToUint8Array(frame.size - headerSize); // frame size (without header)
+            writeBytes = transform.uint32ToUint8Array(frame.size - headerSize); // frame size (without header)
             bufferWriter.set(writeBytes, offset);
             offset += writeBytes.length;
 
