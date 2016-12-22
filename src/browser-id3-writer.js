@@ -68,9 +68,7 @@ class Writer {
                 if (!Array.isArray(frameValue)) {
                     throw new Error(`${frameName} frame value should be an array of strings`);
                 }
-                const artists = frameValue
-                    .map((artist) => artist.toString())
-                    .join('/');
+                const artists = frameValue.join('/');
 
                 this._setStringFrame(frameName, artists);
                 break;
@@ -79,9 +77,7 @@ class Writer {
                 if (!Array.isArray(frameValue)) {
                     throw new Error(`${frameName} frame value should be an array of strings`);
                 }
-                const genres = frameValue
-                    .map((frame) => frame.toString())
-                    .join(';');
+                const genres = frameValue.join(';');
 
                 this._setStringFrame(frameName, genres);
                 break;
