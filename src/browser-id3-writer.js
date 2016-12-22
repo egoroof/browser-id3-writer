@@ -64,8 +64,7 @@ class Writer {
     setFrame(frameName, frameValue) {
         switch (frameName) {
             case 'TPE1': // song artists
-            case 'TCOM': // song composers
-            {
+            case 'TCOM': { // song composers
                 if (!Array.isArray(frameValue)) {
                     throw new Error(`${frameName} frame value should be an array of strings`);
                 }
@@ -76,8 +75,7 @@ class Writer {
                 this._setStringFrame(frameName, artists);
                 break;
             }
-            case 'TCON': // song genre
-            {
+            case 'TCON': { // song genre
                 if (!Array.isArray(frameValue)) {
                     throw new Error(`${frameName} frame value should be an array of strings`);
                 }
@@ -93,32 +91,27 @@ class Writer {
             case 'TPE2': // album artist // spec doesn't say anything about separator, so it is a string, not array
             case 'TRCK': // song number in album: 5 or 5/10
             case 'TPOS': // album disc number: 1 or 1/3
-            case 'TPUB': // label name
-            {
+            case 'TPUB': { // label name
                 this._setStringFrame(frameName, frameValue);
                 break;
             }
             case 'TLEN': // song duration
-            case 'TYER': // album release year
-            {
+            case 'TYER': { // album release year
                 this._setIntegerFrame(frameName, frameValue);
                 break;
             }
-            case 'USLT': // unsychronised lyrics
-            {
+            case 'USLT': { // unsychronised lyrics
                 this._setLyricsFrame(frameName, frameValue);
                 break;
             }
-            case 'APIC': // song cover
-            {
+            case 'APIC': { // song cover
                 if (typeof frameValue !== 'object' || !('byteLength' in frameValue)) {
                     throw new Error('APIC frame value should be an instance of ArrayBuffer or Buffer');
                 }
                 this._setPictureFrame(frameName, frameValue);
                 break;
             }
-            default:
-            {
+            default: {
                 throw new Error(`Unsupported frame ${frameName}`);
             }
         }
@@ -190,8 +183,7 @@ class Writer {
                 case 'TPE2':
                 case 'TRCK':
                 case 'TPOS':
-                case 'TPUB':
-                {
+                case 'TPUB': {
                     writeBytes = [1].concat(BOM); // encoding, BOM
                     bufferWriter.set(writeBytes, offset);
                     offset += writeBytes.length;
@@ -201,8 +193,7 @@ class Writer {
                     offset += writeBytes.length;
                     break;
                 }
-                case 'USLT':
-                {
+                case 'USLT': {
                     const langEng = [101, 110, 103];
 
                     writeBytes = [1].concat(langEng, BOM); // encoding, language, BOM for content descriptor
@@ -221,8 +212,7 @@ class Writer {
                     break;
                 }
                 case 'TLEN':
-                case 'TYER':
-                {
+                case 'TYER': {
                     offset++; // encoding
 
                     writeBytes = encoder.encodeUtf8Ascii(frame.value); // frame value
@@ -230,8 +220,7 @@ class Writer {
                     offset += writeBytes.length;
                     break;
                 }
-                case 'APIC':
-                {
+                case 'APIC': {
                     offset++; // encoding
 
                     writeBytes = encoder.encodeUtf8Ascii(frame.mimeType); // MIME type
