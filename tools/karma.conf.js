@@ -17,8 +17,8 @@ module.exports = (config) => {
             'test/browser.js': ['webpack']
         },
         reporters: ['dots'],
-        logLevel: config.LOG_INFO,
         browsers: process.env.CI ? ['Firefox'] : ['Chrome', 'Firefox', 'IE', 'Edge'],
+        singleRun: true,
         webpack: {
             module: {
                 loaders: [{
