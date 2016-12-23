@@ -1,11 +1,11 @@
-function getNumericFrameSize(frameSize) {
+export function getNumericFrameSize(frameSize) {
     const headerSize = 10;
     const encodingSize = 1;
 
     return headerSize + encodingSize + frameSize;
 }
 
-function getStringFrameSize(frameSize) {
+export function getStringFrameSize(frameSize) {
     const headerSize = 10;
     const encodingSize = 1;
     const bomSize = 2;
@@ -14,7 +14,7 @@ function getStringFrameSize(frameSize) {
     return headerSize + encodingSize + bomSize + frameUtf16Size;
 }
 
-function getLyricsFrameSize(lyricsSize) {
+export function getLyricsFrameSize(lyricsSize) {
     const headerSize = 10;
     const encodingSize = 1;
     const languageSize = 3;
@@ -25,7 +25,7 @@ function getLyricsFrameSize(lyricsSize) {
     return headerSize + encodingSize + languageSize + bomSize + contentDescriptorSize + bomSize + lyricsUtf16Size;
 }
 
-function getPictureFrameSize(frameSize, mimeTypeSize) {
+export function getPictureFrameSize(frameSize, mimeTypeSize) {
     const headerSize = 10;
     const encodingSize = 1;
     const nullSize = 1;
@@ -34,7 +34,7 @@ function getPictureFrameSize(frameSize, mimeTypeSize) {
     return headerSize + encodingSize + mimeTypeSize + nullSize + pictureTypeSize + nullSize + frameSize;
 }
 
-function getTotalFrameSize(frames) {
+export function getTotalFrameSize(frames) {
     let size = 0;
 
     frames.forEach((frame) => {
@@ -42,11 +42,3 @@ function getTotalFrameSize(frames) {
     });
     return size;
 }
-
-module.exports = {
-    getNumericFrameSize,
-    getStringFrameSize,
-    getLyricsFrameSize,
-    getPictureFrameSize,
-    getTotalFrameSize
-};

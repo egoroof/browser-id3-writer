@@ -1,4 +1,8 @@
-const encoder = require('../src/encoder');
+function encodeUtf8Ascii(str) {
+    const codePoints = String(str).split('').map((c) => c.charCodeAt(0)); // up to 0x7F
+
+    return new Uint8Array(codePoints);
+}
 
 function getMp3file() {
     const buffer = new ArrayBuffer(10);
@@ -254,7 +258,7 @@ const tests = [{
                         0, 0, 0, frameTotalSize - 10, // size without header (should be less than 128)
                         0, 0, // flags
                         0 // encoding
-                    ].concat(typedArray2Array(encoder.encodeUtf8Ascii(type.mime)))
+                    ].concat(typedArray2Array(encodeUtf8Ascii(type.mime)))
                         .concat([0, 3, 0]) // delemiter, pic type, delemiter
                         .concat(type.signature)
                         .concat(content)

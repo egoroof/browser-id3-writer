@@ -1,4 +1,4 @@
-function uint32ToUint8Array(uint32) {
+export function uint32ToUint8Array(uint32) {
     const uint8array = [];
     const eightBitMask = (1 << 8) - 1;
 
@@ -8,7 +8,7 @@ function uint32ToUint8Array(uint32) {
     return uint8array;
 }
 
-function uint28ToUint7Array(uint28) {
+export function uint28ToUint7Array(uint28) {
     const uint7array = [];
     const sevenBitMask = (1 << 7) - 1;
 
@@ -18,7 +18,7 @@ function uint28ToUint7Array(uint28) {
     return uint7array;
 }
 
-function uint7ArrayToUint28(uint7Array) {
+export function uint7ArrayToUint28(uint7Array) {
     let uint28 = 0;
 
     for (let i = 0, pow = 21; pow >= 0; pow -= 7, i++) {
@@ -26,9 +26,3 @@ function uint7ArrayToUint28(uint7Array) {
     }
     return uint28;
 }
-
-module.exports = {
-    uint32ToUint8Array,
-    uint28ToUint7Array,
-    uint7ArrayToUint28
-};

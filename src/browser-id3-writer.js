@@ -1,7 +1,7 @@
-const encoder = require('./encoder');
-const signatures = require('./signatures');
-const transform = require('./transform');
-const sizes = require('./sizes');
+import * as encoder from './encoder';
+import * as signatures from './signatures';
+import * as transform from './transform';
+import * as sizes from './sizes';
 
 class Writer {
 
