@@ -64,22 +64,15 @@ class ID3Writer {
     setFrame(frameName, frameValue) {
         switch (frameName) {
             case 'TPE1': // song artists
-            case 'TCOM': { // song composers
+            case 'TCOM': // song composers
+            case 'TCON': { // song genres
                 if (!Array.isArray(frameValue)) {
                     throw new Error(`${frameName} frame value should be an array of strings`);
                 }
-                const artists = frameValue.join('/');
+                const delemiter = frameName === 'TCON' ? ';' : '/';
+                const value = frameValue.join(delemiter);
 
-                this._setStringFrame(frameName, artists);
-                break;
-            }
-            case 'TCON': { // song genre
-                if (!Array.isArray(frameValue)) {
-                    throw new Error(`${frameName} frame value should be an array of strings`);
-                }
-                const genres = frameValue.join(';');
-
-                this._setStringFrame(frameName, genres);
+                this._setStringFrame(frameName, value);
                 break;
             }
             case 'TIT2': // song title
