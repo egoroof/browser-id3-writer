@@ -1,7 +1,7 @@
 const babelConfig = require('./.babelrc.json');
 
 module.exports = {
-    entry: './src/browser-id3-writer.js',
+    entry: './src/ID3Writer.js',
     output: {
         path: './dist',
         filename: 'browser-id3-writer.min.js',

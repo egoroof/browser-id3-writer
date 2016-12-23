@@ -3,7 +3,7 @@ import * as signatures from './signatures';
 import * as transform from './transform';
 import * as sizes from './sizes';
 
-class Writer {
+class ID3Writer {
 
     _setIntegerFrame(name, value) {
         const integer = parseInt(value, 10);
@@ -257,4 +257,4 @@ class Writer {
 
 }
 
-module.exports = Writer;
+module.exports = ID3Writer;
