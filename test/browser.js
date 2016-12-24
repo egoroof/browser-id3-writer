@@ -43,13 +43,17 @@ describe('browser usage', () => {
                     description: 'Текст песенки',
                     lyrics: 'This is unsychronised lyrics'
                 })
+                .setFrame('TXXX', {
+                    description: 'Release Info',
+                    value: 'Double vinyl version was limited to 2500 copies'
+                })
                 .setFrame('COMM', {
                     description: 'This is description of comment',
                     text: 'And this is the comment'
                 });
             writer.addTag();
 
-            expect(writer.arrayBuffer.byteLength).to.be.equal(618330);
+            expect(writer.arrayBuffer.byteLength).to.be.equal(618465);
             done();
         });
     });

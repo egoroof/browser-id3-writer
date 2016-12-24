@@ -171,6 +171,10 @@ writer.setFrame('TIT2', 'Home')
           description: 'Original lyrics',
           lyrics: 'This is unsychronised lyrics'
       })
+      .setFrame('TXXX', {
+          description: 'Release Info',
+          value: 'Double vinyl version was limited to 2500 copies'
+      })
       .setFrame('APIC', coverArrayBuffer);
 writer.addTag();
 ```
@@ -223,6 +227,10 @@ writer.setFrame('TIT2', 'Home')
           description: 'Original lyrics',
           lyrics: 'This is unsychronised lyrics'
       })
+      .setFrame('TXXX', {
+          description: 'Release Info',
+          value: 'Double vinyl version was limited to 2500 copies'
+      })
       .setFrame('APIC', coverBuffer);
 writer.addTag();
 
@@ -270,6 +278,7 @@ Currently you can set next frames:
 
 - COMM (comments): {description: 'description', text: 'text'}
 - USLT (unsychronised lyrics): {description: 'description', lyrics: 'lyrics'}
+- TXXX (user defined text): {description: 'description', value: 'value'}
 
 **arrayBuffer**
 

@@ -47,6 +47,17 @@ export function getCommentFrameSize(descriptionSize, textSize) {
     return headerSize + encodingSize + languageSize + bomSize + descriptionUtf16Size + separatorSize + bomSize + textUtf16Size;
 }
 
+export function getUserStringFrameSize(descriptionSize, valueSize) {
+    const headerSize = 10;
+    const encodingSize = 1;
+    const bomSize = 2;
+    const descriptionUtf16Size = descriptionSize * 2;
+    const separatorSize = 2;
+    const valueUtf16Size = valueSize * 2;
+
+    return headerSize + encodingSize + bomSize + descriptionUtf16Size + separatorSize + bomSize + valueUtf16Size;
+}
+
 export function getTotalFrameSize(frames) {
     return frames.reduce((sum, frame) => {
         return sum + frame.size;

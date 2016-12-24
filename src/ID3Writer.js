@@ -63,6 +63,18 @@ class ID3Writer {
         });
     }
 
+    _setUserStringFrame(description, value) {
+        const descriptionString = description.toString();
+        const valueString = value.toString();
+
+        this.frames.push({
+            name: 'TXXX',
+            description: descriptionString,
+            value: valueString,
+            size: sizes.getUserStringFrameSize(descriptionString.length, valueString.length)
+        });
+    }
+
     constructor(buffer) {
         if (!buffer || typeof buffer !== 'object' || !('byteLength' in buffer)) {
             throw new Error('First argument should be an instance of ArrayBuffer or Buffer');
@@ -73,7 +85,6 @@ class ID3Writer {
         this.frames = [];
         this.url = '';
     }
-
 
     setFrame(frameName, frameValue) {
         switch (frameName) {
@@ -115,6 +126,13 @@ class ID3Writer {
                     throw new Error('APIC frame value should be an instance of ArrayBuffer or Buffer');
                 }
                 this._setPictureFrame(frameValue);
+                break;
+            }
+            case 'TXXX': { // user defined text information
+                if (typeof frameValue !== 'object' || !('description' in frameValue) || !('value' in frameValue)) {
+                    throw new Error('TXXX frame value should be an object with keys description and value');
+                }
+                this._setUserStringFrame(frameValue.description, frameValue.value);
                 break;
             }
             case 'COMM': { // Comments
@@ -207,9 +225,14 @@ class ID3Writer {
                     offset += writeBytes.length;
                     break;
                 }
+                case 'TXXX':
                 case 'USLT':
                 case 'COMM': {
-                    writeBytes = [1].concat(langEng, BOM); // encoding, language, BOM for content descriptor
+                    writeBytes = [1]; // encoding
+                    if (frame.name === 'USLT' || frame.name === 'COMM') {
+                        writeBytes = writeBytes.concat(langEng); // language
+                    }
+                    writeBytes = writeBytes.concat(BOM); // BOM for content descriptor
                     bufferWriter.set(writeBytes, offset);
                     offset += writeBytes.length;
 

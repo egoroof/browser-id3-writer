@@ -37,11 +37,15 @@ describe('node usage', () => {
                 description: 'This is description of comment',
                 text: 'And this is the comment'
             })
+            .setFrame('TXXX', {
+                description: 'Release Info',
+                value: 'Double vinyl version was limited to 2500 copies'
+            })
             .setFrame('APIC', coverBuffer);
         writer.addTag();
 
         const taggedSongBuffer = new Buffer(writer.arrayBuffer);
-        expect(taggedSongBuffer.byteLength).to.be.equal(668844);
+        expect(taggedSongBuffer.byteLength).to.be.equal(668979);
         fs.writeFileSync(path.join(assetFolder, 'song_with_tags.mp3'), taggedSongBuffer);
     });
 });
