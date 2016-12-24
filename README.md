@@ -167,7 +167,10 @@ writer.setFrame('TIT2', 'Home')
       .setFrame('TRCK', '6/8')
       .setFrame('TPOS', '1/2')
       .setFrame('TCON', ['Soundtrack'])
-      .setFrame('USLT', 'This is unsychronised lyrics')
+      .setFrame('USLT', {
+          description: 'Original lyrics',
+          lyrics: 'This is unsychronised lyrics'
+      })
       .setFrame('APIC', coverArrayBuffer);
 writer.addTag();
 ```
@@ -216,7 +219,10 @@ writer.setFrame('TIT2', 'Home')
       .setFrame('TRCK', '6/8')
       .setFrame('TPOS', '1/2')
       .setFrame('TCON', ['Soundtrack'])
-      .setFrame('USLT', 'This is unsychronised lyrics')
+      .setFrame('USLT', {
+          description: 'Original lyrics',
+          lyrics: 'This is unsychronised lyrics'
+      })
       .setFrame('APIC', coverBuffer);
 writer.addTag();
 
@@ -253,7 +259,6 @@ Currently you can set next frames:
 - TPE2 (album artist)
 - TRCK (song number in album): '5' or '5/10'
 - TPOS (album disc number): '1' or '1/3'
-- USLT (unsychronised lyrics)
 - TPUB (label name)
 
 **integer**
@@ -264,6 +269,7 @@ Currently you can set next frames:
 **object**
 
 - COMM (comments): {description: 'description', text: 'text'}
+- USLT (unsychronised lyrics): {description: 'description', lyrics: 'lyrics'}
 
 **arrayBuffer**
 

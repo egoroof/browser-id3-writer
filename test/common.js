@@ -160,10 +160,13 @@ const tests = [{
         describe: 'should correctly set USLT frame',
         test: (ID3Writer, expect) => {
             const writer = new ID3Writer(files.mp3);
-            writer.setFrame('USLT', 'Лирика');
+            writer.setFrame('USLT', {
+                description: 'Ярл',
+                lyrics: 'Лирика'
+            });
 
             const buffer = writer.addTag();
-            const frameTotalSize = 32;
+            const frameTotalSize = 38;
             const bufferUint8 = new Uint8Array(buffer, 10, frameTotalSize);
 
             expect(bufferUint8).to.eql(new Uint8Array([
@@ -173,9 +176,9 @@ const tests = [{
                 1, // encoding
                 101, 110, 103, // language
                 0xff, 0xfe, // BOM
-                0, 0, // content descriptor
-                0xff, 0xfe, // BOM
-                27, 4, 56, 4, 64, 4, 56, 4, 58, 4, 48, 4 // Лирика
+                47, 4, 64, 4, 59, 4, // 'Ярл'
+                0, 0, 0xff, 0xfe, // separator, BOM
+                27, 4, 56, 4, 64, 4, 56, 4, 58, 4, 48, 4 // 'Лирика'
             ]));
         }
     }]

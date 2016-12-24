@@ -14,15 +14,16 @@ export function getStringFrameSize(frameSize) {
     return headerSize + encodingSize + bomSize + frameUtf16Size;
 }
 
-export function getLyricsFrameSize(lyricsSize) {
+export function getLyricsFrameSize(descriptionSize, lyricsSize) {
     const headerSize = 10;
     const encodingSize = 1;
     const languageSize = 3;
-    const contentDescriptorSize = 2;
     const bomSize = 2;
+    const descriptionUtf16Size = descriptionSize * 2;
+    const separatorSize = 2;
     const lyricsUtf16Size = lyricsSize * 2;
 
-    return headerSize + encodingSize + languageSize + bomSize + contentDescriptorSize + bomSize + lyricsUtf16Size;
+    return headerSize + encodingSize + languageSize + bomSize + descriptionUtf16Size + separatorSize + bomSize + lyricsUtf16Size;
 }
 
 export function getPictureFrameSize(pictureSize, mimeTypeSize) {

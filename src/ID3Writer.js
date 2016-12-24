@@ -25,27 +25,29 @@ class ID3Writer {
         });
     }
 
-    _setPictureFrame(name, buffer) {
+    _setPictureFrame(buffer) {
         const mimeType = signatures.getMimeType(new Uint8Array(buffer));
 
         if (!mimeType) {
             throw new Error('Unknown picture MIME type');
         }
         this.frames.push({
-            name,
+            name: 'APIC',
             value: buffer,
             mimeType,
             size: sizes.getPictureFrameSize(buffer.byteLength, mimeType.length)
         });
     }
 
-    _setLyricsFrame(name, lyrics) {
-        const stringValue = lyrics.toString();
+    _setLyricsFrame(description, lyrics) {
+        const descriptionString = description.toString();
+        const lyricsString = lyrics.toString();
 
         this.frames.push({
-            name,
-            value: stringValue,
-            size: sizes.getLyricsFrameSize(stringValue.length)
+            name: 'USLT',
+            value: lyricsString,
+            description: descriptionString,
+            size: sizes.getLyricsFrameSize(descriptionString.length, lyricsString.length)
         });
     }
 
@@ -102,14 +104,17 @@ class ID3Writer {
                 break;
             }
             case 'USLT': { // unsychronised lyrics
-                this._setLyricsFrame(frameName, frameValue);
+                if (typeof frameValue !== 'object' || !('description' in frameValue) || !('lyrics' in frameValue)) {
+                    throw new Error('USLT frame value should be an object with keys description and lyrics');
+                }
+                this._setLyricsFrame(frameValue.description, frameValue.lyrics);
                 break;
             }
             case 'APIC': { // song cover
                 if (typeof frameValue !== 'object' || !('byteLength' in frameValue)) {
                     throw new Error('APIC frame value should be an instance of ArrayBuffer or Buffer');
                 }
-                this._setPictureFrame(frameName, frameValue);
+                this._setPictureFrame(frameValue);
                 break;
             }
             case 'COMM': { // Comments
@@ -202,22 +207,7 @@ class ID3Writer {
                     offset += writeBytes.length;
                     break;
                 }
-                case 'USLT': {
-                    writeBytes = [1].concat(langEng, BOM); // encoding, language, BOM for content descriptor
-                    bufferWriter.set(writeBytes, offset);
-                    offset += writeBytes.length;
-
-                    offset += 2; // content descriptor
-
-                    writeBytes = BOM; // BOM for frame value
-                    bufferWriter.set(writeBytes, offset);
-                    offset += writeBytes.length;
-
-                    writeBytes = encoder.encodeUtf16le(frame.value); // frame value
-                    bufferWriter.set(writeBytes, offset);
-                    offset += writeBytes.length;
-                    break;
-                }
+                case 'USLT':
                 case 'COMM': {
                     writeBytes = [1].concat(langEng, BOM); // encoding, language, BOM for content descriptor
                     bufferWriter.set(writeBytes, offset);
