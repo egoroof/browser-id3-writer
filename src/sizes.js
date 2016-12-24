@@ -34,6 +34,17 @@ export function getPictureFrameSize(pictureSize, mimeTypeSize) {
     return headerSize + encodingSize + mimeTypeSize + nullSize + pictureTypeSize + nullSize + pictureSize;
 }
 
+export function getCommentFrameSize(descriptionSize, textSize) {
+    const headerSize = 10;
+    const encodingSize = 1;
+    const languageSize = 3;
+    const bomSize = 2;
+    const descriptionUtf16Size = descriptionSize * 2;
+    const separatorSize = 2;
+    const textUtf16Size = textSize * 2;
+
+    return headerSize + encodingSize + languageSize + bomSize + descriptionUtf16Size + separatorSize + bomSize + textUtf16Size;
+}
 
 export function getTotalFrameSize(frames) {
     return frames.reduce((sum, frame) => {

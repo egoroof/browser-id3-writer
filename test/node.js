@@ -30,12 +30,15 @@ describe('node usage', () => {
             .setFrame('TPOS', '1/2')
             .setFrame('TCON', ['Soundtrack'])
             .setFrame('USLT', 'This is unsychronised lyrics')
+            .setFrame('COMM', {
+                description: 'This is description of comment',
+                text: 'And this is the comment'
+            })
             .setFrame('APIC', coverBuffer);
         writer.addTag();
-        expect(writer.arrayBuffer.byteLength).to.be.equal(668692);
 
         const taggedSongBuffer = new Buffer(writer.arrayBuffer);
-        expect(taggedSongBuffer.byteLength).to.be.equal(668692);
+        expect(taggedSongBuffer.byteLength).to.be.equal(668818);
         fs.writeFileSync(path.join(assetFolder, 'song_with_tags.mp3'), taggedSongBuffer);
     });
 });

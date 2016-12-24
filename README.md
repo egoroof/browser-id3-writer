@@ -261,6 +261,10 @@ Currently you can set next frames:
 - TLEN (song duration in milliseconds)
 - TYER (album release year)
 
+**object**
+
+- COMM (comments): {description: 'description', text: 'text'}
+
 **arrayBuffer**
 
 - APIC (song cover): works with jpeg, png, gif, webp, tiff, bmp and ico

@@ -180,6 +180,32 @@ const tests = [{
         }
     }]
 }, {
+    describe: 'object frames',
+    it: [{
+        describe: 'should correctly set COMM frame',
+        test: (ID3Writer, expect) => {
+            const writer = new ID3Writer(files.mp3);
+            writer.setFrame('COMM', {
+                description: 'advert',
+                text: 'free hugs'
+            });
+
+            const buffer = writer.addTag();
+            const frameTotalSize = 50;
+            const bufferUint8 = new Uint8Array(buffer, 10, frameTotalSize);
+
+            expect(bufferUint8).to.eql(new Uint8Array([
+                67, 79, 77, 77, // 'COMM'
+                0, 0, 0, frameTotalSize - 10, // size without header (should be less than 128)
+                0, 0, // flags
+                1, 101, 110, 103, 0xff, 0xfe, // encoding, language, BOM
+                97, 0, 100, 0, 118, 0, 101, 0, 114, 0, 116, 0, // 'advert'
+                0, 0, 0xff, 0xfe, // separator, BOM
+                102, 0, 114, 0, 101, 0, 101, 0, 32, 0, 104, 0, 117, 0, 103, 0, 115, 0 // 'free hugs'
+            ]));
+        }
+    }]
+}, {
     describe: 'APIC',
     it: [{
         describe: 'should throw error when value is not a buffer',

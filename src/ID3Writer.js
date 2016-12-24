@@ -49,6 +49,18 @@ class ID3Writer {
         });
     }
 
+    _setCommentFrame(description, text) {
+        const descriptionString = description.toString();
+        const textString = text.toString();
+
+        this.frames.push({
+            name: 'COMM',
+            value: textString,
+            description: descriptionString,
+            size: sizes.getCommentFrameSize(descriptionString.length, textString.length)
+        });
+    }
+
     constructor(buffer) {
         if (!buffer || typeof buffer !== 'object' || !('byteLength' in buffer)) {
             throw new Error('First argument should be an instance of ArrayBuffer or Buffer');
@@ -98,6 +110,13 @@ class ID3Writer {
                     throw new Error('APIC frame value should be an instance of ArrayBuffer or Buffer');
                 }
                 this._setPictureFrame(frameName, frameValue);
+                break;
+            }
+            case 'COMM': { // Comments
+                if (typeof frameValue !== 'object' || !('description' in frameValue) || !('text' in frameValue)) {
+                    throw new Error('COMM frame value should be an object with keys description and text');
+                }
+                this._setCommentFrame(frameValue.description, frameValue.text);
                 break;
             }
             default: {
@@ -191,6 +210,24 @@ class ID3Writer {
                     offset += 2; // content descriptor
 
                     writeBytes = BOM; // BOM for frame value
+                    bufferWriter.set(writeBytes, offset);
+                    offset += writeBytes.length;
+
+                    writeBytes = encoder.encodeUtf16le(frame.value); // frame value
+                    bufferWriter.set(writeBytes, offset);
+                    offset += writeBytes.length;
+                    break;
+                }
+                case 'COMM': {
+                    writeBytes = [1].concat(langEng, BOM); // encoding, language, BOM for content descriptor
+                    bufferWriter.set(writeBytes, offset);
+                    offset += writeBytes.length;
+
+                    writeBytes = encoder.encodeUtf16le(frame.description); // content descriptor
+                    bufferWriter.set(writeBytes, offset);
+                    offset += writeBytes.length;
+
+                    writeBytes = [0, 0].concat(BOM); // separator, BOM for frame value
                     bufferWriter.set(writeBytes, offset);
                     offset += writeBytes.length;
 

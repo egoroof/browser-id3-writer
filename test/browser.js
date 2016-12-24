@@ -39,10 +39,14 @@ describe('browser usage', () => {
                 .setFrame('TRCK', '6/8')
                 .setFrame('TPOS', '1/2')
                 .setFrame('TCON', ['Soundtrack'])
-                .setFrame('USLT', 'This is unsychronised lyrics');
+                .setFrame('USLT', 'This is unsychronised lyrics')
+                .setFrame('COMM', {
+                    description: 'This is description of comment',
+                    text: 'And this is the comment'
+                });
             writer.addTag();
 
-            expect(writer.arrayBuffer.byteLength).to.be.equal(618178);
+            expect(writer.arrayBuffer.byteLength).to.be.equal(618304);
             done();
         });
     });
