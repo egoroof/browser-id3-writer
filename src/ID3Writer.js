@@ -132,6 +132,7 @@ class ID3Writer {
         this.removeTag();
 
         const BOM = [0xff, 0xfe];
+        const langEng = [0x65, 0x6e, 0x67];
         const headerSize = 10;
         const totalFrameSize = sizes.getTotalFrameSize(this.frames);
         const totalTagSize = headerSize + totalFrameSize + this.padding;
@@ -183,8 +184,6 @@ class ID3Writer {
                     break;
                 }
                 case 'USLT': {
-                    const langEng = [101, 110, 103];
-
                     writeBytes = [1].concat(langEng, BOM); // encoding, language, BOM for content descriptor
                     bufferWriter.set(writeBytes, offset);
                     offset += writeBytes.length;

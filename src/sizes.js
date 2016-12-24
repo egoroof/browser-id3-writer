@@ -25,20 +25,18 @@ export function getLyricsFrameSize(lyricsSize) {
     return headerSize + encodingSize + languageSize + bomSize + contentDescriptorSize + bomSize + lyricsUtf16Size;
 }
 
-export function getPictureFrameSize(frameSize, mimeTypeSize) {
+export function getPictureFrameSize(pictureSize, mimeTypeSize) {
     const headerSize = 10;
     const encodingSize = 1;
     const nullSize = 1;
     const pictureTypeSize = 1;
 
-    return headerSize + encodingSize + mimeTypeSize + nullSize + pictureTypeSize + nullSize + frameSize;
+    return headerSize + encodingSize + mimeTypeSize + nullSize + pictureTypeSize + nullSize + pictureSize;
 }
 
-export function getTotalFrameSize(frames) {
-    let size = 0;
 
-    frames.forEach((frame) => {
-        size += frame.size;
-    });
-    return size;
+export function getTotalFrameSize(frames) {
+    return frames.reduce((sum, frame) => {
+        return sum + frame.size;
+    }, 0);
 }

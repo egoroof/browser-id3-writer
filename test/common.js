@@ -4,7 +4,7 @@ function encodeUtf8Ascii(str) {
     return new Uint8Array(codePoints);
 }
 
-function getMp3file() {
+function getMp3fileSurrogate() {
     const buffer = new ArrayBuffer(10);
     const uint8 = new Uint8Array(buffer);
 
@@ -13,7 +13,7 @@ function getMp3file() {
     return buffer;
 }
 
-function getMp3fileWithId3() {
+function getMp3fileSurrogateWithId3() {
     const buffer = new ArrayBuffer(10);
     const uint8 = new Uint8Array(buffer);
 
@@ -27,8 +27,8 @@ function typedArray2Array(typedArray) {
 }
 
 const files = {
-    mp3: getMp3file(),
-    mp3WithId3: getMp3fileWithId3()
+    mp3: getMp3fileSurrogate(),
+    mp3WithId3: getMp3fileSurrogateWithId3()
 };
 
 const tests = [{
