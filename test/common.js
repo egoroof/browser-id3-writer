@@ -1,5 +1,5 @@
-function encodeUtf8Ascii(str) {
-    const codePoints = String(str).split('').map((c) => c.charCodeAt(0)); // up to 0x7F
+function encodeWindows1252(str) {
+    const codePoints = String(str).split('').map((c) => c.charCodeAt(0));
 
     return new Uint8Array(codePoints);
 }
@@ -344,7 +344,7 @@ const tests = [{
                         0, 0, 0, frameTotalSize - 10, // size without header (should be less than 128)
                         0, 0, // flags
                         0 // encoding
-                    ].concat(typedArray2Array(encodeUtf8Ascii(type.mime)))
+                    ].concat(typedArray2Array(encodeWindows1252(type.mime)))
                         .concat([0, 3, 0]) // delemiter, pic type, delemiter
                         .concat(type.signature)
                         .concat(content)

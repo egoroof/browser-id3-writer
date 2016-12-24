@@ -1,5 +1,7 @@
-export function encodeUtf8Ascii(str) {
-    const codePoints = String(str).split('').map((c) => c.charCodeAt(0)); // up to 0x7F
+// https://encoding.spec.whatwg.org/
+
+export function encodeWindows1252(str) {
+    const codePoints = String(str).split('').map((c) => c.charCodeAt(0));
 
     return new Uint8Array(codePoints);
 }

@@ -196,7 +196,7 @@ class ID3Writer {
         offset += writeBytes.length;
 
         this.frames.forEach((frame) => {
-            writeBytes = encoder.encodeUtf8Ascii(frame.name); // frame name
+            writeBytes = encoder.encodeWindows1252(frame.name); // frame name
             bufferWriter.set(writeBytes, offset);
             offset += writeBytes.length;
 
@@ -253,7 +253,7 @@ class ID3Writer {
                 case 'TYER': {
                     offset++; // encoding
 
-                    writeBytes = encoder.encodeUtf8Ascii(frame.value); // frame value
+                    writeBytes = encoder.encodeWindows1252(frame.value); // frame value
                     bufferWriter.set(writeBytes, offset);
                     offset += writeBytes.length;
                     break;
@@ -261,7 +261,7 @@ class ID3Writer {
                 case 'APIC': {
                     offset++; // encoding
 
-                    writeBytes = encoder.encodeUtf8Ascii(frame.mimeType); // MIME type
+                    writeBytes = encoder.encodeWindows1252(frame.mimeType); // MIME type
                     bufferWriter.set(writeBytes, offset);
                     offset += writeBytes.length;
 
