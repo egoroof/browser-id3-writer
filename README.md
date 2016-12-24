@@ -167,6 +167,7 @@ writer.setFrame('TIT2', 'Home')
       .setFrame('TRCK', '6/8')
       .setFrame('TPOS', '1/2')
       .setFrame('TCON', ['Soundtrack'])
+      .setFrame('WPAY', 'https://google.com')
       .setFrame('USLT', {
           description: 'Original lyrics',
           lyrics: 'This is unsychronised lyrics'
@@ -223,6 +224,7 @@ writer.setFrame('TIT2', 'Home')
       .setFrame('TRCK', '6/8')
       .setFrame('TPOS', '1/2')
       .setFrame('TCON', ['Soundtrack'])
+      .setFrame('WPAY', 'https://google.com')
       .setFrame('USLT', {
           description: 'Original lyrics',
           lyrics: 'This is unsychronised lyrics'
@@ -268,6 +270,14 @@ Currently you can set next frames:
 - TRCK (song number in album): '5' or '5/10'
 - TPOS (album disc number): '1' or '1/3'
 - TPUB (label name)
+- WCOM (commercial information)
+- WCOP (copyright/Legal information)
+- WOAF (official audio file webpage)
+- WOAR (official artist/performer webpage)
+- WOAS (official audio source webpage)
+- WORS (official internet radio station homepage)
+- WPAY (payment)
+- WPUB (publishers official webpage)
 
 **integer**
 

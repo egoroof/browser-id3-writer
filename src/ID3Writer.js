@@ -75,6 +75,16 @@ class ID3Writer {
         });
     }
 
+    _setUrlLinkFrame(name, url) {
+        const urlString = url.toString();
+
+        this.frames.push({
+            name,
+            value: urlString,
+            size: sizes.getUrlLinkFrameSize(urlString.length)
+        });
+    }
+
     constructor(buffer) {
         if (!buffer || typeof buffer !== 'object' || !('byteLength' in buffer)) {
             throw new Error('First argument should be an instance of ArrayBuffer or Buffer');
@@ -133,6 +143,17 @@ class ID3Writer {
                     throw new Error('TXXX frame value should be an object with keys description and value');
                 }
                 this._setUserStringFrame(frameValue.description, frameValue.value);
+                break;
+            }
+            case 'WCOM': // Commercial information
+            case 'WCOP': // Copyright/Legal information
+            case 'WOAF': // Official audio file webpage
+            case 'WOAR': // Official artist/performer webpage
+            case 'WOAS': // Official audio source webpage
+            case 'WORS': // Official internet radio station homepage
+            case 'WPAY': // Payment
+            case 'WPUB': { // Publishers official webpage
+                this._setUrlLinkFrame(frameName, frameValue);
                 break;
             }
             case 'COMM': { // Comments
@@ -207,6 +228,19 @@ class ID3Writer {
             offset += 2; // flags
 
             switch (frame.name) {
+                case 'WCOM':
+                case 'WCOP':
+                case 'WOAF':
+                case 'WOAR':
+                case 'WOAS':
+                case 'WORS':
+                case 'WPAY':
+                case 'WPUB': {
+                    writeBytes = encoder.encodeWindows1252(frame.value); // URL
+                    bufferWriter.set(writeBytes, offset);
+                    offset += writeBytes.length;
+                    break;
+                }
                 case 'TPE1':
                 case 'TCOM':
                 case 'TCON':

@@ -156,6 +156,23 @@ const tests = [{
                 102, 0, 111, 0, 114, 0, 103, 0, 101, 0 // forge
             ]));
         }
+    }, {
+        describe: 'should correctly set WPAY frame',
+        test: (ID3Writer, expect) => {
+            const writer = new ID3Writer(files.mp3);
+            writer.setFrame('WPAY', 'https://google.com');
+
+            const buffer = writer.addTag();
+            const frameTotalSize = 28;
+            const bufferUint8 = new Uint8Array(buffer, 10, frameTotalSize);
+
+            expect(bufferUint8).to.eql(new Uint8Array([
+                87, 80, 65, 89, // 'WPAY'
+                0, 0, 0, frameTotalSize - 10, // size without header (should be less than 128)
+                0, 0, // flags
+                104, 116, 116, 112, 115, 58, 47, 47, 103, 111, 111, 103, 108, 101, 46, 99, 111, 109 // 'https://google.com'
+            ]));
+        }
     }]
 }, {
     describe: 'object frames',

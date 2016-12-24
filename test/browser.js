@@ -50,10 +50,18 @@ describe('browser usage', () => {
                 .setFrame('COMM', {
                     description: 'This is description of comment',
                     text: 'And this is the comment'
-                });
+                })
+                .setFrame('WCOM', 'https://google.com/')
+                .setFrame('WCOP', 'https://google.com/')
+                .setFrame('WOAF', 'https://google.com/')
+                .setFrame('WOAR', 'https://google.com/')
+                .setFrame('WOAS', 'https://google.com/')
+                .setFrame('WORS', 'https://google.com/')
+                .setFrame('WPAY', 'https://google.com/')
+                .setFrame('WPUB', 'https://google.com/');
             writer.addTag();
 
-            expect(writer.arrayBuffer.byteLength).to.be.equal(618465);
+            expect(writer.arrayBuffer.byteLength).to.be.equal(618697);
             done();
         });
     });

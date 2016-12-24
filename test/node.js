@@ -41,11 +41,19 @@ describe('node usage', () => {
                 description: 'Release Info',
                 value: 'Double vinyl version was limited to 2500 copies'
             })
+            .setFrame('WCOM', 'https://google.com/')
+            .setFrame('WCOP', 'https://google.com/')
+            .setFrame('WOAF', 'https://google.com/')
+            .setFrame('WOAR', 'https://google.com/')
+            .setFrame('WOAS', 'https://google.com/')
+            .setFrame('WORS', 'https://google.com/')
+            .setFrame('WPAY', 'https://google.com/')
+            .setFrame('WPUB', 'https://google.com/')
             .setFrame('APIC', coverBuffer);
         writer.addTag();
 
         const taggedSongBuffer = new Buffer(writer.arrayBuffer);
-        expect(taggedSongBuffer.byteLength).to.be.equal(668979);
+        expect(taggedSongBuffer.byteLength).to.be.equal(669211);
         fs.writeFileSync(path.join(assetFolder, 'song_with_tags.mp3'), taggedSongBuffer);
     });
 });

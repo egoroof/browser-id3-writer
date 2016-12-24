@@ -58,6 +58,12 @@ export function getUserStringFrameSize(descriptionSize, valueSize) {
     return headerSize + encodingSize + bomSize + descriptionUtf16Size + separatorSize + bomSize + valueUtf16Size;
 }
 
+export function getUrlLinkFrameSize(urlSize) {
+    const headerSize = 10;
+
+    return headerSize + urlSize;
+}
+
 export function getTotalFrameSize(frames) {
     return frames.reduce((sum, frame) => {
         return sum + frame.size;
