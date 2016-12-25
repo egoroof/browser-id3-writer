@@ -118,6 +118,7 @@ class ID3Writer {
             case 'TPE2': // album artist // spec doesn't say anything about separator, so it is a string, not array
             case 'TRCK': // song number in album: 5 or 5/10
             case 'TPOS': // album disc number: 1 or 1/3
+            case 'TMED': // media type
             case 'TPUB': { // label name
                 this._setStringFrame(frameName, frameValue);
                 break;
@@ -267,6 +268,7 @@ class ID3Writer {
                 case 'TRCK':
                 case 'TPOS':
                 case 'TKEY':
+                case 'TMED':
                 case 'TPUB': {
                     writeBytes = [1].concat(BOM); // encoding, BOM
                     bufferWriter.set(writeBytes, offset);

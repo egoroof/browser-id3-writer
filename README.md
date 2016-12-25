@@ -282,6 +282,7 @@ Have not found needed frame? Open a new issue and we'll discuss it.
 - TPOS (album disc number): '1' or '1/3'
 - TPUB (label name)
 - TKEY (initial key)
+- TMED (media type)
 - WCOM (commercial information)
 - WCOP (copyright/Legal information)
 - WOAF (official audio file webpage)

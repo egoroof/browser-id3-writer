@@ -50,6 +50,7 @@ describe('node usage', () => {
             .setFrame('WPAY', 'https://google.com/')
             .setFrame('WPUB', 'https://google.com/')
             .setFrame('TKEY', 'Fbm')
+            .setFrame('TMED', 'TT/45')
             .setFrame('APIC', {
                 type: 3,
                 data: coverBuffer,
@@ -58,7 +59,7 @@ describe('node usage', () => {
         writer.addTag();
 
         const taggedSongBuffer = new Buffer(writer.arrayBuffer);
-        expect(taggedSongBuffer.byteLength).to.be.equal(669259);
+        expect(taggedSongBuffer.byteLength).to.be.equal(669282);
         fs.writeFileSync(path.join(assetFolder, 'song_with_tags.mp3'), taggedSongBuffer);
     });
 });
