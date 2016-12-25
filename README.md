@@ -48,7 +48,7 @@ You can include library via [unpkg](https://unpkg.com/) or save it to local mach
 **Warning**: better use exact version to protect yourself against breaking changes.
 
 ```html
-<script src="//unpkg.com/browser-id3-writer@^2.0.0/dist/browser-id3-writer.min.js"></script>
+<script src="//unpkg.com/browser-id3-writer@^3.0.0/dist/browser-id3-writer.min.js"></script>
 ```
 
 If you are using browser module loaders like `webpack` or `browserify` install it via [npm](https://www.npmjs.com/):
