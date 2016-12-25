@@ -58,10 +58,11 @@ describe('browser usage', () => {
                 .setFrame('WOAS', 'https://google.com/')
                 .setFrame('WORS', 'https://google.com/')
                 .setFrame('WPAY', 'https://google.com/')
-                .setFrame('WPUB', 'https://google.com/');
+                .setFrame('WPUB', 'https://google.com/')
+                .setFrame('TKEY', 'Fbm');
             writer.addTag();
 
-            expect(writer.arrayBuffer.byteLength).to.be.equal(618697);
+            expect(writer.arrayBuffer.byteLength).to.be.equal(618716);
             done();
         });
     });

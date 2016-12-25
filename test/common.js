@@ -173,6 +173,14 @@ const tests = [{
                 104, 116, 116, 112, 115, 58, 47, 47, 103, 111, 111, 103, 108, 101, 46, 99, 111, 109 // 'https://google.com'
             ]));
         }
+    }, {
+        describe: 'should throw an exception with wrong value for TKEY frame',
+        test: (ID3Writer, expect) => {
+            const writer = new ID3Writer(files.mp3);
+            expect(() => {
+                writer.setFrame('TKEY', 'C minor');
+            }).to.throw(Error, 'TKEY frame value should be like Dbm, C#, B or o');
+        }
     }]
 }, {
     describe: 'object frames',

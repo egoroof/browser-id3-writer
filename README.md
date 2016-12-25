@@ -177,6 +177,7 @@ writer.setFrame('TIT2', 'Home')
           description: 'Release Info',
           value: 'Double vinyl version was limited to 2500 copies'
       })
+      .setFrame('TKEY', 'Fbm')
       .setFrame('APIC', {
           type: 3,
           data: coverArrayBuffer,
@@ -238,6 +239,7 @@ writer.setFrame('TIT2', 'Home')
           description: 'Release Info',
           value: 'Double vinyl version was limited to 2500 copies'
       })
+      .setFrame('TKEY', 'Fbm')
       .setFrame('APIC', {
           type: 3,
           data: coverBuffer,
@@ -279,6 +281,7 @@ Have not found needed frame? Open a new issue and we'll discuss it.
 - TRCK (song number in album): '5' or '5/10'
 - TPOS (album disc number): '1' or '1/3'
 - TPUB (label name)
+- TKEY (initial key)
 - WCOM (commercial information)
 - WCOP (copyright/Legal information)
 - WOAF (official audio file webpage)

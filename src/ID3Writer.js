@@ -151,6 +151,17 @@ class ID3Writer {
                 this._setUserStringFrame(frameValue.description, frameValue.value);
                 break;
             }
+            case 'TKEY': { // musical key in which the sound starts
+                if (!/^([A-G][#b]?m?|o)$/.test(frameValue)) {
+                    //specs: The ground keys are represented with "A","B","C","D","E",
+                    //"F" and "G" and halfkeys represented with "b" and "#". Minor is
+                    //represented as "m", e.g. "Dbm". Off key is represented with an
+                    //"o" only.
+                    throw new Error(`${frameName} frame value should be like Dbm, C#, B or o`);
+                }
+                this._setStringFrame(frameName, frameValue);
+                break;
+            }
             case 'WCOM': // Commercial information
             case 'WCOP': // Copyright/Legal information
             case 'WOAF': // Official audio file webpage
@@ -255,6 +266,7 @@ class ID3Writer {
                 case 'TPE2':
                 case 'TRCK':
                 case 'TPOS':
+                case 'TKEY':
                 case 'TPUB': {
                     writeBytes = [1].concat(BOM); // encoding, BOM
                     bufferWriter.set(writeBytes, offset);
