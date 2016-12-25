@@ -31,6 +31,7 @@ describe('node usage', () => {
             .setFrame('TRCK', '6/8')
             .setFrame('TPOS', '1/2')
             .setFrame('TCON', ['Soundtrack'])
+            .setFrame('TBPM', 128)
             .setFrame('USLT', {
                 description: 'Текст песенки',
                 lyrics: 'This is unsychronised lyrics'
@@ -61,7 +62,7 @@ describe('node usage', () => {
         writer.addTag();
 
         const taggedSongBuffer = new Buffer(writer.arrayBuffer);
-        expect(taggedSongBuffer.byteLength).to.be.equal(669348);
+        expect(taggedSongBuffer.byteLength).to.be.equal(669362);
         fs.writeFileSync(path.join(assetFolder, 'song_with_tags.mp3'), taggedSongBuffer);
     });
 });

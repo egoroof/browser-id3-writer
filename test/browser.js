@@ -41,6 +41,7 @@ describe('browser usage', () => {
                 .setFrame('TRCK', '6/8')
                 .setFrame('TPOS', '1/2')
                 .setFrame('TCON', ['Soundtrack'])
+                .setFrame('TBPM', 128)
                 .setFrame('USLT', {
                     description: 'Текст песенки',
                     lyrics: 'This is unsychronised lyrics'
@@ -65,7 +66,7 @@ describe('browser usage', () => {
                 .setFrame('TMED', 'TT/45');
             writer.addTag();
 
-            expect(writer.arrayBuffer.byteLength).to.be.equal(618805);
+            expect(writer.arrayBuffer.byteLength).to.be.equal(618819);
             done();
         });
     });

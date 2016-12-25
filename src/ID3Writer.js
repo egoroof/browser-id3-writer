@@ -125,6 +125,7 @@ class ID3Writer {
                 this._setStringFrame(frameName, frameValue);
                 break;
             }
+            case 'TBPM': // beats per minute
             case 'TLEN': // song duration
             case 'TYER': { // album release year
                 this._setIntegerFrame(frameName, frameValue);
@@ -307,6 +308,7 @@ class ID3Writer {
                     offset += writeBytes.length;
                     break;
                 }
+                case 'TBPM':
                 case 'TLEN':
                 case 'TYER': {
                     offset++; // encoding

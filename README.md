@@ -168,6 +168,7 @@ writer.setFrame('TIT2', 'Home')
       .setFrame('TRCK', '6/8')
       .setFrame('TPOS', '1/2')
       .setFrame('TCON', ['Soundtrack'])
+      .setFrame('TBPM', 128)
       .setFrame('WPAY', 'https://google.com')
       .setFrame('USLT', {
           description: 'Original lyrics',
@@ -230,6 +231,7 @@ writer.setFrame('TIT2', 'Home')
       .setFrame('TRCK', '6/8')
       .setFrame('TPOS', '1/2')
       .setFrame('TCON', ['Soundtrack'])
+      .setFrame('TBPM', 128)
       .setFrame('WPAY', 'https://google.com')
       .setFrame('USLT', {
           description: 'Original lyrics',
@@ -298,6 +300,7 @@ Have not found needed frame? Open a new issue and we'll discuss it.
 
 - TLEN (song duration in milliseconds)
 - TYER (album release year)
+- TBPM (beats per minute)
 
 **object**
 
