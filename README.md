@@ -23,6 +23,7 @@ It can't read the tag so use another lib to do it.
   - [Node.js](#nodejs-1)
 - [Browser memory control](#browser-memory-control)
 - [Supported frames](#supported-frames)
+  - [APIC picture types](#apic-picture-types)
 
 ## Requirements
 
@@ -176,7 +177,11 @@ writer.setFrame('TIT2', 'Home')
           description: 'Release Info',
           value: 'Double vinyl version was limited to 2500 copies'
       })
-      .setFrame('APIC', coverArrayBuffer);
+      .setFrame('APIC', {
+          type: 3,
+          data: coverArrayBuffer,
+          description: 'Super picture'
+      });
 writer.addTag();
 ```
 
@@ -233,7 +238,11 @@ writer.setFrame('TIT2', 'Home')
           description: 'Release Info',
           value: 'Double vinyl version was limited to 2500 copies'
       })
-      .setFrame('APIC', coverBuffer);
+      .setFrame('APIC', {
+          type: 3,
+          data: coverBuffer,
+          description: 'Super picture'
+      });
 writer.addTag();
 
 const taggedSongBuffer = new Buffer(writer.arrayBuffer);
@@ -254,7 +263,7 @@ writer.revokeURL(); // if you have access to writer
 
 ## Supported frames
 
-Currently you can set next frames:
+Have not found needed frame? Open a new issue and we'll discuss it.
 
 **array of strings:**
 
@@ -289,7 +298,30 @@ Currently you can set next frames:
 - COMM (comments): {description: 'description', text: 'text'}
 - USLT (unsychronised lyrics): {description: 'description', lyrics: 'lyrics'}
 - TXXX (user defined text): {description: 'description', value: 'value'}
+- APIC (song cover): {type: 3, data: arrayBuffer, description: 'description'}
 
-**arrayBuffer**
+### APIC picture types
 
-- APIC (song cover): works with jpeg, png, gif, webp, tiff, bmp and ico
+```
+0      Other
+1      32x32 pixels 'file icon' (PNG only)
+2      Other file icon
+3      Cover (front)
+4      Cover (back)
+5      Leaflet page
+6      Media (e.g. lable side of CD)
+7      Lead artist/lead performer/soloist
+8      Artist/performer
+9      Conductor
+10     Band/Orchestra
+11     Composer
+12     Lyricist/text writer
+13     Recording Location
+14     During recording
+15     During performance
+16     Movie/video screen capture
+17     A bright coloured fish
+18     Illustration
+19     Band/artist logotype
+20     Publisher/Studio logotype
+```

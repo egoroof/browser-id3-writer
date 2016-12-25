@@ -25,17 +25,20 @@ class ID3Writer {
         });
     }
 
-    _setPictureFrame(buffer) {
-        const mimeType = signatures.getMimeType(new Uint8Array(buffer));
+    _setPictureFrame(pictureType, data, description) {
+        const mimeType = signatures.getMimeType(new Uint8Array(data));
+        const descriptionString = description.toString();
 
         if (!mimeType) {
             throw new Error('Unknown picture MIME type');
         }
         this.frames.push({
             name: 'APIC',
-            value: buffer,
+            value: data,
+            pictureType,
             mimeType,
-            size: sizes.getPictureFrameSize(buffer.byteLength, mimeType.length)
+            description: descriptionString,
+            size: sizes.getPictureFrameSize(data.byteLength, mimeType.length, descriptionString.length)
         });
     }
 
@@ -132,10 +135,13 @@ class ID3Writer {
                 break;
             }
             case 'APIC': { // song cover
-                if (typeof frameValue !== 'object' || !('byteLength' in frameValue)) {
-                    throw new Error('APIC frame value should be an instance of ArrayBuffer or Buffer');
+                if (typeof frameValue !== 'object' || !('type' in frameValue) || !('data' in frameValue) || !('description' in frameValue)) {
+                    throw new Error('APIC frame value should be an object with keys type, data and description');
                 }
-                this._setPictureFrame(frameValue);
+                if (frameValue.type < 0 || frameValue.type > 20) {
+                    throw new Error('Incorrect APIC frame picture type');
+                }
+                this._setPictureFrame(frameValue.type, frameValue.data, frameValue.description);
                 break;
             }
             case 'TXXX': { // user defined text information
@@ -293,15 +299,23 @@ class ID3Writer {
                     break;
                 }
                 case 'APIC': {
-                    offset++; // encoding
+                    writeBytes = [1]; // encoding
+                    bufferWriter.set(writeBytes, offset);
+                    offset += writeBytes.length;
 
                     writeBytes = encoder.encodeWindows1252(frame.mimeType); // MIME type
                     bufferWriter.set(writeBytes, offset);
                     offset += writeBytes.length;
 
-                    writeBytes = [0, 3, 0]; // delemiter, pic type, delemiter
+                    writeBytes = [0, frame.pictureType].concat(BOM); // separator, pic type, BOM
                     bufferWriter.set(writeBytes, offset);
                     offset += writeBytes.length;
+
+                    writeBytes = encoder.encodeUtf16le(frame.description); // description
+                    bufferWriter.set(writeBytes, offset);
+                    offset += writeBytes.length;
+
+                    offset += 2; // separator
 
                     bufferWriter.set(new Uint8Array(frame.value), offset); // picture content
                     offset += frame.value.byteLength;

@@ -285,30 +285,51 @@ const tests = [{
 }, {
     describe: 'APIC',
     it: [{
-        describe: 'should throw error when value is not a buffer',
+        describe: 'should throw an error when value is not an object',
         test: (ID3Writer, expect) => {
             const writer = new ID3Writer(files.mp3);
 
             expect(() => {
                 writer.setFrame('APIC', 4512);
-            }).to.throw(Error, 'APIC frame value should be an instance of ArrayBuffer or Buffer');
+            }).to.throw(Error, 'APIC frame value should be an object with keys type, data and description');
         }
     }, {
-        describe: 'should throw error when mime type is not detected',
+        describe: 'should throw an error when picture type is out of allowed range',
         test: (ID3Writer, expect) => {
             const writer = new ID3Writer(files.mp3);
 
             expect(() => {
-                writer.setFrame('APIC', new ArrayBuffer(20));
+                writer.setFrame('APIC', {
+                    type: 42,
+                    data: new ArrayBuffer(20),
+                    description: ''
+                });
+            }).to.throw(Error, 'Incorrect APIC frame picture type');
+        }
+    }, {
+        describe: 'should throw an error when mime type is not detected',
+        test: (ID3Writer, expect) => {
+            const writer = new ID3Writer(files.mp3);
+
+            expect(() => {
+                writer.setFrame('APIC', {
+                    type: 0,
+                    data: new ArrayBuffer(20),
+                    description: ''
+                });
             }).to.throw(Error, 'Unknown picture MIME type');
         }
     }, {
-        describe: 'should throw error when buffer is empty',
+        describe: 'should throw an error when buffer is empty',
         test: (ID3Writer, expect) => {
             const writer = new ID3Writer(files.mp3);
 
             expect(() => {
-                writer.setFrame('APIC', new ArrayBuffer(0));
+                writer.setFrame('APIC', {
+                    type: 0,
+                    data: new ArrayBuffer(0),
+                    description: ''
+                });
             }).to.throw(Error, 'Unknown picture MIME type');
         }
     }, {
@@ -350,19 +371,25 @@ const tests = [{
 
                 const writer = new ID3Writer(files.mp3);
 
-                writer.setFrame('APIC', coverBuffer);
+                writer.setFrame('APIC', {
+                    type: 3,
+                    data: coverBuffer,
+                    description: 'Картина'
+                });
 
                 const buffer = writer.addTag();
-                const frameTotalSize = type.mime.length + type.signature.length + content.length + 14;
+                const frameTotalSize = type.mime.length + type.signature.length + content.length + 31;
                 const bufferUint8 = new Uint8Array(buffer, 10, frameTotalSize);
 
                 expect(bufferUint8).to.eql(new Uint8Array([
                         65, 80, 73, 67, // 'APIC'
                         0, 0, 0, frameTotalSize - 10, // size without header (should be less than 128)
                         0, 0, // flags
-                        0 // encoding
+                        1 // encoding
                     ].concat(typedArray2Array(encodeWindows1252(type.mime)))
-                        .concat([0, 3, 0]) // delemiter, pic type, delemiter
+                        .concat([0, 3, 0xff, 0xfe]) // delemiter, pic type, BOM
+                        .concat([26, 4, 48, 4, 64, 4, 66, 4, 56, 4, 61, 4, 48, 4]) // 'Картина'
+                        .concat([0, 0]) // separator
                         .concat(type.signature)
                         .concat(content)
                 ));
