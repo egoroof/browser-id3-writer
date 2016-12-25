@@ -116,6 +116,7 @@ class ID3Writer {
             case 'TIT2': // song title
             case 'TALB': // album title
             case 'TPE2': // album artist // spec doesn't say anything about separator, so it is a string, not array
+            case 'TPE3': // conductor/performer refinement
             case 'TPE4': // interpreted, remixed, or otherwise modified by
             case 'TRCK': // song number in album: 5 or 5/10
             case 'TPOS': // album disc number: 1 or 1/3
@@ -266,6 +267,7 @@ class ID3Writer {
                 case 'TIT2':
                 case 'TALB':
                 case 'TPE2':
+                case 'TPE3':
                 case 'TPE4':
                 case 'TRCK':
                 case 'TPOS':
