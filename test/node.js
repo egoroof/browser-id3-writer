@@ -24,6 +24,7 @@ describe('node usage', () => {
         writer.setFrame('TIT2', 'Home')
             .setFrame('TPE1', ['Eminem', '50 Cent'])
             .setFrame('TPE2', 'Eminem')
+            .setFrame('TPE4', 'Daft Punk')
             .setFrame('TALB', 'Friday Night Lights')
             .setFrame('TYER', 2004)
             .setFrame('TRCK', '6/8')
@@ -59,7 +60,7 @@ describe('node usage', () => {
         writer.addTag();
 
         const taggedSongBuffer = new Buffer(writer.arrayBuffer);
-        expect(taggedSongBuffer.byteLength).to.be.equal(669282);
+        expect(taggedSongBuffer.byteLength).to.be.equal(669313);
         fs.writeFileSync(path.join(assetFolder, 'song_with_tags.mp3'), taggedSongBuffer);
     });
 });

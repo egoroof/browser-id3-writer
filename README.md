@@ -278,6 +278,7 @@ Have not found needed frame? Open a new issue and we'll discuss it.
 - TIT2 (song title)
 - TALB (album title)
 - TPE2 (album artist)
+- TPE4 (interpreted, remixed, or otherwise modified by)
 - TRCK (song number in album): '5' or '5/10'
 - TPOS (album disc number): '1' or '1/3'
 - TPUB (label name)

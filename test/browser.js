@@ -34,6 +34,7 @@ describe('browser usage', () => {
             writer.setFrame('TIT2', 'Home')
                 .setFrame('TPE1', ['Eminem', '50 Cent'])
                 .setFrame('TPE2', 'Eminem')
+                .setFrame('TPE4', 'Daft Punk')
                 .setFrame('TALB', 'Friday Night Lights')
                 .setFrame('TYER', 2004)
                 .setFrame('TRCK', '6/8')
@@ -63,7 +64,7 @@ describe('browser usage', () => {
                 .setFrame('TMED', 'TT/45');
             writer.addTag();
 
-            expect(writer.arrayBuffer.byteLength).to.be.equal(618739);
+            expect(writer.arrayBuffer.byteLength).to.be.equal(618770);
             done();
         });
     });
