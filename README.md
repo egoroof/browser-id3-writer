@@ -304,10 +304,42 @@ Have not found needed frame? Open a new issue and we'll discuss it.
 
 **object**
 
-- COMM (comments): {description: 'description', text: 'text'}
-- USLT (unsychronised lyrics): {description: 'description', lyrics: 'lyrics'}
-- TXXX (user defined text): {description: 'description', value: 'value'}
-- APIC (song cover): {type: 3, data: arrayBuffer, description: 'description'}
+- COMM (comments):
+
+```js
+writer.setFrame('COMM', {
+    description: 'description here',
+    text: 'text here'
+});
+```
+
+- USLT (unsychronised lyrics):
+
+```js
+writer.setFrame('USLT', {
+    description: 'description here',
+    lyrics: 'lyrics here'
+});
+```
+
+- TXXX (user defined text):
+
+```js
+writer.setFrame('TXXX', {
+    description: 'description here',
+    value: 'value here'
+});
+```
+
+- APIC (attached picture):
+
+```js
+writer.setFrame('APIC', {
+    type: 3,
+    data: coverArrayBuffer,
+    description: 'description here'
+});
+```
 
 ### APIC picture types
 
