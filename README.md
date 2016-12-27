@@ -69,6 +69,12 @@ const ID3Writer = require('browser-id3-writer');
 npm install browser-id3-writer --save
 ```
 
+Or using [yarn](https://yarnpkg.com/):
+
+```
+yarn add browser-id3-writer
+```
+
 ## Usage
 
 ### Browser
