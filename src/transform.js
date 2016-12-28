@@ -21,12 +21,5 @@ export function uint28ToUint7Array(uint28) {
 }
 
 export function uint7ArrayToUint28(uint7Array) {
-    let uint28 = 0;
-
-    uint28 += uint7Array[0] << 21;
-    uint28 += uint7Array[1] << 14;
-    uint28 += uint7Array[2] << 7;
-    uint28 += uint7Array[3];
-
-    return uint28;
+    return (uint7Array[0] << 21) + (uint7Array[1] << 14) + (uint7Array[2] << 7) + uint7Array[3];
 }
