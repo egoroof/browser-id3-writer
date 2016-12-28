@@ -218,7 +218,7 @@ class ID3Writer {
         const BOM = [0xff, 0xfe];
         const langEng = [0x65, 0x6e, 0x67];
         const headerSize = 10;
-        const totalFrameSize = sizes.getTotalFrameSize(this.frames);
+        const totalFrameSize = this.frames.reduce((sum, frame) => sum + frame.size, 0);
         const totalTagSize = headerSize + totalFrameSize + this.padding;
         const buffer = new ArrayBuffer(this.arrayBuffer.byteLength + totalTagSize);
         const bufferWriter = new Uint8Array(buffer);

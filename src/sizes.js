@@ -100,9 +100,3 @@ export function getUrlLinkFrameSize(urlSize) {
     return headerSize +
         urlSize;
 }
-
-export function getTotalFrameSize(frames) {
-    return frames.reduce((sum, frame) => {
-        return sum + frame.size;
-    }, 0);
-}
