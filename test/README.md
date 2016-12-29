@@ -9,3 +9,21 @@ There are 3 main files in this directory:
 
 Also you can find `assets` folder with assets like mp3 file and cover.
 They used during test proccess.
+
+To run all tests:
+
+```
+npm test
+```
+
+This command will execute 4 scripts:
+
+```
+npm run lint - test source code with ESLint
+npm run build - build dist which we will test
+npm run test:node - run node's tests
+npm run test:browser - run tests in browsers
+```
+
+When I add a new tag to lib or update old one I also check output file tag manually with
+[Mp3tag](http://www.mp3tag.de/en/) and [MediaInfo](https://mediaarea.net/en/MediaInfo).
