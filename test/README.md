@@ -8,7 +8,7 @@ There are 3 main files in this directory:
 3. `browser.js` - specific tests for browsers.
 
 Also you can find `assets` folder with assets like mp3 file and cover.
-They used during test proccess.
+They are used during test proccess.
 
 To run all tests:
 
