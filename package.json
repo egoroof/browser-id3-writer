@@ -1,6 +1,6 @@
 {
   "name": "browser-id3-writer",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "Pure JS library for writing ID3 tag to MP3 files in browsers and Node.js",
   "main": "dist/browser-id3-writer.min.js",
   "scripts": {
