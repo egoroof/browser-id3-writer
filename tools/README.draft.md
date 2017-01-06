@@ -49,7 +49,7 @@ have any problems to use it with different script loaders.
 You can include library via [unpkg](https://unpkg.com/) or save it to local machine:
 
 ```html
-<script src="//unpkg.com/browser-id3-writer@###version###" crossorigin="anonymous" integrity="###hash###"></script>
+<script src="https://unpkg.com/browser-id3-writer@###version###" crossorigin="anonymous" integrity="###hash###"></script>
 ```
 
 If you are using browser module loaders like `webpack` or `browserify` install it via [npm](https://www.npmjs.com/):

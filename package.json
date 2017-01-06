@@ -23,7 +23,8 @@
     "writer",
     "id3",
     "mp3",
-    "audio"
+    "audio",
+    "tag"
   ],
   "author": "egoroof",
   "files": [
