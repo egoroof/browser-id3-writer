@@ -1,7 +1,10 @@
-# Browser ID3 Writer
+# Browser ID3 Writer [![npm package][npm-badge]][npm] [![Travis][build-badge]][build]
 
-[![npm](https://img.shields.io/npm/v/browser-id3-writer.svg?style=flat-square)](https://www.npmjs.com/package/browser-id3-writer)
-[![Travis](https://img.shields.io/travis/egoroof/browser-id3-writer.svg?style=flat-square)](https://travis-ci.org/egoroof/browser-id3-writer)
+[build-badge]: https://img.shields.io/travis/egoroof/browser-id3-writer.svg?style=flat-square
+[build]: https://travis-ci.org/egoroof/browser-id3-writer
+
+[npm-badge]: https://img.shields.io/npm/v/browser-id3-writer.svg?style=flat-square
+[npm]: https://www.npmjs.org/package/browser-id3-writer
 
 Pure JS library for writing [ID3 (v2.3)](http://id3.org/id3v2.3.0) tag to MP3 files in browsers and Node.js.
 It can't read the tag so use another lib to do it.
