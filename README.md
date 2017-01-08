@@ -163,7 +163,7 @@ fetch(urlToSongFile)
 
 #### Add a tag
 
-Initialize `ID3Writer` object, set frames and add a tag:
+Create new `ID3Writer` instance with arrayBuffer of your song, set frames and add a tag:
 
 ```js
 const writer = new ID3Writer(arrayBuffer);
@@ -196,8 +196,9 @@ writer.addTag();
 
 #### Save file
 
+Now you can save it to file as you want:
+
 ```js
-// now you can save it to file as you wish
 const taggedSongBuffer = writer.arrayBuffer;
 const blob = writer.getBlob();
 const url = writer.getURL();
@@ -350,26 +351,26 @@ writer.setFrame('APIC', {
 
 ### APIC picture types
 
-```
-0      Other
-1      32x32 pixels 'file icon' (PNG only)
-2      Other file icon
-3      Cover (front)
-4      Cover (back)
-5      Leaflet page
-6      Media (e.g. lable side of CD)
-7      Lead artist/lead performer/soloist
-8      Artist/performer
-9      Conductor
-10     Band/Orchestra
-11     Composer
-12     Lyricist/text writer
-13     Recording Location
-14     During recording
-15     During performance
-16     Movie/video screen capture
-17     A bright coloured fish
-18     Illustration
-19     Band/artist logotype
-20     Publisher/Studio logotype
-```
+| Type | Name                                |
+|------|-------------------------------------|
+| 0    | Other                               |
+| 1    | 32x32 pixels 'file icon' (PNG only) |
+| 2    | Other file icon                     |
+| 3    | Cover (front)                       |
+| 4    | Cover (back)                        |
+| 5    | Leaflet page                        |
+| 6    | Media (e.g. lable side of CD)       |
+| 7    | Lead artist/lead performer/soloist  |
+| 8    | Artist/performer                    |
+| 9    | Conductor                           |
+| 10   | Band/Orchestra                      |
+| 11   | Composer                            |
+| 12   | Lyricist/text writer                |
+| 13   | Recording Location                  |
+| 14   | During recording                    |
+| 15   | During performance                  |
+| 16   | Movie/video screen capture          |
+| 17   | A bright coloured fish              |
+| 18   | Illustration                        |
+| 19   | Band/artist logotype                |
+| 20   | Publisher/Studio logotype           |
