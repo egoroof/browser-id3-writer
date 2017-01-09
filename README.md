@@ -260,7 +260,7 @@ writer.setFrame('TIT2', 'Home')
       });
 writer.addTag();
 
-const taggedSongBuffer = new Buffer(writer.arrayBuffer);
+const taggedSongBuffer = Buffer.from(writer.arrayBuffer);
 fs.writeFileSync('song_with_tags.mp3', taggedSongBuffer);
 ```
 

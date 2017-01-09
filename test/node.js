@@ -61,7 +61,7 @@ describe('node usage', () => {
             });
         writer.addTag();
 
-        const taggedSongBuffer = new Buffer(writer.arrayBuffer);
+        const taggedSongBuffer = Buffer.from(writer.arrayBuffer);
         expect(taggedSongBuffer.byteLength).to.be.equal(669362);
         fs.writeFileSync(path.join(assetFolder, 'song_with_tags.mp3'), taggedSongBuffer);
     });
