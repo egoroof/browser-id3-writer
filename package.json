@@ -10,7 +10,7 @@
     "test:browser": "karma start tools/karma.conf.js",
     "test:node": "mocha -c test/node.js",
     "preversion": "npm test",
-    "version": "node tools/prepare_readme.js && git add package.json README.md",
+    "version": "node tools/prepare_readme && git add package.json README.md",
     "postversion": "git push && git push --tags && npm publish"
   },
   "repository": {
@@ -40,9 +40,9 @@
   "devDependencies": {
     "babel-core": "6.21.0",
     "babel-loader": "6.2.10",
-    "babel-preset-env": "1.1.5",
+    "babel-preset-env": "1.1.6",
     "chai": "3.5.0",
-    "eslint": "3.12.2",
+    "eslint": "3.13.0",
     "karma": "1.3.0",
     "karma-chai": "0.1.0",
     "karma-chrome-launcher": "2.0.0",

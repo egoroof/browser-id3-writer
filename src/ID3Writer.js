@@ -193,23 +193,18 @@ class ID3Writer {
 
     removeTag() {
         const headerLength = 10;
-        const bufferLength = this.arrayBuffer.byteLength;
 
-        if (bufferLength < headerLength) {
+        if (this.arrayBuffer.byteLength < headerLength) {
             return;
         }
-        const firstTenBytes = new Uint8Array(this.arrayBuffer, 0, headerLength);
-        const version = firstTenBytes[3];
-        const tagSize = transform.uint7ArrayToUint28([
-                firstTenBytes[6], firstTenBytes[7],
-                firstTenBytes[8], firstTenBytes[9]
-            ]) + headerLength;
+        const bytes = new Uint8Array(this.arrayBuffer);
+        const version = bytes[3];
+        const tagSize = transform.uint7ArrayToUint28([bytes[6], bytes[7], bytes[8], bytes[9]]) + headerLength;
 
-        if (!signatures.isId3v2(firstTenBytes) || version < 2 || version > 4) {
+        if (!signatures.isId3v2(bytes) || version < 2 || version > 4) {
             return;
         }
-
-        this.arrayBuffer = this.arrayBuffer.slice(tagSize);
+        this.arrayBuffer = (new Uint8Array(bytes.subarray(tagSize))).buffer;
     }
 
     addTag() {
