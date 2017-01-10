@@ -16,14 +16,12 @@ It can't read the tag so use another lib to do it.
 - [Requirements](#requirements)
 - [Demo](#demo)
 - [Installation](#installation)
-  - [Browser](#browser)
-  - [Node.js](#nodejs)
 - [Usage](#usage)
-  - [Browser](#browser-1)
+  - [Browser](#browser)
     1. [Get ArrayBuffer of song](#get-arraybuffer-of-song)
     2. [Add a tag](#add-a-tag)
     3. [Save file](#save-file)
-  - [Node.js](#nodejs-1)
+  - [Node.js](#nodejs)
 - [Browser memory control](#browser-memory-control)
 - [Supported frames](#supported-frames)
   - [APIC picture types](#apic-picture-types)
@@ -47,27 +45,13 @@ Demonstration is available here: [egoroof.ru/browser-id3-writer/](https://egoroo
 This library is wrapped with [Universal Module Definition](https://github.com/umdjs/umd). This means you will not
 have any problems to use it with different script loaders.
 
-### Browser
-
-You can include library via [unpkg](https://unpkg.com/) or save it to local machine:
+For browsers you can include library via [unpkg](https://unpkg.com/) CDN or save it to local machine:
 
 ```html
 <script src="https://unpkg.com/browser-id3-writer@###version###" crossorigin="anonymous" integrity="###hash###"></script>
 ```
 
-If you are using browser module loaders like `webpack` or `browserify` install it via [npm](https://www.npmjs.com/):
-
-```
-npm install browser-id3-writer --save
-```
-
-Then you will be able to use it:
-
-```js
-const ID3Writer = require('browser-id3-writer');
-```
-
-### Node.js
+For Node.js and browser module loaders like `webpack`, `browserify`, etc. install it via [npm](https://www.npmjs.com/):
 
 ```
 npm install browser-id3-writer --save
@@ -77,6 +61,12 @@ Or using [yarn](https://yarnpkg.com/):
 
 ```
 yarn add browser-id3-writer
+```
+
+Then you will be able to use it:
+
+```js
+const ID3Writer = require('browser-id3-writer');
 ```
 
 ## Usage
