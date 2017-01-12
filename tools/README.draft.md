@@ -159,6 +159,7 @@ fetch(urlToSongFile)
 Create new `ID3Writer` instance with arrayBuffer of your song, set frames and add a tag:
 
 ```js
+// arrayBuffer of song or empty arrayBuffer if you just want only id3 tag without song
 const writer = new ID3Writer(arrayBuffer);
 writer.setFrame('TIT2', 'Home')
       .setFrame('TPE1', ['Eminem', '50 Cent'])
@@ -259,6 +260,7 @@ You can also create only ID3 tag without song and use it as you want:
 
 ```js
 const writer = new ID3Writer(Buffer.alloc(0));
+writer.padding = 0; // default 4096
 writer.setFrame('TIT2', 'Home');
 writer.addTag();
 const id3Buffer = Buffer.from(writer.arrayBuffer);

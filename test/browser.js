@@ -74,9 +74,10 @@ describe('browser usage', () => {
 
     it('should be possible to create ID3 tag without song', () => {
         const writer = new ID3Writer(new ArrayBuffer(0));
+        writer.padding = 0;
         writer.setFrame('TIT2', 'Home');
         writer.addTag();
-        expect(writer.arrayBuffer.byteLength).to.be.equal(4127);
+        expect(writer.arrayBuffer.byteLength).to.be.equal(31);
     });
 
 });

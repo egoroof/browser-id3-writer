@@ -69,10 +69,11 @@ describe('node usage', () => {
 
     it('should be possible to create ID3 tag without song', () => {
         const writer = new ID3Writer(Buffer.alloc(0));
+        writer.padding = 0;
         writer.setFrame('TIT2', 'Home');
         writer.addTag();
 
         const id3Buffer = Buffer.from(writer.arrayBuffer);
-        expect(id3Buffer.byteLength).to.be.equal(4127);
+        expect(id3Buffer.byteLength).to.be.equal(31);
     });
 });
