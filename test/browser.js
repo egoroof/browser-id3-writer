@@ -26,6 +26,7 @@ function ajax(url, onSuccess, onError) {
 }
 
 describe('browser usage', () => {
+
     it('should load song and change byte length after adding a tag', (done) => {
         ajax('/base/test/assets/song.mp3', (arrayBuffer) => {
             expect(arrayBuffer.byteLength).to.be.equal(613772);
@@ -70,4 +71,12 @@ describe('browser usage', () => {
             done();
         });
     });
+
+    it('should be possible to create ID3 tag without song', () => {
+        const writer = new ID3Writer(new ArrayBuffer(0));
+        writer.setFrame('TIT2', 'Home');
+        writer.addTag();
+        expect(writer.arrayBuffer.byteLength).to.be.equal(4127);
+    });
+
 });

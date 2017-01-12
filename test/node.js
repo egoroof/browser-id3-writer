@@ -14,6 +14,7 @@ tests.forEach((testPack) => {
 });
 
 describe('node usage', () => {
+
     it('should read assets and write tagged song', () => {
         const songBuffer = fs.readFileSync(path.join(assetFolder, 'song.mp3'));
         const coverBuffer = fs.readFileSync(path.join(assetFolder, 'cover.jpg'));
@@ -64,5 +65,14 @@ describe('node usage', () => {
         const taggedSongBuffer = Buffer.from(writer.arrayBuffer);
         expect(taggedSongBuffer.byteLength).to.be.equal(669362);
         fs.writeFileSync(path.join(assetFolder, 'song_with_tags.mp3'), taggedSongBuffer);
+    });
+
+    it('should be possible to create ID3 tag without song', () => {
+        const writer = new ID3Writer(Buffer.alloc(0));
+        writer.setFrame('TIT2', 'Home');
+        writer.addTag();
+
+        const id3Buffer = Buffer.from(writer.arrayBuffer);
+        expect(id3Buffer.byteLength).to.be.equal(4127);
     });
 });

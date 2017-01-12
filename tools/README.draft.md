@@ -215,6 +215,7 @@ chrome.downloads.download({
 
 ### Node.js
 
+Simple example with blocking IO: 
 
 ```js
 const ID3Writer = require('browser-id3-writer');
@@ -252,6 +253,15 @@ writer.addTag();
 
 const taggedSongBuffer = Buffer.from(writer.arrayBuffer);
 fs.writeFileSync('song_with_tags.mp3', taggedSongBuffer);
+```
+
+You can also create only ID3 tag without song and use it as you want:
+
+```js
+const writer = new ID3Writer(Buffer.alloc(0));
+writer.setFrame('TIT2', 'Home');
+writer.addTag();
+const id3Buffer = Buffer.from(writer.arrayBuffer);
 ```
 
 ## Browser memory control
