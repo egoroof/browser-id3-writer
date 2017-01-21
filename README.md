@@ -21,8 +21,8 @@ It can't read the tag so use another lib to do it.
     1. [Get ArrayBuffer of song](#get-arraybuffer-of-song)
     2. [Add a tag](#add-a-tag)
     3. [Save file](#save-file)
-  - [Node.js](#nodejs)
     4. [Memory control](#memory-control)
+  - [Node.js](#nodejs)
 - [Supported frames](#supported-frames)
   - [APIC picture types](#apic-picture-types)
 
