@@ -22,7 +22,7 @@ It can't read the tag so use another lib to do it.
     2. [Add a tag](#add-a-tag)
     3. [Save file](#save-file)
   - [Node.js](#nodejs)
-- [Browser memory control](#browser-memory-control)
+    4. [Memory control](#memory-control)
 - [Supported frames](#supported-frames)
   - [APIC picture types](#apic-picture-types)
 
@@ -214,6 +214,18 @@ chrome.downloads.download({
 });
 ```
 
+#### Memory control
+
+When you generate URLs via `writer.getURL()` you should know
+that whole file is kept in memory until you close the page or move to another one.
+So if you generate lots of URLs in a single page you should manually free memory
+after you finish downloading file:
+
+```js
+URL.revokeObjectURL(url); // if you know url or
+writer.revokeURL(); // if you have access to writer
+```
+
 ### Node.js
 
 Simple example with blocking IO: 
@@ -264,18 +276,6 @@ writer.padding = 0; // default 4096
 writer.setFrame('TIT2', 'Home');
 writer.addTag();
 const id3Buffer = Buffer.from(writer.arrayBuffer);
-```
-
-## Browser memory control
-
-When you generate URLs via `writer.getURL()` you should know
-that whole file is kept in memory until you close the page or move to another one.
-So if you generate lots of URLs in a single page you should manually free memory
-after you finish downloading file:
-
-```js
-URL.revokeObjectURL(url); // if you know url or
-writer.revokeURL(); // if you have access to writer
 ```
 
 ## Supported frames
