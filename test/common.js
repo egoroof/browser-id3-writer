@@ -1,5 +1,7 @@
 function encodeWindows1252(str) {
-    const codePoints = String(str).split('').map((c) => c.charCodeAt(0));
+    const codePoints = String(str).split('').map(function (c) {
+        return c.charCodeAt(0);
+    });
 
     return new Uint8Array(codePoints);
 }
@@ -35,7 +37,7 @@ const tests = [{
     describe: 'constructor',
     it: [{
         describe: 'should be possible to create an instance',
-        test: (ID3Writer, expect) => {
+        test: function (ID3Writer, expect) {
             const writer = new ID3Writer(files.mp3);
             const writer2 = new ID3Writer(files.mp3WithId3);
 
@@ -44,8 +46,8 @@ const tests = [{
         }
     }, {
         describe: 'should throw an exception if no argument passed to constructor',
-        test: (ID3Writer, expect) => {
-            expect(() => {
+        test: function (ID3Writer, expect) {
+            expect(function () {
                 new ID3Writer();
             }).to.throw(Error, 'First argument should be an instance of ArrayBuffer or Buffer');
         }
@@ -54,10 +56,10 @@ const tests = [{
     describe: 'invalid usage',
     it: [{
         describe: 'should throw an exception with wrong frame name',
-        test: (ID3Writer, expect) => {
+        test: function (ID3Writer, expect) {
             const writer = new ID3Writer(files.mp3);
 
-            expect(() => {
+            expect(function () {
                 writer.setFrame('wrongFrameName', 'val');
             }).to.throw(Error, 'Unsupported frame');
         }
@@ -66,7 +68,7 @@ const tests = [{
     describe: 'integer frames',
     it: [{
         describe: 'should correctly set TLEN frame',
-        test: (ID3Writer, expect) => {
+        test: function (ID3Writer, expect) {
             const writer = new ID3Writer(files.mp3);
             writer.setFrame('TLEN', 7200000);
 
@@ -84,7 +86,7 @@ const tests = [{
         }
     }, {
         describe: 'should correctly set TYER frame',
-        test: (ID3Writer, expect) => {
+        test: function (ID3Writer, expect) {
             const writer = new ID3Writer(files.mp3);
             writer.setFrame('TYER', 2011);
 
@@ -105,7 +107,7 @@ const tests = [{
     describe: 'array of strings frames',
     it: [{
         describe: 'should correctly set TPE1 frame',
-        test: (ID3Writer, expect) => {
+        test: function (ID3Writer, expect) {
             const writer = new ID3Writer(files.mp3);
             writer.setFrame('TPE1', ['Eminem', '50 Cent']);
 
@@ -124,12 +126,12 @@ const tests = [{
         }
     }, {
         describe: 'should throw an exception with wrong frame value',
-        test: (ID3Writer, expect) => {
+        test: function (ID3Writer, expect) {
             const frames = ['TPE1', 'TCOM', 'TCON'];
             const writer = new ID3Writer(files.mp3);
 
-            frames.forEach((frameName) => {
-                expect(() => {
+            frames.forEach(function (frameName) {
+                expect(function () {
                     writer.setFrame(frameName, '');
                 }).to.throw(Error, 'frame value should be an array of strings');
             });
@@ -139,7 +141,7 @@ const tests = [{
     describe: 'string frames',
     it: [{
         describe: 'should correctly set TIT2 frame',
-        test: (ID3Writer, expect) => {
+        test: function (ID3Writer, expect) {
             const writer = new ID3Writer(files.mp3);
             writer.setFrame('TIT2', 'Емеля - forge');
 
@@ -158,7 +160,7 @@ const tests = [{
         }
     }, {
         describe: 'should correctly set WPAY frame',
-        test: (ID3Writer, expect) => {
+        test: function (ID3Writer, expect) {
             const writer = new ID3Writer(files.mp3);
             writer.setFrame('WPAY', 'https://google.com');
 
@@ -175,9 +177,9 @@ const tests = [{
         }
     }, {
         describe: 'should throw an exception with wrong value for TKEY frame',
-        test: (ID3Writer, expect) => {
+        test: function (ID3Writer, expect) {
             const writer = new ID3Writer(files.mp3);
-            expect(() => {
+            expect(function () {
                 writer.setFrame('TKEY', 'C minor');
             }).to.throw(Error, 'TKEY frame value should be like Dbm, C#, B or o');
         }
@@ -186,7 +188,7 @@ const tests = [{
     describe: 'object frames',
     it: [{
         describe: 'should correctly set COMM frame',
-        test: (ID3Writer, expect) => {
+        test: function (ID3Writer, expect) {
             const writer = new ID3Writer(files.mp3);
             writer.setFrame('COMM', {
                 description: 'advert',
@@ -209,7 +211,7 @@ const tests = [{
         }
     }, {
         describe: 'should correctly set TXXX frame',
-        test: (ID3Writer, expect) => {
+        test: function (ID3Writer, expect) {
             const writer = new ID3Writer(files.mp3);
             writer.setFrame('TXXX', {
                 description: 'foo',
@@ -232,7 +234,7 @@ const tests = [{
         }
     }, {
         describe: 'should correctly set USLT frame',
-        test: (ID3Writer, expect) => {
+        test: function (ID3Writer, expect) {
             const writer = new ID3Writer(files.mp3);
             writer.setFrame('USLT', {
                 description: 'Ярл',
@@ -260,19 +262,19 @@ const tests = [{
     describe: 'TXXX',
     it: [{
         describe: 'should throw an exception when used with simple string',
-        test: (ID3Writer, expect) => {
+        test: function (ID3Writer, expect) {
             const writer = new ID3Writer(files.mp3);
 
-            expect(() => {
+            expect(function () {
                 writer.setFrame('TXXX', 'foobar');
             }).to.throw(Error, 'TXXX frame value should be an object with keys description and value');
         }
     }, {
         describe: 'should throw an exception when no description provided',
-        test: (ID3Writer, expect) => {
+        test: function (ID3Writer, expect) {
             const writer = new ID3Writer(files.mp3);
 
-            expect(() => {
+            expect(function () {
                 writer.setFrame('TXXX', {
                     value: 'foobar'
                 });
@@ -280,10 +282,10 @@ const tests = [{
         }
     }, {
         describe: 'should throw an exception when no value provided',
-        test: (ID3Writer, expect) => {
+        test: function (ID3Writer, expect) {
             const writer = new ID3Writer(files.mp3);
 
-            expect(() => {
+            expect(function () {
                 writer.setFrame('TXXX', {
                     description: 'foobar'
                 });
@@ -294,19 +296,19 @@ const tests = [{
     describe: 'APIC',
     it: [{
         describe: 'should throw an error when value is not an object',
-        test: (ID3Writer, expect) => {
+        test: function (ID3Writer, expect) {
             const writer = new ID3Writer(files.mp3);
 
-            expect(() => {
+            expect(function () {
                 writer.setFrame('APIC', 4512);
             }).to.throw(Error, 'APIC frame value should be an object with keys type, data and description');
         }
     }, {
         describe: 'should throw an error when picture type is out of allowed range',
-        test: (ID3Writer, expect) => {
+        test: function (ID3Writer, expect) {
             const writer = new ID3Writer(files.mp3);
 
-            expect(() => {
+            expect(function () {
                 writer.setFrame('APIC', {
                     type: 42,
                     data: new ArrayBuffer(20),
@@ -316,10 +318,10 @@ const tests = [{
         }
     }, {
         describe: 'should throw an error when mime type is not detected',
-        test: (ID3Writer, expect) => {
+        test: function (ID3Writer, expect) {
             const writer = new ID3Writer(files.mp3);
 
-            expect(() => {
+            expect(function () {
                 writer.setFrame('APIC', {
                     type: 0,
                     data: new ArrayBuffer(20),
@@ -329,10 +331,10 @@ const tests = [{
         }
     }, {
         describe: 'should throw an error when buffer is empty',
-        test: (ID3Writer, expect) => {
+        test: function (ID3Writer, expect) {
             const writer = new ID3Writer(files.mp3);
 
-            expect(() => {
+            expect(function () {
                 writer.setFrame('APIC', {
                     type: 0,
                     data: new ArrayBuffer(0),
@@ -342,7 +344,7 @@ const tests = [{
         }
     }, {
         describe: 'should accept various image types',
-        test: (ID3Writer, expect) => {
+        test: function (ID3Writer, expect) {
             const types = [{
                 signature: [0xff, 0xd8, 0xff],
                 mime: 'image/jpeg'
@@ -370,7 +372,7 @@ const tests = [{
             }];
             const content = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
-            types.forEach((type) => {
+            types.forEach(function (type) {
                 const coverBuffer = new ArrayBuffer(type.signature.length + content.length);
                 const coverUint8 = new Uint8Array(coverBuffer);
 
@@ -406,4 +408,8 @@ const tests = [{
     }]
 }];
 
-module.exports = tests;
+if (typeof exports === 'object' && typeof module === 'object') {
+    module.exports = tests;
+} else {
+    this['tests'] = tests;
+}

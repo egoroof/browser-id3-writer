@@ -1,9 +1,7 @@
-const tests = require('./common');
-
-tests.forEach((testPack) => {
-    describe(testPack.describe, () => {
-        testPack.it.forEach((test) => {
-            it(test.describe, test.test.bind(null, ID3Writer, expect));
+window.tests.forEach(function (testPack) {
+    describe(testPack.describe, function () {
+        testPack.it.forEach(function (test) {
+            it(test.describe, test.test.bind(null, ID3Writer, window.expect));
         });
     });
 });
@@ -16,7 +14,7 @@ function ajax(url, onSuccess, onError) {
         if (xhr.status === 200) {
             onSuccess(xhr.response);
         } else {
-            onError(new Error(`${xhr.statusText} (${xhr.status})`));
+            onError(new Error(xhr.statusText + ' (' + xhr.status + ')'));
         }
     };
     xhr.onerror = function () {
@@ -25,11 +23,11 @@ function ajax(url, onSuccess, onError) {
     xhr.send();
 }
 
-describe('browser usage', () => {
+describe('browser usage', function() {
 
-    it('should load song and change byte length after adding a tag', (done) => {
-        ajax('/base/test/assets/song.mp3', (arrayBuffer) => {
-            expect(arrayBuffer.byteLength).to.be.equal(613772);
+    it('should load song and change byte length after adding a tag', function(done) {
+        ajax('/base/test/assets/song.mp3', function(arrayBuffer) {
+            window.expect(arrayBuffer.byteLength).to.be.equal(613772);
 
             const writer = new ID3Writer(arrayBuffer);
             writer.setFrame('TIT2', 'Home')
@@ -67,17 +65,17 @@ describe('browser usage', () => {
                 .setFrame('TMED', 'TT/45');
             writer.addTag();
 
-            expect(writer.arrayBuffer.byteLength).to.be.equal(618819);
+            window.expect(writer.arrayBuffer.byteLength).to.be.equal(618819);
             done();
         });
     });
 
-    it('should be possible to create ID3 tag without song', () => {
+    it('should be possible to create ID3 tag without song', function() {
         const writer = new ID3Writer(new ArrayBuffer(0));
         writer.padding = 0;
         writer.setFrame('TIT2', 'Home');
         writer.addTag();
-        expect(writer.arrayBuffer.byteLength).to.be.equal(31);
+        window.expect(writer.arrayBuffer.byteLength).to.be.equal(31);
     });
 
 });

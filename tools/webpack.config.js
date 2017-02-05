@@ -1,5 +1,3 @@
-const babelConfig = require('./.babelrc.json');
-
 module.exports = {
     entry: './src/ID3Writer.js',
     output: {
@@ -13,7 +11,9 @@ module.exports = {
             test: /\.js$/,
             exclude: /node_modules/,
             loader: 'babel-loader',
-            query: babelConfig
+            query: {
+                presets: ['env']
+            }
         }]
     }
 };

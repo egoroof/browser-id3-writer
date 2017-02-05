@@ -10,8 +10,7 @@ module.exports = {
         "mocha": true
     },
     "globals": {
-        ID3Writer: false,
-        expect: false
+        ID3Writer: false
     },
     "extends": "eslint:recommended",
     "rules": {
