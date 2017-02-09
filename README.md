@@ -32,7 +32,7 @@ For browsers:
 [Typed Arrays](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Typed_arrays),
 [Blob](https://developer.mozilla.org/en-US/docs/Web/API/Blob),
 [URL](https://developer.mozilla.org/en-US/docs/Web/API/URL).
-Tested in latest Chrome, Firefox, Edge and IE11 (IE10 isn't tested but should work).
+Tested in latest Chrome, Firefox, Safari, Edge and IE11 (IE10 isn't tested but should work).
 
 Node.js 4 - 7 are tested and works well.
 
