@@ -1,4 +1,4 @@
-export function getNumericFrameSize(frameSize) {
+function getNumericFrameSize(frameSize) {
     const headerSize = 10;
     const encodingSize = 1;
 
@@ -7,7 +7,7 @@ export function getNumericFrameSize(frameSize) {
         frameSize;
 }
 
-export function getStringFrameSize(frameSize) {
+function getStringFrameSize(frameSize) {
     const headerSize = 10;
     const encodingSize = 1;
     const bomSize = 2;
@@ -19,7 +19,7 @@ export function getStringFrameSize(frameSize) {
         frameUtf16Size;
 }
 
-export function getLyricsFrameSize(descriptionSize, lyricsSize) {
+function getLyricsFrameSize(descriptionSize, lyricsSize) {
     const headerSize = 10;
     const encodingSize = 1;
     const languageSize = 3;
@@ -38,7 +38,7 @@ export function getLyricsFrameSize(descriptionSize, lyricsSize) {
         lyricsUtf16Size;
 }
 
-export function getPictureFrameSize(pictureSize, mimeTypeSize, descriptionSize) {
+function getPictureFrameSize(pictureSize, mimeTypeSize, descriptionSize) {
     const headerSize = 10;
     const encodingSize = 1;
     const separatorSize = 1;
@@ -58,7 +58,7 @@ export function getPictureFrameSize(pictureSize, mimeTypeSize, descriptionSize) 
         pictureSize;
 }
 
-export function getCommentFrameSize(descriptionSize, textSize) {
+function getCommentFrameSize(descriptionSize, textSize) {
     const headerSize = 10;
     const encodingSize = 1;
     const languageSize = 3;
@@ -77,7 +77,7 @@ export function getCommentFrameSize(descriptionSize, textSize) {
         textUtf16Size;
 }
 
-export function getUserStringFrameSize(descriptionSize, valueSize) {
+function getUserStringFrameSize(descriptionSize, valueSize) {
     const headerSize = 10;
     const encodingSize = 1;
     const bomSize = 2;
@@ -94,9 +94,19 @@ export function getUserStringFrameSize(descriptionSize, valueSize) {
         valueUtf16Size;
 }
 
-export function getUrlLinkFrameSize(urlSize) {
+function getUrlLinkFrameSize(urlSize) {
     const headerSize = 10;
 
     return headerSize +
         urlSize;
 }
+
+module.exports = {
+    getNumericFrameSize,
+    getStringFrameSize,
+    getLyricsFrameSize,
+    getPictureFrameSize,
+    getCommentFrameSize,
+    getUserStringFrameSize,
+    getUrlLinkFrameSize
+};
