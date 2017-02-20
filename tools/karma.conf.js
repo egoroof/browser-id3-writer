@@ -29,6 +29,7 @@ module.exports = (config) => {
         ],
         reporters: ['dots'],
         browsers: browsers,
-        singleRun: true
+        singleRun: true,
+        logLevel: config.LOG_WARN
     });
 };
