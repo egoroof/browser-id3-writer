@@ -1,8 +1,8 @@
-function isId3v2(buf) {
+export function isId3v2(buf) {
     return buf[0] === 0x49 && buf[1] === 0x44 && buf[2] === 0x33;
 }
 
-function getMimeType(buf) {
+export function getMimeType(buf) {
     // https://github.com/sindresorhus/file-type
     if (!buf || !buf.length) {
         return null;
@@ -33,8 +33,3 @@ function getMimeType(buf) {
     }
     return null;
 }
-
-module.exports = {
-    isId3v2,
-    getMimeType
-};

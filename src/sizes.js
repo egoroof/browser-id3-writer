@@ -1,4 +1,4 @@
-function getNumericFrameSize(frameSize) {
+export function getNumericFrameSize(frameSize) {
     const headerSize = 10;
     const encodingSize = 1;
 
@@ -7,7 +7,7 @@ function getNumericFrameSize(frameSize) {
         frameSize;
 }
 
-function getStringFrameSize(frameSize) {
+export function getStringFrameSize(frameSize) {
     const headerSize = 10;
     const encodingSize = 1;
     const bomSize = 2;
@@ -19,7 +19,7 @@ function getStringFrameSize(frameSize) {
         frameUtf16Size;
 }
 
-function getLyricsFrameSize(descriptionSize, lyricsSize) {
+export function getLyricsFrameSize(descriptionSize, lyricsSize) {
     const headerSize = 10;
     const encodingSize = 1;
     const languageSize = 3;
@@ -38,7 +38,7 @@ function getLyricsFrameSize(descriptionSize, lyricsSize) {
         lyricsUtf16Size;
 }
 
-function getPictureFrameSize(pictureSize, mimeTypeSize, descriptionSize) {
+export function getPictureFrameSize(pictureSize, mimeTypeSize, descriptionSize) {
     const headerSize = 10;
     const encodingSize = 1;
     const separatorSize = 1;
@@ -58,7 +58,7 @@ function getPictureFrameSize(pictureSize, mimeTypeSize, descriptionSize) {
         pictureSize;
 }
 
-function getCommentFrameSize(descriptionSize, textSize) {
+export function getCommentFrameSize(descriptionSize, textSize) {
     const headerSize = 10;
     const encodingSize = 1;
     const languageSize = 3;
@@ -77,7 +77,7 @@ function getCommentFrameSize(descriptionSize, textSize) {
         textUtf16Size;
 }
 
-function getUserStringFrameSize(descriptionSize, valueSize) {
+export function getUserStringFrameSize(descriptionSize, valueSize) {
     const headerSize = 10;
     const encodingSize = 1;
     const bomSize = 2;
@@ -94,19 +94,9 @@ function getUserStringFrameSize(descriptionSize, valueSize) {
         valueUtf16Size;
 }
 
-function getUrlLinkFrameSize(urlSize) {
+export function getUrlLinkFrameSize(urlSize) {
     const headerSize = 10;
 
     return headerSize +
         urlSize;
 }
-
-module.exports = {
-    getNumericFrameSize,
-    getStringFrameSize,
-    getLyricsFrameSize,
-    getPictureFrameSize,
-    getCommentFrameSize,
-    getUserStringFrameSize,
-    getUrlLinkFrameSize
-};

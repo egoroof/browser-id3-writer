@@ -1,9 +1,17 @@
-const encoder = require('./encoder');
-const signatures = require('./signatures');
-const transform = require('./transform');
-const sizes = require('./sizes');
+import {encodeWindows1252, encodeUtf16le} from './encoder';
+import {getMimeType, isId3v2} from './signatures';
+import {uint7ArrayToUint28, uint28ToUint7Array, uint32ToUint8Array} from './transform';
+import {
+    getNumericFrameSize,
+    getStringFrameSize,
+    getPictureFrameSize,
+    getLyricsFrameSize,
+    getCommentFrameSize,
+    getUserStringFrameSize,
+    getUrlLinkFrameSize
+} from './sizes';
 
-class ID3Writer {
+export default class ID3Writer {
 
     _setIntegerFrame(name, value) {
         const integer = parseInt(value, 10);
@@ -11,7 +19,7 @@ class ID3Writer {
         this.frames.push({
             name,
             value: integer,
-            size: sizes.getNumericFrameSize(integer.toString().length)
+            size: getNumericFrameSize(integer.toString().length)
         });
     }
 
@@ -21,12 +29,12 @@ class ID3Writer {
         this.frames.push({
             name,
             value: stringValue,
-            size: sizes.getStringFrameSize(stringValue.length)
+            size: getStringFrameSize(stringValue.length)
         });
     }
 
     _setPictureFrame(pictureType, data, description) {
-        const mimeType = signatures.getMimeType(new Uint8Array(data));
+        const mimeType = getMimeType(new Uint8Array(data));
         const descriptionString = description.toString();
 
         if (!mimeType) {
@@ -38,7 +46,7 @@ class ID3Writer {
             pictureType,
             mimeType,
             description: descriptionString,
-            size: sizes.getPictureFrameSize(data.byteLength, mimeType.length, descriptionString.length)
+            size: getPictureFrameSize(data.byteLength, mimeType.length, descriptionString.length)
         });
     }
 
@@ -50,7 +58,7 @@ class ID3Writer {
             name: 'USLT',
             value: lyricsString,
             description: descriptionString,
-            size: sizes.getLyricsFrameSize(descriptionString.length, lyricsString.length)
+            size: getLyricsFrameSize(descriptionString.length, lyricsString.length)
         });
     }
 
@@ -62,7 +70,7 @@ class ID3Writer {
             name: 'COMM',
             value: textString,
             description: descriptionString,
-            size: sizes.getCommentFrameSize(descriptionString.length, textString.length)
+            size: getCommentFrameSize(descriptionString.length, textString.length)
         });
     }
 
@@ -74,7 +82,7 @@ class ID3Writer {
             name: 'TXXX',
             description: descriptionString,
             value: valueString,
-            size: sizes.getUserStringFrameSize(descriptionString.length, valueString.length)
+            size: getUserStringFrameSize(descriptionString.length, valueString.length)
         });
     }
 
@@ -84,7 +92,7 @@ class ID3Writer {
         this.frames.push({
             name,
             value: urlString,
-            size: sizes.getUrlLinkFrameSize(urlString.length)
+            size: getUrlLinkFrameSize(urlString.length)
         });
     }
 
@@ -199,9 +207,9 @@ class ID3Writer {
         }
         const bytes = new Uint8Array(this.arrayBuffer);
         const version = bytes[3];
-        const tagSize = transform.uint7ArrayToUint28([bytes[6], bytes[7], bytes[8], bytes[9]]) + headerLength;
+        const tagSize = uint7ArrayToUint28([bytes[6], bytes[7], bytes[8], bytes[9]]) + headerLength;
 
-        if (!signatures.isId3v2(bytes) || version < 2 || version > 4) {
+        if (!isId3v2(bytes) || version < 2 || version > 4) {
             return;
         }
         this.arrayBuffer = (new Uint8Array(bytes.subarray(tagSize))).buffer;
@@ -228,16 +236,16 @@ class ID3Writer {
         offset++; // version revision
         offset++; // flags
 
-        writeBytes = transform.uint28ToUint7Array(totalTagSize - headerSize); // tag size (without header)
+        writeBytes = uint28ToUint7Array(totalTagSize - headerSize); // tag size (without header)
         bufferWriter.set(writeBytes, offset);
         offset += writeBytes.length;
 
         this.frames.forEach((frame) => {
-            writeBytes = encoder.encodeWindows1252(frame.name); // frame name
+            writeBytes = encodeWindows1252(frame.name); // frame name
             bufferWriter.set(writeBytes, offset);
             offset += writeBytes.length;
 
-            writeBytes = transform.uint32ToUint8Array(frame.size - headerSize); // frame size (without header)
+            writeBytes = uint32ToUint8Array(frame.size - headerSize); // frame size (without header)
             bufferWriter.set(writeBytes, offset);
             offset += writeBytes.length;
 
@@ -252,7 +260,7 @@ class ID3Writer {
                 case 'WORS':
                 case 'WPAY':
                 case 'WPUB': {
-                    writeBytes = encoder.encodeWindows1252(frame.value); // URL
+                    writeBytes = encodeWindows1252(frame.value); // URL
                     bufferWriter.set(writeBytes, offset);
                     offset += writeBytes.length;
                     break;
@@ -274,7 +282,7 @@ class ID3Writer {
                     bufferWriter.set(writeBytes, offset);
                     offset += writeBytes.length;
 
-                    writeBytes = encoder.encodeUtf16le(frame.value); // frame value
+                    writeBytes = encodeUtf16le(frame.value); // frame value
                     bufferWriter.set(writeBytes, offset);
                     offset += writeBytes.length;
                     break;
@@ -290,7 +298,7 @@ class ID3Writer {
                     bufferWriter.set(writeBytes, offset);
                     offset += writeBytes.length;
 
-                    writeBytes = encoder.encodeUtf16le(frame.description); // content descriptor
+                    writeBytes = encodeUtf16le(frame.description); // content descriptor
                     bufferWriter.set(writeBytes, offset);
                     offset += writeBytes.length;
 
@@ -298,7 +306,7 @@ class ID3Writer {
                     bufferWriter.set(writeBytes, offset);
                     offset += writeBytes.length;
 
-                    writeBytes = encoder.encodeUtf16le(frame.value); // frame value
+                    writeBytes = encodeUtf16le(frame.value); // frame value
                     bufferWriter.set(writeBytes, offset);
                     offset += writeBytes.length;
                     break;
@@ -308,7 +316,7 @@ class ID3Writer {
                 case 'TYER': {
                     offset++; // encoding
 
-                    writeBytes = encoder.encodeWindows1252(frame.value); // frame value
+                    writeBytes = encodeWindows1252(frame.value); // frame value
                     bufferWriter.set(writeBytes, offset);
                     offset += writeBytes.length;
                     break;
@@ -318,7 +326,7 @@ class ID3Writer {
                     bufferWriter.set(writeBytes, offset);
                     offset += writeBytes.length;
 
-                    writeBytes = encoder.encodeWindows1252(frame.mimeType); // MIME type
+                    writeBytes = encodeWindows1252(frame.mimeType); // MIME type
                     bufferWriter.set(writeBytes, offset);
                     offset += writeBytes.length;
 
@@ -326,7 +334,7 @@ class ID3Writer {
                     bufferWriter.set(writeBytes, offset);
                     offset += writeBytes.length;
 
-                    writeBytes = encoder.encodeUtf16le(frame.description); // description
+                    writeBytes = encodeUtf16le(frame.description); // description
                     bufferWriter.set(writeBytes, offset);
                     offset += writeBytes.length;
 
@@ -361,5 +369,3 @@ class ID3Writer {
     }
 
 }
-
-module.exports = ID3Writer;
