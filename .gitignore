@@ -1,8 +1,6 @@
 .idea/
-.nyc_output/
 node_modules/
 dist/
-coverage/
 tools/todo.md
 npm-debug.log
 song_with_tags.mp3

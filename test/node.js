@@ -1,22 +1,9 @@
-'use strict'; // node 4 and 5 legacy
-
 const tests = require('./common');
 const expect = require('chai').expect;
 const fs = require('fs');
 const path = require('path');
 const assetFolder = path.join(__dirname, 'assets');
-const mode = process.argv[3]; // test, coverage
-
-let ID3Writer;
-
-switch (mode) {
-    case 'coverage':
-        ID3Writer = require('../src/ID3Writer');
-        break;
-    default:
-        ID3Writer = require('../dist/browser-id3-writer');
-        break;
-}
+const ID3Writer= require('../dist/browser-id3-writer');
 
 tests.forEach((testPack) => {
     describe(testPack.describe, () => {

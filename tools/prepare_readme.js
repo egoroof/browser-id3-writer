@@ -6,7 +6,7 @@ const pack = require('../package.json');
 const rootDir = path.dirname(__dirname);
 const readmePath = path.join(rootDir, 'README.md');
 const readmeDraftPath = path.join(rootDir, 'tools', 'README.draft.md');
-const distFilePath = path.join(rootDir, 'dist', 'browser-id3-writer.min.js');
+const distFilePath = path.join(rootDir, 'dist', 'browser-id3-writer.js');
 const algo = 'sha384';
 
 const readmeDraft = fs.readFileSync(readmeDraftPath, 'utf8');
