@@ -2,7 +2,9 @@
 Be sure you are editing the draft (/tools/README.draft.md) not the root readme as it's generated automatically.
 -->
 
-# Browser ID3 Writer [![npm package][npm-badge]][npm] [![Travis][build-badge]][build] [![Coveralls][coverage-badge]][coverage]
+# Browser ID3 Writer
+
+[![npm package][npm-badge]][npm] [![Travis][build-badge]][build] [![Coveralls][coverage-badge]][coverage]
 
 [build-badge]: https://img.shields.io/travis/egoroof/browser-id3-writer.svg?style=flat-square
 [build]: https://travis-ci.org/egoroof/browser-id3-writer
