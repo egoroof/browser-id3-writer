@@ -3,7 +3,8 @@ const expect = require('chai').expect;
 const fs = require('fs');
 const path = require('path');
 const assetFolder = path.join(__dirname, 'assets');
-const ID3Writer= require('../dist/browser-id3-writer');
+const pack = require('../package.json');
+const ID3Writer= require(`../${pack.main}`);
 
 tests.forEach((testPack) => {
     describe(testPack.describe, () => {
