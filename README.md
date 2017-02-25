@@ -1,6 +1,8 @@
-# Browser ID3 Writer
+<!--
+Be sure you are editing the draft (/tools/README.draft.md) not the root readme as it's generated automatically.
+-->
 
-[![npm package][npm-badge]][npm] [![Travis][build-badge]][build] [![Coveralls][coverage-badge]][coverage]
+# Browser ID3 Writer [![npm package][npm-badge]][npm] [![Travis][build-badge]][build] [![Coveralls][coverage-badge]][coverage]
 
 [build-badge]: https://img.shields.io/travis/egoroof/browser-id3-writer.svg?style=flat-square
 [build]: https://travis-ci.org/egoroof/browser-id3-writer
@@ -16,10 +18,12 @@ It can't read the tag so use another lib to do it.
 
 **Note**: the library removes existing ID3 tag (v2.2, v2.3 and v2.4).
 
+Works in Node.js 4+, IE10+ and all modern browsers.
+
+Here is an online demonstration: [egoroof.ru/browser-id3-writer/](https://egoroof.ru/browser-id3-writer/)
+
 ## Table of Contents
 
-- [Requirements](#requirements)
-- [Demo](#demo)
 - [Installation](#installation)
 - [Usage](#usage)
   - [Browser](#browser)
@@ -29,20 +33,7 @@ It can't read the tag so use another lib to do it.
     4. [Memory control](#memory-control)
   - [Node.js](#nodejs)
 - [Supported frames](#supported-frames)
-  - [APIC picture types](#apic-picture-types)
-
-## Requirements
-
-For browsers:
-[Typed Arrays](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Typed_arrays),
-[Blob](https://developer.mozilla.org/en-US/docs/Web/API/Blob),
-[URL](https://developer.mozilla.org/en-US/docs/Web/API/URL). IE10+ and all modern browsers.
-
-Node.js 4 - 7 are tested and works well.
-
-## Demo
-
-Demonstration is available here: [egoroof.ru/browser-id3-writer/](https://egoroof.ru/browser-id3-writer/)
+- [APIC picture types](#apic-picture-types)
 
 ## Installation
 
@@ -59,12 +50,6 @@ For Node.js and browser module loaders like `webpack`, `browserify`, etc. instal
 
 ```
 npm install browser-id3-writer --save
-```
-
-Or using [yarn](https://yarnpkg.com/):
-
-```
-yarn add browser-id3-writer
 ```
 
 Then you will be able to use it:
@@ -134,30 +119,6 @@ xhr.onerror = function() {
 xhr.send();
 ```
 
-##### Fetch
-
-If you are ok with [browser support](http://caniuse.com/#search=fetch) of
-[Fetch](https://developer.mozilla.org/en/docs/Web/API/Fetch_API) or you are using a
-[polyfill](https://github.com/github/fetch) then getting arrayBuffer from remote server will look like this:
-
-```js
-fetch(urlToSongFile)
-    .then(function (response) {
-        if (!response.ok) {
-            throw new Error(response.statusText + ' (' + response.status + ')');
-        }
-
-        return response.arrayBuffer();
-    })
-    .then(function (arrayBuffer) {
-        // go next
-    })
-    .catch(function (error) {
-        // handle error
-        console.error('Request failed', error);
-    });
-```
-
 #### Add a tag
 
 Create new `ID3Writer` instance with arrayBuffer of your song, set frames and add a tag:
@@ -167,22 +128,12 @@ Create new `ID3Writer` instance with arrayBuffer of your song, set frames and ad
 const writer = new ID3Writer(arrayBuffer);
 writer.setFrame('TIT2', 'Home')
       .setFrame('TPE1', ['Eminem', '50 Cent'])
-      .setFrame('TPE2', 'Eminem')
       .setFrame('TALB', 'Friday Night Lights')
       .setFrame('TYER', 2004)
       .setFrame('TRCK', '6/8')
-      .setFrame('TPOS', '1/2')
       .setFrame('TCON', ['Soundtrack'])
       .setFrame('TBPM', 128)
       .setFrame('WPAY', 'https://google.com')
-      .setFrame('USLT', {
-          description: 'Original lyrics',
-          lyrics: 'This is unsychronised lyrics'
-      })
-      .setFrame('TXXX', {
-          description: 'Release Info',
-          value: 'Double vinyl version was limited to 2500 copies'
-      })
       .setFrame('TKEY', 'Fbm')
       .setFrame('APIC', {
           type: 3,
@@ -244,23 +195,8 @@ const coverBuffer = fs.readFileSync('path_to_cover.jpg');
 const writer = new ID3Writer(songBuffer);
 writer.setFrame('TIT2', 'Home')
       .setFrame('TPE1', ['Eminem', '50 Cent'])
-      .setFrame('TPE2', 'Eminem')
       .setFrame('TALB', 'Friday Night Lights')
       .setFrame('TYER', 2004)
-      .setFrame('TRCK', '6/8')
-      .setFrame('TPOS', '1/2')
-      .setFrame('TCON', ['Soundtrack'])
-      .setFrame('TBPM', 128)
-      .setFrame('WPAY', 'https://google.com')
-      .setFrame('USLT', {
-          description: 'Original lyrics',
-          lyrics: 'This is unsychronised lyrics'
-      })
-      .setFrame('TXXX', {
-          description: 'Release Info',
-          value: 'Double vinyl version was limited to 2500 copies'
-      })
-      .setFrame('TKEY', 'Fbm')
       .setFrame('APIC', {
           type: 3,
           data: coverBuffer,
@@ -358,7 +294,7 @@ writer.setFrame('APIC', {
 });
 ```
 
-### APIC picture types
+## APIC picture types
 
 | Type | Name                                |
 |------|-------------------------------------|
