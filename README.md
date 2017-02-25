@@ -42,7 +42,7 @@ have any problems to use it with different script loaders.
 For browsers you can include library via [unpkg](https://unpkg.com/) CDN or save it to local machine:
 
 ```html
-<script src="https://unpkg.com/browser-id3-writer@3.0.2" crossorigin="anonymous" integrity="sha384-gorNI1+ZzfIwsUNdrckT9f5Pzr6nwDHAaCZUmP/Y7mGz+w1gVZLbPtCyfdqDmQkl"></script>
+<script src="https://unpkg.com/browser-id3-writer@3.0.3" crossorigin="anonymous" integrity="sha384-tDtam1j4DM51JscQjP7GuDyRf0CQXCSdavmuHpOb08OJ8s8YxwFpBhRhmMMdbCpM"></script>
 ```
 
 For Node.js and browser module loaders like `webpack`, `browserify`, etc. install it via [npm](https://www.npmjs.com/):
