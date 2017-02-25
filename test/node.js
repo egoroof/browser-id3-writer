@@ -14,7 +14,7 @@ switch (mode) {
         ID3Writer = require('../src/ID3Writer');
         break;
     default:
-        ID3Writer = require('../dist/browser-id3-writer.min');
+        ID3Writer = require('../dist/browser-id3-writer');
         break;
 }
 

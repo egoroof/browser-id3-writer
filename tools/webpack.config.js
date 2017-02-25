@@ -2,7 +2,7 @@ module.exports = {
     entry: './src/ID3Writer.js',
     output: {
         path: './dist',
-        filename: 'browser-id3-writer.min.js',
+        filename: 'browser-id3-writer.js',
         library: 'ID3Writer',
         libraryTarget: 'umd'
     },

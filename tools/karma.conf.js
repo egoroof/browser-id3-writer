@@ -18,7 +18,7 @@ module.exports = (config) => {
         basePath: '../',
         frameworks: ['mocha', 'chai'],
         files: [
-            'dist/browser-id3-writer.min.js',
+            'dist/browser-id3-writer.js',
             'test/common.js',
             'test/browser.js',
             {
