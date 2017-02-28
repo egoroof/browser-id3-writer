@@ -39,7 +39,7 @@ Here is an online demonstration: [egoroof.ru/browser-id3-writer/](https://egoroo
 This library is wrapped with [Universal Module Definition](https://github.com/umdjs/umd). This means you will not
 have any problems to use it with different script loaders.
 
-For browsers you can include library via [unpkg](https://unpkg.com/) CDN or save it to local machine:
+For browsers you can include library via [unpkg](https://unpkg.com/) CDN (###gzip_size### KiB gzip) or save it to local machine:
 
 ```html
 <script src="https://unpkg.com/browser-id3-writer@###version###" crossorigin="anonymous" integrity="###hash###"></script>
