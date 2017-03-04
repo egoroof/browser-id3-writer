@@ -31,6 +31,7 @@ module.exports = (config) => {
         reporters: ['dots'],
         browsers: browsers,
         singleRun: true,
+        concurrency: 1,
         logLevel: config.LOG_WARN
     });
 };
