@@ -1,9 +1,7 @@
 function encodeWindows1252(str) {
-    const codePoints = String(str).split('').map(function (c) {
+    return String(str).split('').map(function (c) {
         return c.charCodeAt(0);
     });
-
-    return new Uint8Array(codePoints);
 }
 
 function getMp3fileSurrogate() {
@@ -22,10 +20,6 @@ function getMp3fileSurrogateWithId3() {
     uint8.set([0x49, 0x44, 0x33, 0, 1, 2, 3, 4, 5, 6]);
 
     return buffer;
-}
-
-function typedArray2Array(typedArray) {
-    return Array.prototype.slice.call(typedArray);
 }
 
 const files = {
@@ -396,7 +390,7 @@ const tests = [{
                         0, 0, 0, frameTotalSize - 10, // size without header (should be less than 128)
                         0, 0, // flags
                         1 // encoding
-                    ].concat(typedArray2Array(encodeWindows1252(type.mime)))
+                    ].concat(encodeWindows1252(type.mime))
                         .concat([0, 3, 0xff, 0xfe]) // delemiter, pic type, BOM
                         .concat([26, 4, 48, 4, 64, 4, 66, 4, 56, 4, 61, 4, 48, 4]) // 'Картина'
                         .concat([0, 0]) // separator
