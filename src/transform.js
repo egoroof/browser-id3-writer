@@ -1,5 +1,5 @@
 export function uint32ToUint8Array(uint32) {
-    const eightBitMask = (1 << 8) - 1;
+    const eightBitMask = 0xff;
 
     return [
         (uint32 >>> 24) & eightBitMask,
@@ -10,7 +10,7 @@ export function uint32ToUint8Array(uint32) {
 }
 
 export function uint28ToUint7Array(uint28) {
-    const sevenBitMask = (1 << 7) - 1;
+    const sevenBitMask = 0x7f;
 
     return [
         (uint28 >>> 21) & sevenBitMask,
