@@ -1,4 +1,3 @@
-const pack = require('../package.json');
 const browsers = ['Firefox'];
 
 if (!process.env.CI) {
@@ -14,12 +13,12 @@ if (!process.env.CI) {
     }
 }
 
-module.exports = (config) => {
+module.exports = function(config) {
     config.set({
         basePath: '../',
         frameworks: ['mocha', 'chai'],
         files: [
-            pack.main,
+            'dist/browser-id3-writer.js',
             'test/common.js',
             'test/browser.js',
             {

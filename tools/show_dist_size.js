@@ -1,9 +1,7 @@
 const fs = require('fs');
-const path = require('path');
-const pack = require('../package.json');
+const path = 'dist/browser-id3-writer.js';
 
-const rootDir = path.dirname(__dirname);
-const stat = fs.statSync(path.join(rootDir, pack.main));
+const stat = fs.statSync(path);
 const size = (stat.size / 1024).toFixed(2);
 
-console.log(`Size of "${pack.main}" is ${size} KiB`);
+console.log(`Size of "${path}" is ${size} KiB`);
