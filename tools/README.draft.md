@@ -36,7 +36,7 @@ Here is an online demonstration: [egoroof.ru/browser-id3-writer/](https://egoroo
 
 ## Installation
 
-For browsers you can include library via [unpkg](https://unpkg.com/) CDN (###gzip_size### KiB gzip) or save it to local machine:
+For browsers you can include library via [unpkg](https://unpkg.com/) CDN (###gzip_size### KiB gzip) or save it locally:
 
 ```html
 <script src="https://unpkg.com/browser-id3-writer@###version###" crossorigin="anonymous" integrity="###hash###"></script>
@@ -73,7 +73,7 @@ For example you can create file input and use
 <input type="file" id="file" accept="audio/mpeg">
 <script>
     document.getElementById('file').addEventListener('change', function () {
-        if (!this.files.length) {
+        if (this.files.length === 0) {
             return;
         }
         const reader = new FileReader();
@@ -179,7 +179,7 @@ writer.revokeURL(); // if you have access to writer
 
 ### Node.js
 
-Simple example with blocking IO: 
+Simple example with blocking IO:
 
 ```js
 const ID3Writer = require('browser-id3-writer');
@@ -286,9 +286,14 @@ writer.setFrame('TXXX', {
 writer.setFrame('APIC', {
     type: 3,
     data: coverArrayBuffer,
-    description: 'description here'
+    description: 'description here',
+    useUnicodeEncoding: false
 });
 ```
+
+`useUnicodeEncoding` should only be `true` when description contains non-Western characters.
+When it's set to `true` some program might not be able to read the picture correctly.
+See [#42](https://github.com/egoroof/browser-id3-writer/issues/42).
 
 ## APIC picture types
 

@@ -36,7 +36,7 @@ Here is an online demonstration: [egoroof.ru/browser-id3-writer/](https://egoroo
 
 ## Installation
 
-For browsers you can include library via [unpkg](https://unpkg.com/) CDN (2.2 KiB gzip) or save it to local machine:
+For browsers you can include library via [unpkg](https://unpkg.com/) CDN (2.1 KiB gzip) or save it locally:
 
 ```html
 <script src="https://unpkg.com/browser-id3-writer@3.0.3" crossorigin="anonymous" integrity="sha384-tDtam1j4DM51JscQjP7GuDyRf0CQXCSdavmuHpOb08OJ8s8YxwFpBhRhmMMdbCpM"></script>
@@ -73,7 +73,7 @@ For example you can create file input and use
 <input type="file" id="file" accept="audio/mpeg">
 <script>
     document.getElementById('file').addEventListener('change', function () {
-        if (!this.files.length) {
+        if (this.files.length === 0) {
             return;
         }
         const reader = new FileReader();
