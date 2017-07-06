@@ -38,23 +38,22 @@ export function getLyricsFrameSize(descriptionSize, lyricsSize) {
         lyricsUtf16Size;
 }
 
-export function getPictureFrameSize(pictureSize, mimeTypeSize, descriptionSize) {
+export function getPictureFrameSize(pictureSize, mimeTypeSize, descriptionSize, useUnicodeEncoding) {
     const headerSize = 10;
     const encodingSize = 1;
     const separatorSize = 1;
     const pictureTypeSize = 1;
     const bomSize = 2;
-    const descriptionUtf16Size = descriptionSize * 2;
+    const encodedDescriptionSize = useUnicodeEncoding ?
+        bomSize + (descriptionSize + separatorSize) * 2 :
+        descriptionSize + separatorSize;
 
     return headerSize +
         encodingSize +
         mimeTypeSize +
         separatorSize +
         pictureTypeSize +
-        bomSize +
-        descriptionUtf16Size +
-        separatorSize +
-        separatorSize +
+        encodedDescriptionSize +
         pictureSize;
 }
 

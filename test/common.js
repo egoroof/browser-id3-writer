@@ -337,6 +337,82 @@ const tests = [{
             }).to.throw(Error, 'Unknown picture MIME type');
         }
     }, {
+        describe: 'should not use Unicode encoding by default',
+        test: function (ID3Writer, expect) {
+            const type = {
+                signature: [0xff, 0xd8, 0xff],
+                mime: 'image/jpeg'
+            };
+            const content = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+            const coverBuffer = new ArrayBuffer(type.signature.length + content.length);
+            const coverUint8 = new Uint8Array(coverBuffer);
+            coverUint8.set(type.signature);
+            coverUint8.set(content, type.signature.length);
+
+            const writer = new ID3Writer(files.mp3);
+
+            writer.setFrame('APIC', {
+                type: 3,
+                data: coverBuffer,
+                description: 'Pic'
+            });
+
+            const buffer = writer.addTag();
+            const frameTotalSize = type.mime.length + type.signature.length + content.length + 17;
+            const bufferUint8 = new Uint8Array(buffer, 10, frameTotalSize);
+
+            expect(bufferUint8).to.eql(new Uint8Array([
+                    65, 80, 73, 67, // 'APIC'
+                    0, 0, 0, frameTotalSize - 10, // size without header (should be less than 128)
+                    0, 0, // flags
+                    0 // encoding
+                ].concat(encodeWindows1252(type.mime))
+                    .concat([0, 3]) // delemiter, pic type
+                    .concat([0x50, 0x69, 0x63]) // 'Pic'
+                    .concat([0]) // separator
+                    .concat(type.signature)
+                    .concat(content)
+            ));
+        }
+    }, {
+        describe: 'should force Western encoding when description is empty',
+        test: function (ID3Writer, expect) {
+            const type = {
+                signature: [0xff, 0xd8, 0xff],
+                mime: 'image/jpeg'
+            };
+            const content = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+            const coverBuffer = new ArrayBuffer(type.signature.length + content.length);
+            const coverUint8 = new Uint8Array(coverBuffer);
+            coverUint8.set(type.signature);
+            coverUint8.set(content, type.signature.length);
+
+            const writer = new ID3Writer(files.mp3);
+
+            writer.setFrame('APIC', {
+                type: 3,
+                data: coverBuffer,
+                description: '',
+                useUnicodeEncoding: true
+            });
+
+            const buffer = writer.addTag();
+            const frameTotalSize = type.mime.length + type.signature.length + content.length + 14;
+            const bufferUint8 = new Uint8Array(buffer, 10, frameTotalSize);
+
+            expect(bufferUint8).to.eql(new Uint8Array([
+                    65, 80, 73, 67, // 'APIC'
+                    0, 0, 0, frameTotalSize - 10, // size without header (should be less than 128)
+                    0, 0, // flags
+                    0 // encoding
+                ].concat(encodeWindows1252(type.mime))
+                    .concat([0, 3]) // delemiter, pic type
+                    .concat([0]) // separator
+                    .concat(type.signature)
+                    .concat(content)
+            ));
+        }
+    }, {
         describe: 'should accept various image types',
         test: function (ID3Writer, expect) {
             const types = [{
@@ -378,7 +454,8 @@ const tests = [{
                 writer.setFrame('APIC', {
                     type: 3,
                     data: coverBuffer,
-                    description: 'Картина'
+                    description: 'Картина',
+                    useUnicodeEncoding: true
                 });
 
                 const buffer = writer.addTag();

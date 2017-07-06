@@ -33,20 +33,24 @@ export default class ID3Writer {
         });
     }
 
-    _setPictureFrame(pictureType, data, description) {
+    _setPictureFrame(pictureType, data, description, useUnicodeEncoding) {
         const mimeType = getMimeType(new Uint8Array(data));
         const descriptionString = description.toString();
 
         if (!mimeType) {
             throw new Error('Unknown picture MIME type');
         }
+        if (!description) {
+            useUnicodeEncoding = false;
+        }
         this.frames.push({
             name: 'APIC',
             value: data,
             pictureType,
             mimeType,
+            useUnicodeEncoding,
             description: descriptionString,
-            size: getPictureFrameSize(data.byteLength, mimeType.length, descriptionString.length)
+            size: getPictureFrameSize(data.byteLength, mimeType.length, descriptionString.length, useUnicodeEncoding)
         });
     }
 
@@ -153,7 +157,7 @@ export default class ID3Writer {
                 if (frameValue.type < 0 || frameValue.type > 20) {
                     throw new Error('Incorrect APIC frame picture type');
                 }
-                this._setPictureFrame(frameValue.type, frameValue.data, frameValue.description);
+                this._setPictureFrame(frameValue.type, frameValue.data, frameValue.description, !!frameValue.useUnicodeEncoding);
                 break;
             }
             case 'TXXX': { // user defined text information
@@ -322,7 +326,7 @@ export default class ID3Writer {
                     break;
                 }
                 case 'APIC': {
-                    writeBytes = [1]; // encoding
+                    writeBytes = [frame.useUnicodeEncoding ? 1 : 0]; // encoding
                     bufferWriter.set(writeBytes, offset);
                     offset += writeBytes.length;
 
@@ -330,15 +334,27 @@ export default class ID3Writer {
                     bufferWriter.set(writeBytes, offset);
                     offset += writeBytes.length;
 
-                    writeBytes = [0, frame.pictureType].concat(BOM); // separator, pic type, BOM
+                    writeBytes = [0, frame.pictureType]; // separator, pic type
                     bufferWriter.set(writeBytes, offset);
                     offset += writeBytes.length;
 
-                    writeBytes = encodeUtf16le(frame.description); // description
-                    bufferWriter.set(writeBytes, offset);
-                    offset += writeBytes.length;
+                    if (frame.useUnicodeEncoding) {
+                        writeBytes = [].concat(BOM); // BOM
+                        bufferWriter.set(writeBytes, offset);
+                        offset += writeBytes.length;
 
-                    offset += 2; // separator
+                        writeBytes = encodeUtf16le(frame.description); // description
+                        bufferWriter.set(writeBytes, offset);
+                        offset += writeBytes.length;
+
+                        offset += 2; // separator
+                    } else {
+                        writeBytes = encodeWindows1252(frame.description); // description
+                        bufferWriter.set(writeBytes, offset);
+                        offset += writeBytes.length;
+
+                        offset++; // separator
+                    }
 
                     bufferWriter.set(new Uint8Array(frame.value), offset); // picture content
                     offset += frame.value.byteLength;

@@ -179,7 +179,7 @@ writer.revokeURL(); // if you have access to writer
 
 ### Node.js
 
-Simple example with blocking IO: 
+Simple example with blocking IO:
 
 ```js
 const ID3Writer = require('browser-id3-writer');
@@ -286,9 +286,14 @@ writer.setFrame('TXXX', {
 writer.setFrame('APIC', {
     type: 3,
     data: coverArrayBuffer,
-    description: 'description here'
+    description: 'description here',
+    useUnicodeEncoding: false
 });
 ```
+
+`useUnicodeEncoding` should only be `true` when description contains non-Western characters.
+When it's set to `true` some program might not be able to read the picture correctly.
+See [#42](https://github.com/egoroof/browser-id3-writer/issues/42).
 
 ## APIC picture types
 
