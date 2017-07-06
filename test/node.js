@@ -59,7 +59,8 @@ describe('node usage', () => {
             .setFrame('APIC', {
                 type: 3,
                 data: coverBuffer,
-                description: 'Super picture'
+                description: 'Super picture',
+                useUnicodeEncoding: true
             });
         writer.addTag();
 
