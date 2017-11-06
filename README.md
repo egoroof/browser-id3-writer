@@ -6,7 +6,7 @@ Be sure you are editing the draft (/tools/README.draft.md) not the root readme a
 
 [![npm package][npm-badge]][npm] [![Travis][build-badge]][build]
 
-[build-badge]: https://img.shields.io/travis/egoroof/browser-id3-writer.svg?style=flat-square
+[build-badge]: https://img.shields.io/travis/egoroof/browser-id3-writer/master.svg?style=flat-square
 [build]: https://travis-ci.org/egoroof/browser-id3-writer
 
 [npm-badge]: https://img.shields.io/npm/v/browser-id3-writer.svg?style=flat-square
