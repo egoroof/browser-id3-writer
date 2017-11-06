@@ -23,7 +23,7 @@ const readme = readmeDraftFile
 
 fs.writeFileSync(readmePath, readme);
 
-console.log(`File ${readmePath} is updated`);
+console.log(`+ ${readmePath}`);
 console.log(`Version: ${pack.version}`);
 console.log(`Hash: ${algo}-${digest}`);
 console.log(`Gzip size: ${size} KiB`);

@@ -4,7 +4,7 @@ const fs = require('fs');
 const path = require('path');
 const assetFolder = path.join(__dirname, 'assets');
 const pack = require('../package.json');
-const ID3Writer= require(`../${pack.main}`);
+const ID3Writer = require(`../${pack.main}`);
 
 tests.forEach((testPack) => {
     describe(testPack.describe, () => {

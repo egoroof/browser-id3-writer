@@ -1,12 +1,12 @@
 {
   "presets": [
     [
-      "env",
+      "@babel/env",
       {
         "modules": false,
         "loose": true,
         "exclude": [
-          "transform-es2015-typeof-symbol"
+          "transform-typeof-symbol"
         ]
       }
     ]
