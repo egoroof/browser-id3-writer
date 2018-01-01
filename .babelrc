@@ -4,10 +4,7 @@
       "@babel/env",
       {
         "modules": false,
-        "loose": true,
-        "exclude": [
-          "transform-typeof-symbol"
-        ]
+        "loose": true
       }
     ]
   ]
