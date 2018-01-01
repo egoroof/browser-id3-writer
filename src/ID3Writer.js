@@ -19,7 +19,7 @@ export default class ID3Writer {
         this.frames.push({
             name,
             value: integer,
-            size: getNumericFrameSize(integer.toString().length)
+            size: getNumericFrameSize(integer.toString().length),
         });
     }
 
@@ -29,7 +29,7 @@ export default class ID3Writer {
         this.frames.push({
             name,
             value: stringValue,
-            size: getStringFrameSize(stringValue.length)
+            size: getStringFrameSize(stringValue.length),
         });
     }
 
@@ -50,7 +50,7 @@ export default class ID3Writer {
             mimeType,
             useUnicodeEncoding,
             description: descriptionString,
-            size: getPictureFrameSize(data.byteLength, mimeType.length, descriptionString.length, useUnicodeEncoding)
+            size: getPictureFrameSize(data.byteLength, mimeType.length, descriptionString.length, useUnicodeEncoding),
         });
     }
 
@@ -62,7 +62,7 @@ export default class ID3Writer {
             name: 'USLT',
             value: lyricsString,
             description: descriptionString,
-            size: getLyricsFrameSize(descriptionString.length, lyricsString.length)
+            size: getLyricsFrameSize(descriptionString.length, lyricsString.length),
         });
     }
 
@@ -74,7 +74,7 @@ export default class ID3Writer {
             name: 'COMM',
             value: textString,
             description: descriptionString,
-            size: getCommentFrameSize(descriptionString.length, textString.length)
+            size: getCommentFrameSize(descriptionString.length, textString.length),
         });
     }
 
@@ -86,7 +86,7 @@ export default class ID3Writer {
             name: 'TXXX',
             description: descriptionString,
             value: valueString,
-            size: getUserStringFrameSize(descriptionString.length, valueString.length)
+            size: getUserStringFrameSize(descriptionString.length, valueString.length),
         });
     }
 
@@ -96,7 +96,7 @@ export default class ID3Writer {
         this.frames.push({
             name,
             value: urlString,
-            size: getUrlLinkFrameSize(urlString.length)
+            size: getUrlLinkFrameSize(urlString.length),
         });
     }
 

@@ -1,6 +1,4 @@
 .idea/
 node_modules/
 dist/
-tools/todo.md
 npm-debug.log
-song_with_tags.mp3
