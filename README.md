@@ -60,7 +60,7 @@ const ID3Writer = require('browser-id3-writer');
 
 #### Get ArrayBuffer of song
 
-You should first get
+In browsers you should first get
 [ArrayBuffer](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer)
 of the song you would like to add ID3 tag.
 
