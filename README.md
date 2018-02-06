@@ -1,7 +1,3 @@
-<!--
-Be sure you are editing the draft (/tools/README.draft.md) not the root readme as it's generated automatically.
--->
-
 # Browser ID3 Writer
 
 [![npm package][npm-badge]][npm] [![Travis][build-badge]][build]
@@ -36,22 +32,10 @@ Here is an online demonstration: [egoroof.ru/browser-id3-writer/](https://egoroo
 
 ## Installation
 
-For browsers you can include library via [unpkg](https://unpkg.com/) CDN (2.0 KiB gzip) or save it locally:
-
-```html
-<script src="https://unpkg.com/browser-id3-writer@4.0.0" crossorigin="anonymous" integrity="sha384-cEi0gGIqBwYacENeo/qnaVo6RWaRR1aj4LVEXITfS+tw2oJomW5Wr3HGQyRXBKlH"></script>
-```
-
-For Node.js and browser module loaders like `webpack`, `browserify`, etc. install it via [npm](https://www.npmjs.com/):
+Take latest version [here](https://unpkg.com/browser-id3-writer) or with npm:
 
 ```
 npm install browser-id3-writer --save
-```
-
-Then you will be able to use it:
-
-```js
-const ID3Writer = require('browser-id3-writer');
 ```
 
 ## Usage
