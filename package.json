@@ -34,7 +34,7 @@
   "files": [
     "LICENSE.md",
     "README.md",
-    "dist/browser-id3-writer.js"
+    "dist/*.js"
   ],
   "license": "MIT",
   "bugs": {
