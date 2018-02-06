@@ -32,7 +32,17 @@ Here is an online demonstration: [egoroof.ru/browser-id3-writer/](https://egoroo
 
 ## Installation
 
+<<<<<<< HEAD:README.md
 Take latest version [here](https://unpkg.com/browser-id3-writer) or with npm:
+=======
+For browsers you can include library via [unpkg](https://unpkg.com/) CDN (###gzip_size### KiB gzip) or save it locally:
+
+```html
+<script src="https://unpkg.com/browser-id3-writer@###version###/dist/browser-id3-writer.min.js" crossorigin="anonymous" integrity="###hash###"></script>
+```
+
+For Node.js and browser module loaders like `webpack`, `browserify`, etc. install it via [npm](https://www.npmjs.com/):
+>>>>>>> Keep compiled&unminified code:tools/README.draft.md
 
 ```
 npm install browser-id3-writer --save
