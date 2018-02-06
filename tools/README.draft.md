@@ -39,7 +39,7 @@ Here is an online demonstration: [egoroof.ru/browser-id3-writer/](https://egoroo
 For browsers you can include library via [unpkg](https://unpkg.com/) CDN (###gzip_size### KiB gzip) or save it locally:
 
 ```html
-<script src="https://unpkg.com/browser-id3-writer@###version###" crossorigin="anonymous" integrity="###hash###"></script>
+<script src="https://unpkg.com/browser-id3-writer@###version###/dist/browser-id3-writer.min.js" crossorigin="anonymous" integrity="###hash###"></script>
 ```
 
 For Node.js and browser module loaders like `webpack`, `browserify`, etc. install it via [npm](https://www.npmjs.com/):

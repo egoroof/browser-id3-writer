@@ -9,7 +9,7 @@
     "build:concat": "rollup -f es -i src/ID3Writer.js -o dist/browser-id3-writer.js && node tools/show_dist_size",
     "build:transpile": "babel dist/browser-id3-writer.js -o dist/browser-id3-writer.js && node tools/show_dist_size",
     "build:wrap": "rollup -f umd -n ID3Writer -i dist/browser-id3-writer.js -o dist/browser-id3-writer.js && node tools/show_dist_size",
-    "build:compress": "uglifyjs dist/browser-id3-writer.js -o dist/browser-id3-writer.js -m -c && node tools/show_dist_size",
+    "build:compress": "uglifyjs dist/browser-id3-writer.js -o dist/browser-id3-writer.min.js -m -c && node tools/show_dist_size",
     "test": "npm run lint && npm run build && npm run mocha",
     "mocha": "mocha --recursive",
     "preversion": "npm test",
@@ -34,7 +34,7 @@
   "files": [
     "LICENSE.md",
     "README.md",
-    "dist/browser-id3-writer.js"
+    "dist/*.js"
   ],
   "license": "MIT",
   "bugs": {

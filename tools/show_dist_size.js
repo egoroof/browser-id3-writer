@@ -1,9 +1,15 @@
 /* eslint-disable no-console */
+/* eslint-disable no-empty */
 
 const fs = require('fs');
-const path = 'dist/browser-id3-writer.js';
+const paths = ['dist/browser-id3-writer.js', 'dist/browser-id3-writer.min.js'];
 
-const stat = fs.statSync(path);
-const size = (stat.size / 1024).toFixed(2);
+for (const path of paths) {
+  try {
+    const stat = fs.statSync(path);
+    const size = (stat.size / 1024).toFixed(2);
 
-console.log(`Size of "${path}" is ${size} KiB`);
+    console.log(`Size of "${path}" is ${size} KiB`);
+  } catch (e) {}
+}
+
