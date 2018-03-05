@@ -133,6 +133,8 @@ export default class ID3Writer {
             case 'TRCK': // song number in album: 5 or 5/10
             case 'TPOS': // album disc number: 1 or 1/3
             case 'TMED': // media type
+            case 'TSRC': // song ISRC
+            case 'TDAT': // song date
             case 'TPUB': { // label name
                 this._setStringFrame(frameName, frameValue);
                 break;
@@ -281,6 +283,8 @@ export default class ID3Writer {
                 case 'TPOS':
                 case 'TKEY':
                 case 'TMED':
+                case 'TSRC':
+                case 'TDAT':
                 case 'TPUB': {
                     writeBytes = [1].concat(BOM); // encoding, BOM
                     bufferWriter.set(writeBytes, offset);
