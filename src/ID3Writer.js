@@ -135,6 +135,7 @@ export default class ID3Writer {
             case 'TMED': // media type
             case 'TSRC': // song ISRC
             case 'TDAT': // song date
+            case 'WCOP': // Copyright/Legal information
             case 'TPUB': { // label name
                 this._setStringFrame(frameName, frameValue);
                 break;
@@ -181,7 +182,6 @@ export default class ID3Writer {
                 break;
             }
             case 'WCOM': // Commercial information
-            case 'WCOP': // Copyright/Legal information
             case 'WOAF': // Official audio file webpage
             case 'WOAR': // Official artist/performer webpage
             case 'WOAS': // Official audio source webpage
@@ -259,7 +259,6 @@ export default class ID3Writer {
 
             switch (frame.name) {
                 case 'WCOM':
-                case 'WCOP':
                 case 'WOAF':
                 case 'WOAR':
                 case 'WOAS':
@@ -273,6 +272,7 @@ export default class ID3Writer {
                 }
                 case 'TPE1':
                 case 'TCOM':
+                case 'WCOP':
                 case 'TCON':
                 case 'TIT2':
                 case 'TALB':
