@@ -133,6 +133,9 @@ export default class ID3Writer {
             case 'TRCK': // song number in album: 5 or 5/10
             case 'TPOS': // album disc number: 1 or 1/3
             case 'TMED': // media type
+            case 'TSRC': // song ISRC
+            case 'TDAT': // song date
+            case 'WCOP': // Copyright/Legal information
             case 'TPUB': { // label name
                 this._setStringFrame(frameName, frameValue);
                 break;
@@ -179,7 +182,6 @@ export default class ID3Writer {
                 break;
             }
             case 'WCOM': // Commercial information
-            case 'WCOP': // Copyright/Legal information
             case 'WOAF': // Official audio file webpage
             case 'WOAR': // Official artist/performer webpage
             case 'WOAS': // Official audio source webpage
@@ -257,7 +259,6 @@ export default class ID3Writer {
 
             switch (frame.name) {
                 case 'WCOM':
-                case 'WCOP':
                 case 'WOAF':
                 case 'WOAR':
                 case 'WOAS':
@@ -271,6 +272,7 @@ export default class ID3Writer {
                 }
                 case 'TPE1':
                 case 'TCOM':
+                case 'WCOP':
                 case 'TCON':
                 case 'TIT2':
                 case 'TALB':
@@ -281,6 +283,8 @@ export default class ID3Writer {
                 case 'TPOS':
                 case 'TKEY':
                 case 'TMED':
+                case 'TSRC':
+                case 'TDAT':
                 case 'TPUB': {
                     writeBytes = [1].concat(BOM); // encoding, BOM
                     bufferWriter.set(writeBytes, offset);
