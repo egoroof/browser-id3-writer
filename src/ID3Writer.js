@@ -141,6 +141,7 @@ export default class ID3Writer {
             }
             case 'TBPM': // beats per minute
             case 'TLEN': // song duration
+            case 'TDAT': // album release date expressed as DDMM
             case 'TYER': { // album release year
                 this._setIntegerFrame(frameName, frameValue);
                 break;
@@ -321,6 +322,7 @@ export default class ID3Writer {
                 }
                 case 'TBPM':
                 case 'TLEN':
+                case 'TDAT':
                 case 'TYER': {
                     offset++; // encoding
 
