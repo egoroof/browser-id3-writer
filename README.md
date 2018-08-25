@@ -2,8 +2,8 @@
 
 [![npm package][npm-badge]][npm] [![Travis][build-badge]][build]
 
-[build-badge]: https://img.shields.io/travis/egoroof/browser-id3-writer/master.svg?style=flat-square
-[build]: https://travis-ci.org/egoroof/browser-id3-writer
+[build-badge]: https://img.shields.io/travis/com/egoroof/browser-id3-writer/master.svg?style=flat-square
+[build]: https://travis-ci.com/egoroof/browser-id3-writer
 
 [npm-badge]: https://img.shields.io/npm/v/browser-id3-writer.svg?style=flat-square
 [npm]: https://www.npmjs.org/package/browser-id3-writer
