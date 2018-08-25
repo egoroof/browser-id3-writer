@@ -133,12 +133,15 @@ export default class ID3Writer {
             case 'TRCK': // song number in album: 5 or 5/10
             case 'TPOS': // album disc number: 1 or 1/3
             case 'TMED': // media type
-            case 'TPUB': { // label name
+            case 'TPUB': // label name
+            case 'TCOP': // copyright
+            case 'TSRC': { // isrc
                 this._setStringFrame(frameName, frameValue);
                 break;
             }
             case 'TBPM': // beats per minute
             case 'TLEN': // song duration
+            case 'TDAT': // album release date expressed as DDMM
             case 'TYER': { // album release year
                 this._setIntegerFrame(frameName, frameValue);
                 break;
@@ -281,7 +284,9 @@ export default class ID3Writer {
                 case 'TPOS':
                 case 'TKEY':
                 case 'TMED':
-                case 'TPUB': {
+                case 'TPUB':
+                case 'TCOP':
+                case 'TSRC': {
                     writeBytes = [1].concat(BOM); // encoding, BOM
                     bufferWriter.set(writeBytes, offset);
                     offset += writeBytes.length;
@@ -317,6 +322,7 @@ export default class ID3Writer {
                 }
                 case 'TBPM':
                 case 'TLEN':
+                case 'TDAT':
                 case 'TYER': {
                     offset++; // encoding
 

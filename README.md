@@ -220,6 +220,8 @@ Have not found needed frame? Open a new issue and we'll discuss it.
 - TPUB (label name)
 - TKEY (initial key)
 - TMED (media type)
+- TSRC (isrc - international standard recording code)
+- TCOP (copyright message)
 - WCOM (commercial information)
 - WCOP (copyright/Legal information)
 - WOAF (official audio file webpage)
@@ -232,6 +234,7 @@ Have not found needed frame? Open a new issue and we'll discuss it.
 **integer**
 
 - TLEN (song duration in milliseconds)
+- TDAT (album release date expressed as DDMM)
 - TYER (album release year)
 - TBPM (beats per minute)
 
