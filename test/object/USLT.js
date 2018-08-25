@@ -1,5 +1,5 @@
 const assert = require('assert');
-const ID3Writer = require('../../dist/browser-id3-writer');
+const ID3Writer = require('../../dist/browser-id3-writer.min');
 
 const emptyBuffer = new ArrayBuffer(0);
 const id3Header = [
