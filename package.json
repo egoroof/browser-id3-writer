@@ -13,7 +13,7 @@
     "test": "npm run lint && npm run build && npm run mocha",
     "mocha": "mocha --recursive",
     "preversion": "npm test",
-    "version": "git add package.json README.md",
+    "version": "git add package.json package-lock.json",
     "postversion": "git push && git push --tags && npm publish"
   },
   "repository": {
@@ -42,13 +42,13 @@
   },
   "homepage": "https://github.com/egoroof/browser-id3-writer#readme",
   "devDependencies": {
-    "@babel/cli": "^7.0.0-rc.3",
-    "@babel/core": "^7.0.0-rc.3",
-    "@babel/preset-env": "^7.0.0-rc.3",
-    "eslint": "^5.4.0",
-    "mocha": "^5.2.0",
-    "rollup": "^0.64.1",
-    "uglify-js": "^3.4.8"
+    "@babel/cli": "^7.4.4",
+    "@babel/core": "^7.4.4",
+    "@babel/preset-env": "^7.4.4",
+    "eslint": "^5.16.0",
+    "mocha": "^6.1.4",
+    "rollup": "^1.12.3",
+    "uglify-js": "^3.5.13"
   },
   "engines": {
     "node": ">=4.0.0"
