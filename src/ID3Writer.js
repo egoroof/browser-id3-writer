@@ -135,6 +135,7 @@ export default class ID3Writer {
             case 'TMED': // media type
             case 'TPUB': // label name
             case 'TCOP': // copyright
+            case 'TKEY': // musical key in which the sound starts
             case 'TSRC': { // isrc
                 this._setStringFrame(frameName, frameValue);
                 break;
@@ -168,17 +169,6 @@ export default class ID3Writer {
                     throw new Error('TXXX frame value should be an object with keys description and value');
                 }
                 this._setUserStringFrame(frameValue.description, frameValue.value);
-                break;
-            }
-            case 'TKEY': { // musical key in which the sound starts
-                if (!/^([A-G][#b]?m?|o)$/.test(frameValue)) {
-                    //specs: The ground keys are represented with "A","B","C","D","E",
-                    //"F" and "G" and halfkeys represented with "b" and "#". Minor is
-                    //represented as "m", e.g. "Dbm". Off key is represented with an
-                    //"o" only.
-                    throw new Error(`${frameName} frame value should be like Dbm, C#, B or o`);
-                }
-                this._setStringFrame(frameName, frameValue);
                 break;
             }
             case 'WCOM': // Commercial information
