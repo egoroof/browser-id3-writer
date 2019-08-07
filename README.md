@@ -200,8 +200,6 @@ const id3Buffer = Buffer.from(writer.arrayBuffer);
 
 ## Supported frames
 
-Have not found needed frame? Open a new issue and we'll discuss it.
-
 **array of strings:**
 
 - TPE1 (song artists)
@@ -222,6 +220,7 @@ Have not found needed frame? Open a new issue and we'll discuss it.
 - TMED (media type)
 - TSRC (isrc - international standard recording code)
 - TCOP (copyright message)
+- TEXT (lyricist / text writer)
 - WCOM (commercial information)
 - WCOP (copyright/Legal information)
 - WOAF (official audio file webpage)
