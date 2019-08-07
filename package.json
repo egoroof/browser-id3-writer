@@ -42,13 +42,13 @@
   },
   "homepage": "https://github.com/egoroof/browser-id3-writer#readme",
   "devDependencies": {
-    "@babel/cli": "^7.4.4",
-    "@babel/core": "^7.4.4",
-    "@babel/preset-env": "^7.4.4",
-    "eslint": "^5.16.0",
-    "mocha": "^6.1.4",
-    "rollup": "^1.12.3",
-    "uglify-js": "^3.5.13"
+    "@babel/cli": "^7.5.5",
+    "@babel/core": "^7.5.5",
+    "@babel/preset-env": "^7.5.5",
+    "eslint": "^6.1.0",
+    "mocha": "^6.2.0",
+    "rollup": "^1.19.3",
+    "uglify-js": "^3.6.0"
   },
   "engines": {
     "node": ">=4.0.0"
