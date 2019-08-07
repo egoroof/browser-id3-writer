@@ -27,10 +27,4 @@ describe('TKEY', () => {
         ]);
         assert.deepStrictEqual(actual, expected);
     });
-    it('Throw with wrong value', () => {
-        const writer = new ID3Writer(emptyBuffer);
-        assert.throws(() => {
-            writer.setFrame('TKEY', 'C minor');
-        }, /TKEY frame value should be like Dbm, C#, B or o/);
-    });
 });
