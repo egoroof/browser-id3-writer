@@ -8,7 +8,8 @@ import {
     getLyricsFrameSize,
     getCommentFrameSize,
     getUserStringFrameSize,
-    getUrlLinkFrameSize
+    getUrlLinkFrameSize,
+    getPrivateFrameSize
 } from './sizes';
 
 export default class ID3Writer {
@@ -75,6 +76,17 @@ export default class ID3Writer {
             value: textString,
             description: descriptionString,
             size: getCommentFrameSize(descriptionString.length, textString.length),
+        });
+    }
+
+    _setPrivateFrame(id, data) {
+        const identifier = id.toString();
+
+        this.frames.push({
+            name: 'PRIV',
+            value: data,
+            id: identifier,
+            size: getPrivateFrameSize(identifier.length, data.byteLength),
         });
     }
 
@@ -188,6 +200,13 @@ export default class ID3Writer {
                     throw new Error('COMM frame value should be an object with keys description and text');
                 }
                 this._setCommentFrame(frameValue.description, frameValue.text);
+                break;
+            }
+            case 'PRIV': { // Private frame
+                if (typeof frameValue !== 'object' || !('id' in frameValue) || !('data' in frameValue)) {
+                    throw new Error('PRIV frame value should be an object with keys id and data');
+                }
+                this._setPrivateFrame(frameValue.id, frameValue.data);
                 break;
             }
             default: {
@@ -321,6 +340,17 @@ export default class ID3Writer {
                     writeBytes = encodeWindows1252(frame.value); // frame value
                     bufferWriter.set(writeBytes, offset);
                     offset += writeBytes.length;
+                    break;
+                }
+                case 'PRIV': {
+                    writeBytes = encodeWindows1252(frame.id); // identifier
+                    bufferWriter.set(writeBytes, offset);
+                    offset += writeBytes.length;
+
+                    offset++; // separator
+
+                    bufferWriter.set(new Uint8Array(frame.value), offset); // frame data
+                    offset += frame.value.byteLength;
                     break;
                 }
                 case 'APIC': {
