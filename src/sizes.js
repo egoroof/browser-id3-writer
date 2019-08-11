@@ -76,6 +76,16 @@ export function getCommentFrameSize(descriptionSize, textSize) {
         textUtf16Size;
 }
 
+export function getPrivateFrameSize(idSize, dataSize) {
+    const headerSize = 10;
+    const separatorSize = 1;
+
+    return headerSize +
+        idSize +
+        separatorSize +
+        dataSize;
+}
+
 export function getUserStringFrameSize(descriptionSize, valueSize) {
     const headerSize = 10;
     const encodingSize = 1;

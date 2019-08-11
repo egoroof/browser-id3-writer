@@ -266,6 +266,15 @@ writer.setFrame('TXXX', {
 });
 ```
 
+- PRIV (private frame):
+
+```js
+writer.setFrame('PRIV', {
+    id: 'identifier',
+    data: dataArrayBuffer
+});
+```
+
 - APIC (attached picture):
 
 ```js
