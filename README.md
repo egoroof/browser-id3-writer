@@ -208,7 +208,10 @@ const id3Buffer = Buffer.from(writer.arrayBuffer);
 
 **string**
 
+- TLAN (language)
+- TIT1 (content group description)
 - TIT2 (song title)
+- TIT3 (song subtitle)
 - TALB (album title)
 - TPE2 (album artist)
 - TPE3 (conductor/performer refinement)

@@ -137,7 +137,10 @@ export default class ID3Writer {
                 this._setStringFrame(frameName, value);
                 break;
             }
+            case 'TLAN': // language
+            case 'TIT1': // content group description
             case 'TIT2': // song title
+            case 'TIT3': // song subtitle
             case 'TALB': // album title
             case 'TPE2': // album artist // spec doesn't say anything about separator, so it is a string, not array
             case 'TPE3': // conductor/performer refinement
@@ -285,7 +288,10 @@ export default class ID3Writer {
                 case 'TPE1':
                 case 'TCOM':
                 case 'TCON':
+                case 'TLAN':
+                case 'TIT1':
                 case 'TIT2':
+                case 'TIT3':
                 case 'TALB':
                 case 'TPE2':
                 case 'TPE3':
