@@ -55,25 +55,37 @@ export default class ID3Writer {
         });
     }
 
-    _setLyricsFrame(description, lyrics) {
+    _setLyricsFrame(language, description, lyrics) {
+        const languageBuffer = [];
         const descriptionString = description.toString();
         const lyricsString = lyrics.toString();
+
+        for (let i = 0; i < language.length; i++) {
+          languageBuffer[i] = language.charCodeAt(i);
+        }
 
         this.frames.push({
             name: 'USLT',
             value: lyricsString,
+            language: languageBuffer,
             description: descriptionString,
             size: getLyricsFrameSize(descriptionString.length, lyricsString.length),
         });
     }
 
-    _setCommentFrame(description, text) {
+    _setCommentFrame(language, description, text) {
+        const languageBuffer = [];
         const descriptionString = description.toString();
         const textString = text.toString();
+
+        for (let i = 0; i < language.length; i++) {
+          languageBuffer[i] = language.charCodeAt(i);
+        }
 
         this.frames.push({
             name: 'COMM',
             value: textString,
+            language: languageBuffer,
             description: descriptionString,
             size: getCommentFrameSize(descriptionString.length, textString.length),
         });
@@ -164,10 +176,13 @@ export default class ID3Writer {
                 break;
             }
             case 'USLT': { // unsychronised lyrics
-                if (typeof frameValue !== 'object' || !('description' in frameValue) || !('lyrics' in frameValue)) {
-                    throw new Error('USLT frame value should be an object with keys description and lyrics');
+                if (typeof frameValue !== 'object' || !('language' in frameValue) || !('description' in frameValue) || !('lyrics' in frameValue)) {
+                    throw new Error('USLT frame value should be an object with keys language, description, and lyrics');
                 }
-                this._setLyricsFrame(frameValue.description, frameValue.lyrics);
+                if (frameValue.language.length !== 3) {
+                    throw new Error('Language must be coded following the ISO 639-2 standards');
+                }
+                this._setLyricsFrame(frameValue.language, frameValue.description, frameValue.lyrics);
                 break;
             }
             case 'APIC': { // song cover
@@ -199,10 +214,13 @@ export default class ID3Writer {
                 break;
             }
             case 'COMM': { // Comments
-                if (typeof frameValue !== 'object' || !('description' in frameValue) || !('text' in frameValue)) {
+                if (typeof frameValue !== 'object' || !('language' in frameValue) || !('description' in frameValue) || !('text' in frameValue)) {
                     throw new Error('COMM frame value should be an object with keys description and text');
                 }
-                this._setCommentFrame(frameValue.description, frameValue.text);
+                if (frameValue.language.length !== 3) {
+                    throw new Error('Language must be coded following the ISO 639-2 standards');
+                }
+                this._setCommentFrame(frameValue.language, frameValue.description, frameValue.text);
                 break;
             }
             case 'PRIV': { // Private frame
@@ -239,7 +257,6 @@ export default class ID3Writer {
         this.removeTag();
 
         const BOM = [0xff, 0xfe];
-        const langEng = [0x65, 0x6e, 0x67];
         const headerSize = 10;
         const totalFrameSize = this.frames.reduce((sum, frame) => sum + frame.size, 0);
         const totalTagSize = headerSize + totalFrameSize + this.padding;
@@ -318,7 +335,7 @@ export default class ID3Writer {
                 case 'COMM': {
                     writeBytes = [1]; // encoding
                     if (frame.name === 'USLT' || frame.name === 'COMM') {
-                        writeBytes = writeBytes.concat(langEng); // language
+                        writeBytes = writeBytes.concat(frame.language); // language
                     }
                     writeBytes = writeBytes.concat(BOM); // BOM for content descriptor
                     bufferWriter.set(writeBytes, offset);
