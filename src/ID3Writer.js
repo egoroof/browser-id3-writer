@@ -56,36 +56,28 @@ export default class ID3Writer {
     }
 
     _setLyricsFrame(language, description, lyrics) {
-        const languageBuffer = [];
+        const languageCode = language.split('').map(c => c.charCodeAt(0));
         const descriptionString = description.toString();
         const lyricsString = lyrics.toString();
-
-        for (let i = 0; i < language.length; i++) {
-          languageBuffer[i] = language.charCodeAt(i);
-        }
 
         this.frames.push({
             name: 'USLT',
             value: lyricsString,
-            language: languageBuffer,
+            language: languageCode,
             description: descriptionString,
             size: getLyricsFrameSize(descriptionString.length, lyricsString.length),
         });
     }
 
     _setCommentFrame(language, description, text) {
-        const languageBuffer = [];
+        const languageCode = language.split('').map(c => c.charCodeAt(0));
         const descriptionString = description.toString();
         const textString = text.toString();
-
-        for (let i = 0; i < language.length; i++) {
-          languageBuffer[i] = language.charCodeAt(i);
-        }
 
         this.frames.push({
             name: 'COMM',
             value: textString,
-            language: languageBuffer,
+            language: languageCode,
             description: descriptionString,
             size: getCommentFrameSize(descriptionString.length, textString.length),
         });
