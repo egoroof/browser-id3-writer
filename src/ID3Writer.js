@@ -176,10 +176,11 @@ export default class ID3Writer {
                 break;
             }
             case 'USLT': { // unsychronised lyrics
-                if (typeof frameValue !== 'object' || !('language' in frameValue) || !('description' in frameValue) || !('lyrics' in frameValue)) {
-                    throw new Error('USLT frame value should be an object with keys language, description, and lyrics');
+                frameValue.language = frameValue.language || 'eng';
+                if (typeof frameValue !== 'object' || !('description' in frameValue) || !('lyrics' in frameValue)) {
+                    throw new Error('USLT frame value should be an object with keys description and lyrics');
                 }
-                if (frameValue.language.length !== 3) {
+                if (frameValue.language && !frameValue.language.match(/[a-z]{3}/i)) {
                     throw new Error('Language must be coded following the ISO 639-2 standards');
                 }
                 this._setLyricsFrame(frameValue.language, frameValue.description, frameValue.lyrics);
@@ -214,10 +215,11 @@ export default class ID3Writer {
                 break;
             }
             case 'COMM': { // Comments
+                frameValue.language = frameValue.language || 'eng';
                 if (typeof frameValue !== 'object' || !('language' in frameValue) || !('description' in frameValue) || !('text' in frameValue)) {
                     throw new Error('COMM frame value should be an object with keys description and text');
                 }
-                if (frameValue.language.length !== 3) {
+                if (frameValue.language && !frameValue.language.match(/[a-z]{3}/i)) {
                     throw new Error('Language must be coded following the ISO 639-2 standards');
                 }
                 this._setCommentFrame(frameValue.language, frameValue.description, frameValue.text);

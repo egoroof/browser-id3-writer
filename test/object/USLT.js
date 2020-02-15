@@ -13,7 +13,6 @@ describe('USLT', () => {
         const writer = new ID3Writer(emptyBuffer);
         writer.padding = 0;
         writer.setFrame('USLT', {
-            language: 'eng',
             description: 'Ярл',
             lyrics: 'Лирика',
         });

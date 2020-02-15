@@ -13,7 +13,6 @@ describe('COMM', () => {
         const writer = new ID3Writer(emptyBuffer);
         writer.padding = 0;
         writer.setFrame('COMM', {
-            language: 'eng',
             description: 'advert',
             text: 'free hugs',
         });
