@@ -246,7 +246,6 @@ const id3Buffer = Buffer.from(writer.arrayBuffer);
 
 ```js
 writer.setFrame('COMM', {
-    language: 'eng',
     description: 'description here',
     text: 'text here'
 });
@@ -256,7 +255,6 @@ writer.setFrame('COMM', {
 
 ```js
 writer.setFrame('USLT', {
-    language: 'eng',
     description: 'description here',
     lyrics: 'lyrics here'
 });
