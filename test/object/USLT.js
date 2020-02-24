@@ -33,7 +33,7 @@ describe('USLT', () => {
         ]);
         assert.deepStrictEqual(actual, expected);
     });
-    it('USLT', () => {
+    it('Change language', () => {
         const writer = new ID3Writer(emptyBuffer);
         writer.padding = 0;
         writer.setFrame('USLT', {
