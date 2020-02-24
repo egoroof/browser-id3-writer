@@ -208,7 +208,7 @@ export default class ID3Writer {
             }
             case 'COMM': { // Comments
                 frameValue.language = frameValue.language || 'eng';
-                if (typeof frameValue !== 'object' || !('language' in frameValue) || !('description' in frameValue) || !('text' in frameValue)) {
+                if (typeof frameValue !== 'object' || !('description' in frameValue) || !('text' in frameValue)) {
                     throw new Error('COMM frame value should be an object with keys description and text');
                 }
                 if (frameValue.language && !frameValue.language.match(/[a-z]{3}/i)) {
