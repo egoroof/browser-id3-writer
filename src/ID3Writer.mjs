@@ -14,6 +14,7 @@ import {
   getUserStringFrameSize,
   getUrlLinkFrameSize,
   getPrivateFrameSize,
+  getPairedTextFrameSize,
 } from './sizes.mjs';
 
 export default class ID3Writer {
@@ -124,6 +125,14 @@ export default class ID3Writer {
       name,
       value: urlString,
       size: getUrlLinkFrameSize(urlString.length),
+    });
+  }
+
+  _setPairedTextFrame(name, list) {
+    this.frames.push({
+      name,
+      value: list,
+      size: getPairedTextFrameSize(list),
     });
   }
 
@@ -294,6 +303,14 @@ export default class ID3Writer {
           );
         }
         this._setPrivateFrame(frameValue.id, frameValue.data);
+        break;
+      }
+      case 'IPLS': { // Involved people
+        if (!Array.isArray(frameValue) || !Array.isArray(frameValue[0])) {
+          throw new Error('IPLS frame value should be an array of pairs');
+        }
+
+        this._setPairedTextFrame(frameName, frameValue);
         break;
       }
       default: {
@@ -480,6 +497,35 @@ export default class ID3Writer {
 
           bufferWriter.set(new Uint8Array(frame.value), offset); // picture content
           offset += frame.value.byteLength;
+          break;
+        }
+        case 'IPLS': {
+          writeBytes = [1]; // encoding
+          bufferWriter.set(writeBytes, offset);
+          offset += writeBytes.length;
+
+          frame.value.forEach((pair) => {
+            writeBytes = [].concat(BOM); // BOM
+            bufferWriter.set(writeBytes, offset);
+            offset += writeBytes.length;
+
+            writeBytes = encodeUtf16le(pair[0].toString()); // role
+            bufferWriter.set(writeBytes, offset);
+            offset += writeBytes.length;
+
+            writeBytes = [0, 0].concat(BOM); // separator + BOM
+            bufferWriter.set(writeBytes, offset);
+            offset += writeBytes.length;
+
+            writeBytes = encodeUtf16le(pair[1].toString()); // name
+            bufferWriter.set(writeBytes, offset);
+            offset += writeBytes.length;
+
+            writeBytes = [0, 0]; // separator
+            bufferWriter.set(writeBytes, offset);
+            offset += writeBytes.length;
+          });
+
           break;
         }
       }

@@ -113,3 +113,18 @@ export function getUrlLinkFrameSize(urlSize) {
 
   return headerSize + urlSize;
 }
+
+export function getPairedTextFrameSize(list){
+  const headerSize = 10;
+  const encodingSize = 1;
+  const bomSize = 2;
+  const separatorSize = 2;
+  let encodedListSize = 0;
+  list.forEach((pair) => {
+    encodedListSize += bomSize + (pair[0].length*2) + separatorSize + bomSize + (pair[1].length*2) + separatorSize;
+  });
+
+  return headerSize +
+        encodingSize +
+        encodedListSize;
+}
