@@ -132,3 +132,28 @@ export function getPairedTextFrameSize(list) {
 
   return headerSize + encodingSize + encodedListSize;
 }
+
+export function getSynchronisedLyricsFrameSize(lyrics) {
+  const headerSize = 10;
+  const encodingSize = 1;
+  const languageSize = 3;
+  const timestampFormatSize = 1;
+  const contentTypeSize = 1;
+  const bomSize = 2;
+  const separatorSize = 2;
+  const timestampSize = 4;
+  let encodedLyricsSize = 0;
+  lyrics.forEach((line) => {
+    encodedLyricsSize +=
+      bomSize + line[0].length * 2 + separatorSize + timestampSize;
+  });
+
+  return (
+    headerSize +
+    encodingSize +
+    languageSize +
+    timestampFormatSize +
+    contentTypeSize +
+    encodedLyricsSize
+  );
+}
