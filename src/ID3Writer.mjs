@@ -18,7 +18,12 @@ import {
 
 export default class ID3Writer {
   _setIntegerFrame(name, value) {
-    const integer = parseInt(value, 10);
+    let integer;
+    if (name === 'TDAT'){
+      integer = String(parseInt(value, 10)).padStart(4, '0');
+    } else {
+      integer = parseInt(value, 10);
+    }
 
     this.frames.push({
       name,
