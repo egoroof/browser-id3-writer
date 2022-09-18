@@ -133,13 +133,14 @@ export function getPairedTextFrameSize(list) {
   return headerSize + encodingSize + encodedListSize;
 }
 
-export function getSynchronisedLyricsFrameSize(lyrics) {
+export function getSynchronisedLyricsFrameSize(lyrics, descriptionSize) {
   const headerSize = 10;
   const encodingSize = 1;
   const languageSize = 3;
   const timestampFormatSize = 1;
   const contentTypeSize = 1;
   const bomSize = 2;
+  const descriptionUtf16Size = descriptionSize * 2;
   const separatorSize = 2;
   const timestampSize = 4;
   let encodedLyricsSize = 0;
@@ -154,6 +155,9 @@ export function getSynchronisedLyricsFrameSize(lyrics) {
     languageSize +
     timestampFormatSize +
     contentTypeSize +
+    bomSize +
+    descriptionUtf16Size +
+    separatorSize +
     encodedLyricsSize
   );
 }

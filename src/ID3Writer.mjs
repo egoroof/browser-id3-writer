@@ -142,16 +142,24 @@ export default class ID3Writer {
     });
   }
 
-  _setSynchronisedLyricsFrame(type, text, timestampFormat, language) {
+  _setSynchronisedLyricsFrame(
+    type,
+    text,
+    timestampFormat,
+    language,
+    description
+  ) {
+    const descriptionString = description.toString();
     const languageCode = language.split('').map((c) => c.charCodeAt(0));
 
     this.frames.push({
       name: 'SYLT',
       value: text,
       language: languageCode,
+      description: descriptionString,
       type,
       timestampFormat,
-      size: getSynchronisedLyricsFrameSize(text),
+      size: getSynchronisedLyricsFrameSize(text, descriptionString.length),
     });
   }
 
@@ -358,12 +366,14 @@ export default class ID3Writer {
           throw new Error('Incorrect SYLT frame time stamp format');
         }
         frameValue.language = frameValue.language || 'XXX';
+        frameValue.description = frameValue.description || '';
 
         this._setSynchronisedLyricsFrame(
           frameValue.type,
           frameValue.text,
           frameValue.timestampFormat,
-          frameValue.language
+          frameValue.language,
+          frameValue.description
         );
         break;
       }
@@ -588,6 +598,16 @@ export default class ID3Writer {
           writeBytes = writeBytes.concat(frame.type); // content type
           bufferWriter.set(writeBytes, offset);
           offset += writeBytes.length;
+
+          writeBytes = [].concat(BOM); // BOM
+          bufferWriter.set(writeBytes, offset);
+          offset += writeBytes.length;
+
+          writeBytes = encodeUtf16le(frame.description); // description
+          bufferWriter.set(writeBytes, offset);
+          offset += writeBytes.length;
+
+          offset += 2; // separator
 
           frame.value.forEach((line) => {
             writeBytes = [].concat(BOM); // BOM
