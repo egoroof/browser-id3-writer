@@ -15,7 +15,7 @@ It can't read the tag so use another lib to do it.
 
 Works in Node.js 4+, IE10+ and all modern browsers.
 
-Here is an online demonstration: [egoroof.ru/browser-id3-writer/](https://egoroof.ru/browser-id3-writer/)
+Here is an online demonstration: [egoroof.github.io/browser-id3-writer/](https://egoroof.github.io/browser-id3-writer/)
 
 ## Table of Contents
 
