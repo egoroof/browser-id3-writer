@@ -4,7 +4,7 @@ const fs = require('fs');
 const path = require('path');
 const zlib = require('zlib');
 
-const bytesToKiB = bytes => (bytes / 1024).toFixed(2);
+const bytesToKiB = (bytes) => (bytes / 1024).toFixed(2);
 
 const filePath = 'dist/browser-id3-writer.js';
 const rootDir = path.dirname(__dirname);

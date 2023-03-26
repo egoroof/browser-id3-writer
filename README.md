@@ -4,7 +4,6 @@
 
 [build-badge]: https://img.shields.io/travis/com/egoroof/browser-id3-writer/master.svg?style=flat-square
 [build]: https://travis-ci.com/egoroof/browser-id3-writer
-
 [npm-badge]: https://img.shields.io/npm/v/browser-id3-writer.svg?style=flat-square
 [npm]: https://www.npmjs.com/package/browser-id3-writer
 
@@ -54,23 +53,23 @@ For example you can create file input and use
 [FileReader](https://developer.mozilla.org/en-US/docs/Web/API/FileReader):
 
 ```html
-<input type="file" id="file" accept="audio/mpeg">
+<input type="file" id="file" accept="audio/mpeg" />
 <script>
-    document.getElementById('file').addEventListener('change', function () {
-        if (this.files.length === 0) {
-            return;
-        }
-        const reader = new FileReader();
-        reader.onload = function () {
-            const arrayBuffer = reader.result;
-            // go next
-        };
-        reader.onerror = function () {
-            // handle error
-            console.error('Reader error', reader.error);
-        };
-        reader.readAsArrayBuffer(this.files[0]);
-    });
+  document.getElementById('file').addEventListener('change', function () {
+    if (this.files.length === 0) {
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = function () {
+      const arrayBuffer = reader.result;
+      // go next
+    };
+    reader.onerror = function () {
+      // handle error
+      console.error('Reader error', reader.error);
+    };
+    reader.readAsArrayBuffer(this.files[0]);
+  });
 </script>
 ```
 
@@ -84,17 +83,17 @@ const xhr = new XMLHttpRequest();
 xhr.open('GET', urlToSongFile, true);
 xhr.responseType = 'arraybuffer';
 xhr.onload = function () {
-    if (xhr.status === 200) {
-        const arrayBuffer = xhr.response;
-        // go next
-    } else {
-        // handle error
-        console.error(xhr.statusText + ' (' + xhr.status + ')');
-    }
-};
-xhr.onerror = function() {
+  if (xhr.status === 200) {
+    const arrayBuffer = xhr.response;
+    // go next
+  } else {
     // handle error
-    console.error('Network error');
+    console.error(xhr.statusText + ' (' + xhr.status + ')');
+  }
+};
+xhr.onerror = function () {
+  // handle error
+  console.error('Network error');
 };
 xhr.send();
 ```
@@ -106,20 +105,21 @@ Create new `ID3Writer` instance with arrayBuffer of your song, set frames and ad
 ```js
 // arrayBuffer of song or empty arrayBuffer if you just want only id3 tag without song
 const writer = new ID3Writer(arrayBuffer);
-writer.setFrame('TIT2', 'Home')
-      .setFrame('TPE1', ['Eminem', '50 Cent'])
-      .setFrame('TALB', 'Friday Night Lights')
-      .setFrame('TYER', 2004)
-      .setFrame('TRCK', '6/8')
-      .setFrame('TCON', ['Soundtrack'])
-      .setFrame('TBPM', 128)
-      .setFrame('WPAY', 'https://google.com')
-      .setFrame('TKEY', 'Fbm')
-      .setFrame('APIC', {
-          type: 3,
-          data: coverArrayBuffer,
-          description: 'Super picture'
-      });
+writer
+  .setFrame('TIT2', 'Home')
+  .setFrame('TPE1', ['Eminem', '50 Cent'])
+  .setFrame('TALB', 'Friday Night Lights')
+  .setFrame('TYER', 2004)
+  .setFrame('TRCK', '6/8')
+  .setFrame('TCON', ['Soundtrack'])
+  .setFrame('TBPM', 128)
+  .setFrame('WPAY', 'https://google.com')
+  .setFrame('TKEY', 'Fbm')
+  .setFrame('APIC', {
+    type: 3,
+    data: coverArrayBuffer,
+    description: 'Super picture',
+  });
 writer.addTag();
 ```
 
@@ -144,8 +144,8 @@ If you are writing chromium extension you can save file using
 
 ```js
 chrome.downloads.download({
-    url: url,
-    filename: 'song with tags.mp3'
+  url: url,
+  filename: 'song with tags.mp3',
 });
 ```
 
@@ -173,15 +173,16 @@ const songBuffer = fs.readFileSync('path_to_song.mp3');
 const coverBuffer = fs.readFileSync('path_to_cover.jpg');
 
 const writer = new ID3Writer(songBuffer);
-writer.setFrame('TIT2', 'Home')
-      .setFrame('TPE1', ['Eminem', '50 Cent'])
-      .setFrame('TALB', 'Friday Night Lights')
-      .setFrame('TYER', 2004)
-      .setFrame('APIC', {
-          type: 3,
-          data: coverBuffer,
-          description: 'Super picture'
-      });
+writer
+  .setFrame('TIT2', 'Home')
+  .setFrame('TPE1', ['Eminem', '50 Cent'])
+  .setFrame('TALB', 'Friday Night Lights')
+  .setFrame('TYER', 2004)
+  .setFrame('APIC', {
+    type: 3,
+    data: coverBuffer,
+    description: 'Super picture',
+  });
 writer.addTag();
 
 const taggedSongBuffer = Buffer.from(writer.arrayBuffer);
@@ -246,9 +247,9 @@ const id3Buffer = Buffer.from(writer.arrayBuffer);
 
 ```js
 writer.setFrame('COMM', {
-    description: 'description here',
-    text: 'text here',
-    language: 'eng'
+  description: 'description here',
+  text: 'text here',
+  language: 'eng',
 });
 ```
 
@@ -256,9 +257,9 @@ writer.setFrame('COMM', {
 
 ```js
 writer.setFrame('USLT', {
-    description: 'description here',
-    lyrics: 'lyrics here',
-    language: 'eng'
+  description: 'description here',
+  lyrics: 'lyrics here',
+  language: 'eng',
 });
 ```
 
@@ -266,8 +267,8 @@ writer.setFrame('USLT', {
 
 ```js
 writer.setFrame('TXXX', {
-    description: 'description here',
-    value: 'value here'
+  description: 'description here',
+  value: 'value here',
 });
 ```
 
@@ -275,8 +276,8 @@ writer.setFrame('TXXX', {
 
 ```js
 writer.setFrame('PRIV', {
-    id: 'identifier',
-    data: dataArrayBuffer
+  id: 'identifier',
+  data: dataArrayBuffer,
 });
 ```
 
@@ -284,10 +285,10 @@ writer.setFrame('PRIV', {
 
 ```js
 writer.setFrame('APIC', {
-    type: 3,
-    data: coverArrayBuffer,
-    description: 'description here',
-    useUnicodeEncoding: false
+  type: 3,
+  data: coverArrayBuffer,
+  description: 'description here',
+  useUnicodeEncoding: false,
 });
 ```
 
@@ -298,7 +299,7 @@ See [#42](https://github.com/egoroof/browser-id3-writer/issues/42).
 ## APIC picture types
 
 | Type | Name                                |
-|------|-------------------------------------|
+| ---- | ----------------------------------- |
 | 0    | Other                               |
 | 1    | 32x32 pixels 'file icon' (PNG only) |
 | 2    | Other file icon                     |
