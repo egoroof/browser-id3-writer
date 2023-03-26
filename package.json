@@ -10,11 +10,13 @@
     "build:transpile": "babel dist/browser-id3-writer.js -o dist/browser-id3-writer.js",
     "build:wrap": "rollup -f umd -n ID3Writer -i dist/browser-id3-writer.js -o dist/browser-id3-writer.js",
     "build:compress": "uglifyjs dist/browser-id3-writer.js -o dist/browser-id3-writer.js -m -c",
-    "test": "npm run lint && npm run build && npm run mocha",
+    "test": "npm run prettier:check && npm run lint && npm run build && npm run mocha",
     "mocha": "mocha --recursive",
     "preversion": "npm test",
     "version": "git add package.json package-lock.json",
-    "postversion": "git push && git push --tags && npm publish"
+    "postversion": "git push && git push --tags && npm publish",
+    "prettier:write": "prettier --write .",
+    "prettier:check": "prettier --check ."
   },
   "repository": {
     "type": "git",
@@ -47,6 +49,7 @@
     "@babel/preset-env": "^7.19.4",
     "eslint": "^8.26.0",
     "mocha": "^10.1.0",
+    "prettier": "^2.8.7",
     "rollup": "^3.2.3",
     "uglify-js": "^3.17.4"
   }
