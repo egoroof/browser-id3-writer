@@ -1,10 +1,10 @@
-import { encodeWindows1252, encodeUtf16le } from './encoder';
-import { getMimeType, isId3v2 } from './signatures';
+import { encodeWindows1252, encodeUtf16le } from './encoder.mjs';
+import { getMimeType, isId3v2 } from './signatures.mjs';
 import {
   uint7ArrayToUint28,
   uint28ToUint7Array,
   uint32ToUint8Array,
-} from './transform';
+} from './transform.mjs';
 import {
   getNumericFrameSize,
   getStringFrameSize,
@@ -14,7 +14,7 @@ import {
   getUserStringFrameSize,
   getUrlLinkFrameSize,
   getPrivateFrameSize,
-} from './sizes';
+} from './sizes.mjs';
 
 export default class ID3Writer {
   _setIntegerFrame(name, value) {

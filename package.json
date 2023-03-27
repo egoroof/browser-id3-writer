@@ -4,9 +4,9 @@
   "description": "Pure JS library for writing ID3 tag to MP3 files in browsers and Node.js",
   "main": "dist/browser-id3-writer.js",
   "scripts": {
-    "lint": "eslint src tools test",
+    "lint": "eslint src tools test --ext js,mjs",
     "build": "npm run build:concat && npm run build:transpile && npm run build:wrap && npm run build:compress && node tools/distSize",
-    "build:concat": "rollup -f es -i src/ID3Writer.js -o dist/browser-id3-writer.js",
+    "build:concat": "rollup -f es -i src/ID3Writer.mjs -o dist/browser-id3-writer.js",
     "build:transpile": "babel dist/browser-id3-writer.js -o dist/browser-id3-writer.js",
     "build:wrap": "rollup -f umd -n ID3Writer -i dist/browser-id3-writer.js -o dist/browser-id3-writer.js",
     "build:compress": "uglifyjs dist/browser-id3-writer.js -o dist/browser-id3-writer.js -m -c",
