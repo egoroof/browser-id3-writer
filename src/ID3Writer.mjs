@@ -305,7 +305,8 @@ export default class ID3Writer {
         this._setPrivateFrame(frameValue.id, frameValue.data);
         break;
       }
-      case 'IPLS': { // Involved people
+      case 'IPLS': {
+        // Involved people
         if (!Array.isArray(frameValue) || !Array.isArray(frameValue[0])) {
           throw new Error('IPLS frame value should be an array of pairs');
         }
