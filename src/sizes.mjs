@@ -126,16 +126,19 @@ export function getSynchronisedLyricsFrameSize(lyrics, descriptionSize) {
   const timestampSize = 4;
   let encodedLyricsSize = 0;
   lyrics.forEach((line) => {
-    encodedLyricsSize += bomSize + (line[0].length*2) + separatorSize + timestampSize;
+    encodedLyricsSize +=
+      bomSize + line[0].length * 2 + separatorSize + timestampSize;
   });
 
-  return headerSize +
-        encodingSize +
-        languageSize +
-        timestampFormatSize +
-        contentTypeSize +
-        bomSize +
-        descriptionUtf16Size +
-        separatorSize +
-        encodedLyricsSize;
+  return (
+    headerSize +
+    encodingSize +
+    languageSize +
+    timestampFormatSize +
+    contentTypeSize +
+    bomSize +
+    descriptionUtf16Size +
+    separatorSize +
+    encodedLyricsSize
+  );
 }

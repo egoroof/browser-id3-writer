@@ -128,9 +128,15 @@ export default class ID3Writer {
     });
   }
 
-  _setSynchronisedLyricsFrame(type, text, timestampFormat, language, description) {
+  _setSynchronisedLyricsFrame(
+    type,
+    text,
+    timestampFormat,
+    language,
+    description
+  ) {
     const descriptionString = description.toString();
-    const languageCode = language.split('').map(c => c.charCodeAt(0));
+    const languageCode = language.split('').map((c) => c.charCodeAt(0));
 
     this.frames.push({
       name: 'SYLT',
@@ -312,11 +318,22 @@ export default class ID3Writer {
         this._setPrivateFrame(frameValue.id, frameValue.data);
         break;
       }
-      case 'SYLT': { // Synchronised Lyrics
-        if (typeof frameValue !== 'object' || !('type' in frameValue) || !('text' in frameValue) || !('timestampFormat' in frameValue)) {
-          throw new Error('SYLT frame value should be an object with keys type, text and timestampFormat');
+      case 'SYLT': {
+        // Synchronised Lyrics
+        if (
+          typeof frameValue !== 'object' ||
+          !('type' in frameValue) ||
+          !('text' in frameValue) ||
+          !('timestampFormat' in frameValue)
+        ) {
+          throw new Error(
+            'SYLT frame value should be an object with keys type, text and timestampFormat'
+          );
         }
-        if (!Array.isArray(frameValue.text) || !Array.isArray(frameValue.text[0])) {
+        if (
+          !Array.isArray(frameValue.text) ||
+          !Array.isArray(frameValue.text[0])
+        ) {
           throw new Error('SYLT frame text value should be an array of pairs');
         }
         if (frameValue.type < 0 || frameValue.type > 6) {
@@ -328,7 +345,13 @@ export default class ID3Writer {
         frameValue.language = frameValue.language || 'XXX';
         frameValue.description = frameValue.description || '';
 
-        this._setSynchronisedLyricsFrame(frameValue.type, frameValue.text, frameValue.timestampFormat, frameValue.language, frameValue.description);
+        this._setSynchronisedLyricsFrame(
+          frameValue.type,
+          frameValue.text,
+          frameValue.timestampFormat,
+          frameValue.language,
+          frameValue.description
+        );
         break;
       }
       default: {
