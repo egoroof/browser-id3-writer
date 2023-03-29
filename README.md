@@ -256,6 +256,16 @@ writer.setFrame('USLT', {
 });
 ```
 
+- IPLS (involved people list):
+
+```js
+writer.setFrame('IPLS', [
+  ['role', 'name'],
+  ['role', 'name'],
+  ...
+]);
+```
+
 - TXXX (user defined text):
 
 ```js
