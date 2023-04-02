@@ -365,7 +365,7 @@ export default class ID3Writer {
         if (frameValue.timestampFormat < 1 || frameValue.timestampFormat > 2) {
           throw new Error('Incorrect SYLT frame time stamp format');
         }
-        frameValue.language = frameValue.language || 'XXX';
+        frameValue.language = frameValue.language || 'eng';
         frameValue.description = frameValue.description || '';
 
         this._setSynchronisedLyricsFrame(
