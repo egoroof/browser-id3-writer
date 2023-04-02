@@ -541,10 +541,10 @@ export default class ID3Writer {
           break;
         }
         case 'SYLT': {
-          writeBytes = [1]; // encoding
-          writeBytes = writeBytes.concat(frame.language); // language
-          writeBytes = writeBytes.concat(frame.timestampFormat); // time stamp format
-          writeBytes = writeBytes.concat(frame.type); // content type
+          writeBytes = [1] // encoding
+            .concat(frame.language) // language
+            .concat(frame.timestampFormat) // time stamp format
+            .concat(frame.type); // content type
           bufferWriter.set(writeBytes, offset);
           offset += writeBytes.length;
 
