@@ -7,7 +7,7 @@
     "lint": "eslint src tools test --ext js,mjs",
     "build": "npm run build:wrap && npm run build:compress && node tools/distSize",
     "build:wrap": "rollup -f umd -n ID3Writer -i src/ID3Writer.mjs -o dist/browser-id3-writer.js",
-    "build:compress": "uglifyjs dist/browser-id3-writer.js -o dist/browser-id3-writer.js -m -c",
+    "build:compress": "terser dist/browser-id3-writer.js -o dist/browser-id3-writer.js -m -c",
     "test": "npm run prettier:check && npm run lint && npm run build && npm run mocha",
     "mocha": "mocha --recursive",
     "preversion": "npm test",
@@ -46,6 +46,6 @@
     "mocha": "^10.2.0",
     "prettier": "^2.8.7",
     "rollup": "^3.20.2",
-    "uglify-js": "^3.17.4"
+    "terser": "^5.16.8"
   }
 }
