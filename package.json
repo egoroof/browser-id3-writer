@@ -5,10 +5,8 @@
   "main": "dist/browser-id3-writer.js",
   "scripts": {
     "lint": "eslint src tools test --ext js,mjs",
-    "build": "npm run build:concat && npm run build:transpile && npm run build:wrap && npm run build:compress && node tools/distSize",
-    "build:concat": "rollup -f es -i src/ID3Writer.mjs -o dist/browser-id3-writer.js",
-    "build:transpile": "babel dist/browser-id3-writer.js -o dist/browser-id3-writer.js",
-    "build:wrap": "rollup -f umd -n ID3Writer -i dist/browser-id3-writer.js -o dist/browser-id3-writer.js",
+    "build": "npm run build:wrap && npm run build:compress && node tools/distSize",
+    "build:wrap": "rollup -f umd -n ID3Writer -i src/ID3Writer.mjs -o dist/browser-id3-writer.js",
     "build:compress": "uglifyjs dist/browser-id3-writer.js -o dist/browser-id3-writer.js -m -c",
     "test": "npm run prettier:check && npm run lint && npm run build && npm run mocha",
     "mocha": "mocha --recursive",
@@ -44,9 +42,6 @@
   },
   "homepage": "https://github.com/egoroof/browser-id3-writer#readme",
   "devDependencies": {
-    "@babel/cli": "^7.21.0",
-    "@babel/core": "^7.21.3",
-    "@babel/preset-env": "^7.20.2",
     "eslint": "^8.36.0",
     "mocha": "^10.2.0",
     "prettier": "^2.8.7",
