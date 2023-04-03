@@ -30,11 +30,16 @@ export default class ID3Writer {
 
   _setStringFrame(name, value) {
     const stringValue = value.toString();
+    let size = getStringFrameSize(stringValue.length);
+
+    if (name === 'TDAT') {
+      size = getNumericFrameSize(stringValue.length);
+    }
 
     this.frames.push({
       name,
       value: stringValue,
-      size: getStringFrameSize(stringValue.length),
+      size,
     });
   }
 
@@ -181,6 +186,7 @@ export default class ID3Writer {
       case 'TCOP': // copyright
       case 'TKEY': // musical key in which the sound starts
       case 'TEXT': // lyricist / text writer
+      case 'TDAT': // album release date expressed as DDMM
       case 'TSRC': {
         // isrc
         this._setStringFrame(frameName, frameValue);
@@ -188,7 +194,6 @@ export default class ID3Writer {
       }
       case 'TBPM': // beats per minute
       case 'TLEN': // song duration
-      case 'TDAT': // album release date expressed as DDMM
       case 'TYER': {
         // album release year
         this._setIntegerFrame(frameName, frameValue);

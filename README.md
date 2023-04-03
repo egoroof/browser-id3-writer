@@ -218,6 +218,7 @@ const id3Buffer = Buffer.from(writer.arrayBuffer);
 - TPUB (label name)
 - TKEY (initial key)
 - TMED (media type)
+- TDAT (album release date expressed as 'DDMM')
 - TSRC (isrc - international standard recording code)
 - TCOP (copyright message)
 - TEXT (lyricist / text writer)
@@ -233,7 +234,6 @@ const id3Buffer = Buffer.from(writer.arrayBuffer);
 **integer**
 
 - TLEN (song duration in milliseconds)
-- TDAT (album release date expressed as DDMM)
 - TYER (album release year)
 - TBPM (beats per minute)
 
