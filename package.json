@@ -1,7 +1,7 @@
 {
   "name": "browser-id3-writer",
   "version": "4.4.0",
-  "description": "Pure JS library for writing ID3 tag to MP3 files in browsers and Node.js",
+  "description": "JavaScript library for writing ID3 tag to MP3 files in browsers and Node.js",
   "main": "dist/browser-id3-writer.js",
   "scripts": {
     "lint": "eslint src tools test --ext js,mjs",

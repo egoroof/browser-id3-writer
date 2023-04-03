@@ -1,6 +1,6 @@
 The MIT License (MIT)
 
-Copyright Artyom Egorov <mail@egoroof.ru>
+Copyright Artyom Egorov
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

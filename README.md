@@ -1,11 +1,14 @@
 # Browser ID3 Writer
 
-Pure JS library for writing [ID3 (v2.3)](https://egoroof.github.io/browser-id3-writer/spec/) tag to MP3 files in browsers and Node.js.
+[![npm package][npm-badge]][npm]
+
+[npm-badge]: https://img.shields.io/npm/v/browser-id3-writer.svg?style=flat-square
+[npm]: https://www.npmjs.com/package/browser-id3-writer
+
+JavaScript library for writing [ID3 (v2.3)](https://egoroof.github.io/browser-id3-writer/spec/) tag to MP3 files in browsers and Node.js.
 It can't read the tag so use another lib to do it.
 
 **Note**: the library removes existing ID3 tag (v2.2, v2.3 and v2.4).
-
-Works in Node.js 4+, IE10+ and all modern browsers.
 
 Here is an online demonstration: [egoroof.github.io/browser-id3-writer/](https://egoroof.github.io/browser-id3-writer/)
 
