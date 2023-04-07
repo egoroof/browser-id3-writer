@@ -15,6 +15,7 @@ import {
   getUrlLinkFrameSize,
   getPrivateFrameSize,
   getPairedTextFrameSize,
+  getSynchronisedLyricsFrameSize,
 } from './sizes.mjs';
 
 export default class ID3Writer {
@@ -138,6 +139,27 @@ export default class ID3Writer {
       name,
       value: list,
       size: getPairedTextFrameSize(list),
+    });
+  }
+
+  _setSynchronisedLyricsFrame(
+    type,
+    text,
+    timestampFormat,
+    language,
+    description
+  ) {
+    const descriptionString = description.toString();
+    const languageCode = language.split('').map((c) => c.charCodeAt(0));
+
+    this.frames.push({
+      name: 'SYLT',
+      value: text,
+      language: languageCode,
+      description: descriptionString,
+      type,
+      timestampFormat,
+      size: getSynchronisedLyricsFrameSize(text, descriptionString.length),
     });
   }
 
@@ -317,6 +339,42 @@ export default class ID3Writer {
         }
 
         this._setPairedTextFrame(frameName, frameValue);
+        break;
+      }
+      case 'SYLT': {
+        // Synchronised Lyrics
+        if (
+          typeof frameValue !== 'object' ||
+          !('type' in frameValue) ||
+          !('text' in frameValue) ||
+          !('timestampFormat' in frameValue)
+        ) {
+          throw new Error(
+            'SYLT frame value should be an object with keys type, text and timestampFormat'
+          );
+        }
+        if (
+          !Array.isArray(frameValue.text) ||
+          !Array.isArray(frameValue.text[0])
+        ) {
+          throw new Error('SYLT frame text value should be an array of pairs');
+        }
+        if (frameValue.type < 0 || frameValue.type > 6) {
+          throw new Error('Incorrect SYLT frame content type');
+        }
+        if (frameValue.timestampFormat < 1 || frameValue.timestampFormat > 2) {
+          throw new Error('Incorrect SYLT frame time stamp format');
+        }
+        frameValue.language = frameValue.language || 'eng';
+        frameValue.description = frameValue.description || '';
+
+        this._setSynchronisedLyricsFrame(
+          frameValue.type,
+          frameValue.text,
+          frameValue.timestampFormat,
+          frameValue.language,
+          frameValue.description
+        );
         break;
       }
       default: {
@@ -531,7 +589,43 @@ export default class ID3Writer {
             bufferWriter.set(writeBytes, offset);
             offset += writeBytes.length;
           });
+          break;
+        }
+        case 'SYLT': {
+          writeBytes = [1] // encoding
+            .concat(frame.language) // language
+            .concat(frame.timestampFormat) // time stamp format
+            .concat(frame.type); // content type
+          bufferWriter.set(writeBytes, offset);
+          offset += writeBytes.length;
 
+          writeBytes = [].concat(BOM); // BOM
+          bufferWriter.set(writeBytes, offset);
+          offset += writeBytes.length;
+
+          writeBytes = encodeUtf16le(frame.description); // description
+          bufferWriter.set(writeBytes, offset);
+          offset += writeBytes.length;
+
+          offset += 2; // separator
+
+          frame.value.forEach((line) => {
+            writeBytes = [].concat(BOM); // BOM
+            bufferWriter.set(writeBytes, offset);
+            offset += writeBytes.length;
+
+            writeBytes = encodeUtf16le(line[0].toString()); // lyric line
+            bufferWriter.set(writeBytes, offset);
+            offset += writeBytes.length;
+
+            writeBytes = [0, 0]; // separator
+            bufferWriter.set(writeBytes, offset);
+            offset += writeBytes.length;
+
+            writeBytes = uint32ToUint8Array(line[1]); // timestamp
+            bufferWriter.set(writeBytes, offset);
+            offset += writeBytes.length;
+          });
           break;
         }
       }

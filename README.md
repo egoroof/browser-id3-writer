@@ -269,6 +269,24 @@ writer.setFrame('IPLS', [
 ]);
 ```
 
+- SYLT (synchronised lyrics):
+
+```js
+writer.setFrame('SYLT', {
+    type: 1,
+    text: [
+      ['lyrics here', 0],
+      ['lyrics here', 3500],
+      ...
+    ],
+    timestampFormat: 2,
+    language: 'eng',
+    description: 'description',
+});
+```
+
+`text` is an array of arrays of string and integer.
+
 - TXXX (user defined text):
 
 ```js
@@ -327,3 +345,22 @@ See [#42](https://github.com/egoroof/browser-id3-writer/issues/42).
 | 18   | Illustration                        |
 | 19   | Band/artist logotype                |
 | 20   | Publisher/Studio logotype           |
+
+## SYLT content types
+
+| Type | Name                                         |
+| ---- | -------------------------------------------- |
+| 0    | Other                                        |
+| 1    | Lyrics                                       |
+| 2    | Text transcription                           |
+| 3    | Movement/part name (e.g. "Adagio")           |
+| 4    | Events (e.g. "Don Quijote enters the stage") |
+| 5    | Chord (e.g. "Bb F Fsus")                     |
+| 6    | Trivia/'pop up' information                  |
+
+## SYLT timestamp formats
+
+| Type | Name                                                    |
+| ---- | ------------------------------------------------------- |
+| 1    | Absolute time, 32 bit sized, using MPEG frames as unit  |
+| 2    | Absolute time, 32 bit sized, using milliseconds as unit |
