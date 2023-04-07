@@ -280,7 +280,8 @@ writer.setFrame('SYLT', {
       ...
     ],
     timestampFormat: 2,
-    language: 'eng'
+    language: 'eng',
+    description: 'description',
 });
 ```
 

@@ -17,6 +17,7 @@ describe('SYLT', () => {
       type: 1,
       timestampFormat: 2,
       language: 'eng',
+      description: 'Description',
     });
     writer.addTag();
     const actual = new Uint8Array(writer.arrayBuffer);
@@ -25,12 +26,12 @@ describe('SYLT', () => {
       0,
       0,
       2,
-      34, // tag size without header
+      56, // tag size without header
       ...encodeWindows1252('SYLT'),
       0,
       0,
       1,
-      24, // size without header
+      46, // size without header
       0,
       0, // flags
       1, // text encoding
@@ -39,7 +40,7 @@ describe('SYLT', () => {
       1, // Content type
       0xff,
       0xfe, // BOM
-      ...encodeUtf16le(''), // description (empty)
+      ...encodeUtf16le('Description'), // description
       0,
       0, // separator
       0xff,
