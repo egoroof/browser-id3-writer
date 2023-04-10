@@ -5,7 +5,7 @@
   "main": "dist/browser-id3-writer.js",
   "scripts": {
     "lint": "eslint src tools test --ext js,mjs",
-    "build": "npm run build:wrap && npm run build:compress && node tools/distSize",
+    "build": "npm run build:wrap && npm run build:compress && node tools/distSize.mjs",
     "build:wrap": "rollup -f umd -n ID3Writer -i src/ID3Writer.mjs -o dist/browser-id3-writer.js",
     "build:compress": "terser dist/browser-id3-writer.js -o dist/browser-id3-writer.js -m -c",
     "test": "npm run prettier:check && npm run lint && npm run build && npm run mocha",
