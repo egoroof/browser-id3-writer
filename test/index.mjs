@@ -1,3 +1,4 @@
+import { describe, it } from 'node:test';
 import { deepStrictEqual, throws } from 'assert';
 import { getEmptyBuffer, id3Header } from './utils.mjs';
 import { encodeUtf16le, encodeWindows1252 } from '../src/encoder.mjs';

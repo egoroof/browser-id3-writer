@@ -9,7 +9,7 @@
     "build:wrap": "rollup -f umd -n ID3Writer -i src/ID3Writer.mjs -o dist/browser-id3-writer.js",
     "build:compress": "terser dist/browser-id3-writer.js -o dist/browser-id3-writer.js -m -c",
     "test": "npm run prettier:check && npm run lint && npm run build && npm run mocha",
-    "mocha": "mocha --recursive",
+    "mocha": "node --test --test-reporter spec test/",
     "preversion": "npm test",
     "version": "git add package.json package-lock.json",
     "postversion": "git push && git push --tags && npm publish",
@@ -43,7 +43,6 @@
   "homepage": "https://github.com/egoroof/browser-id3-writer#readme",
   "devDependencies": {
     "eslint": "^8.36.0",
-    "mocha": "^10.2.0",
     "prettier": "^2.8.7",
     "rollup": "^3.20.2",
     "terser": "^5.16.8"

@@ -1,3 +1,4 @@
+import { describe, it } from 'node:test';
 import { deepStrictEqual } from 'assert';
 import {
   uint32ToUint8Array,
