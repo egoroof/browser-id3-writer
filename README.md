@@ -12,6 +12,8 @@ It can't read the tag so use another lib to do it.
 
 Here is an online demonstration: [egoroof.github.io/browser-id3-writer/](https://egoroof.github.io/browser-id3-writer/)
 
+Find the changelog in [CHANGELOG.md](https://github.com/egoroof/browser-id3-writer/blob/master/CHANGELOG.md)
+
 ## Table of Contents
 
 - [Installation](#installation)
