@@ -2,6 +2,10 @@ import { describe, it } from 'node:test';
 import { deepStrictEqual, throws } from 'assert';
 import { getEmptyBuffer, id3Header } from '../utils.mjs';
 import { encodeUtf16le, encodeWindows1252 } from '../../src/encoder.mjs';
+import {
+  uint28ToUint7Array,
+  uint32ToUint8Array,
+} from '../../src/transform.mjs';
 import ID3Writer from '../../dist/browser-id3-writer.js';
 
 const imageContent = [4, 8, 15, 16, 23, 42];
@@ -21,15 +25,9 @@ describe('APIC', () => {
     const actual = new Uint8Array(writer.arrayBuffer);
     const expected = new Uint8Array([
       ...id3Header,
-      0,
-      0,
-      0,
-      35, // tag size without header
+      ...uint28ToUint7Array(35), // tag size without header
       ...encodeWindows1252('APIC'),
-      0,
-      0,
-      0,
-      25, // size without header
+      ...uint32ToUint8Array(25), // frame size without header
       0,
       0, // flags
       0, // encoding
@@ -58,15 +56,9 @@ describe('APIC', () => {
     const actual = new Uint8Array(writer.arrayBuffer);
     const expected = new Uint8Array([
       ...id3Header,
-      0,
-      0,
-      0,
-      40, // tag size without header
+      ...uint28ToUint7Array(40), // tag size without header
       ...encodeWindows1252('APIC'),
-      0,
-      0,
-      0,
-      30, // size without header
+      ...uint32ToUint8Array(30), // frame size without header
       0,
       0, // flags
       1, // encoding
@@ -97,15 +89,9 @@ describe('APIC', () => {
     const actual = new Uint8Array(writer.arrayBuffer);
     const expected = new Uint8Array([
       ...id3Header,
-      0,
-      0,
-      0,
-      35, // tag size without header
+      ...uint28ToUint7Array(35), // tag size without header
       ...encodeWindows1252('APIC'),
-      0,
-      0,
-      0,
-      25, // size without header
+      ...uint32ToUint8Array(25), // frame size without header
       0,
       0, // flags
       0, // encoding
@@ -133,15 +119,9 @@ describe('APIC', () => {
     const actual = new Uint8Array(writer.arrayBuffer);
     const expected = new Uint8Array([
       ...id3Header,
-      0,
-      0,
-      0,
-      34, // tag size without header
+      ...uint28ToUint7Array(34), // tag size without header
       ...encodeWindows1252('APIC'),
-      0,
-      0,
-      0,
-      24, // size without header
+      ...uint32ToUint8Array(24), // frame size without header
       0,
       0, // flags
       0, // encoding
@@ -169,15 +149,9 @@ describe('APIC', () => {
     const actual = new Uint8Array(writer.arrayBuffer);
     const expected = new Uint8Array([
       ...id3Header,
-      0,
-      0,
-      0,
-      44, // tag size without header
+      ...uint28ToUint7Array(44), // tag size without header
       ...encodeWindows1252('APIC'),
-      0,
-      0,
-      0,
-      34, // size without header
+      ...uint32ToUint8Array(34), // frame size without header
       0,
       0, // flags
       0, // encoding
@@ -205,15 +179,9 @@ describe('APIC', () => {
     const actual = new Uint8Array(writer.arrayBuffer);
     const expected = new Uint8Array([
       ...id3Header,
-      0,
-      0,
-      0,
-      36, // tag size without header
+      ...uint28ToUint7Array(36), // tag size without header
       ...encodeWindows1252('APIC'),
-      0,
-      0,
-      0,
-      26, // size without header
+      ...uint32ToUint8Array(26), // frame size without header
       0,
       0, // flags
       0, // encoding
@@ -241,15 +209,9 @@ describe('APIC', () => {
     const actual = new Uint8Array(writer.arrayBuffer);
     const expected = new Uint8Array([
       ...id3Header,
-      0,
-      0,
-      0,
-      36, // tag size without header
+      ...uint28ToUint7Array(36), // tag size without header
       ...encodeWindows1252('APIC'),
-      0,
-      0,
-      0,
-      26, // size without header
+      ...uint32ToUint8Array(26), // frame size without header
       0,
       0, // flags
       0, // encoding
@@ -277,15 +239,9 @@ describe('APIC', () => {
     const actual = new Uint8Array(writer.arrayBuffer);
     const expected = new Uint8Array([
       ...id3Header,
-      0,
-      0,
-      0,
-      33, // tag size without header
+      ...uint28ToUint7Array(33), // tag size without header
       ...encodeWindows1252('APIC'),
-      0,
-      0,
-      0,
-      23, // size without header
+      ...uint32ToUint8Array(23), // frame size without header
       0,
       0, // flags
       0, // encoding
@@ -313,15 +269,9 @@ describe('APIC', () => {
     const actual = new Uint8Array(writer.arrayBuffer);
     const expected = new Uint8Array([
       ...id3Header,
-      0,
-      0,
-      0,
-      38, // tag size without header
+      ...uint28ToUint7Array(38), // tag size without header
       ...encodeWindows1252('APIC'),
-      0,
-      0,
-      0,
-      28, // size without header
+      ...uint32ToUint8Array(28), // frame size without header
       0,
       0, // flags
       0, // encoding
@@ -350,15 +300,9 @@ describe('APIC', () => {
     const actual = new Uint8Array(writer.arrayBuffer);
     const expected = new Uint8Array([
       ...id3Header,
-      0,
-      0,
-      0,
-      36, // tag size without header
+      ...uint28ToUint7Array(36), // tag size without header
       ...encodeWindows1252('APIC'),
-      0,
-      0,
-      0,
-      26, // size without header
+      ...uint32ToUint8Array(26), // frame size without header
       0,
       0, // flags
       0, // encoding

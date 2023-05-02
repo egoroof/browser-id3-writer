@@ -2,6 +2,7 @@ import { describe, it } from 'node:test';
 import { deepStrictEqual, throws } from 'assert';
 import { getEmptyBuffer, id3Header } from './utils.mjs';
 import { encodeUtf16le, encodeWindows1252 } from '../src/encoder.mjs';
+import { uint28ToUint7Array, uint32ToUint8Array } from '../src/transform.mjs';
 import ID3Writer from '../dist/browser-id3-writer.js';
 
 describe('Commom usage', () => {
@@ -14,15 +15,9 @@ describe('Commom usage', () => {
     const actual = new Uint8Array(writer.arrayBuffer);
     const expected = new Uint8Array([
       ...id3Header,
-      0,
-      0,
-      0,
-      51, // tag size without header
+      ...uint28ToUint7Array(51), // tag size without header
       ...encodeWindows1252('TIT2'),
-      0,
-      0,
-      0,
-      11, // size of tit2 without header
+      ...uint32ToUint8Array(11), // size of tit2 without header
       0,
       0, // flags
       1, // encoding
@@ -30,10 +25,7 @@ describe('Commom usage', () => {
       0xfe, // BOM
       ...encodeUtf16le('Home'),
       ...encodeWindows1252('TPE1'),
-      0,
-      0,
-      0,
-      15, // size of tpe1 without header
+      ...uint32ToUint8Array(15), // size of tpe1 without header
       0,
       0, // flags
       1, // encoding
