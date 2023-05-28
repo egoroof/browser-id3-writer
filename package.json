@@ -42,9 +42,9 @@
   },
   "homepage": "https://github.com/egoroof/browser-id3-writer#readme",
   "devDependencies": {
-    "eslint": "^8.36.0",
-    "prettier": "^2.8.7",
-    "rollup": "^3.20.2",
-    "terser": "^5.16.8"
+    "eslint": "^8.41.0",
+    "prettier": "^2.8.8",
+    "rollup": "^3.23.0",
+    "terser": "^5.17.6"
   }
 }
