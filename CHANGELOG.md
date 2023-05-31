@@ -1,5 +1,38 @@
 # Changelog
 
+## v6.0.0
+
+- **Breaking**: Now this library exports only as JS native module (not UMD) and use named export (not default export)
+
+Migration on Nodejs:
+
+```js
+// v5 common js
+const ID3Writer = require('browser-id3-writer');
+
+// v5 esm interop
+import ID3Writer from 'browser-id3-writer';
+
+// v6
+import { ID3Writer } from 'browser-id3-writer';
+```
+
+Migration on browsers:
+
+```html
+<!-- v5 -->
+<script src="browser-id3-writer.js"></script>
+<script>
+  // your code using ID3Writer
+</script>
+
+<!-- v6 -->
+<script type="module">
+  import { ID3Writer } from 'browser-id3-writer.mjs';
+  // your code
+</script>
+```
+
 ## v5.0.0
 
 - **Breaking**: Change `TDAT` frame type from number to string as some values is not possible to represent as number in JS (like 0212), so this change fixes ability to properly encode this frame in some situations:
