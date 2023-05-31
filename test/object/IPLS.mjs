@@ -6,7 +6,7 @@ import {
   uint28ToUint7Array,
   uint32ToUint8Array,
 } from '../../src/transform.mjs';
-import ID3Writer from '../../dist/browser-id3-writer.js';
+import { ID3Writer } from '../../dist/browser-id3-writer.mjs';
 
 describe('IPLS', () => {
   it('IPLS', () => {

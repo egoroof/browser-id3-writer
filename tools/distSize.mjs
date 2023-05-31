@@ -3,7 +3,7 @@ import { gzipSync } from 'zlib';
 
 const bytesToKiB = (bytes) => (bytes / 1024).toFixed(2);
 
-const filePath = 'dist/browser-id3-writer.js';
+const filePath = 'dist/browser-id3-writer.mjs';
 const distFile = readFileSync(filePath);
 const size = bytesToKiB(distFile.byteLength);
 const gzipSize = bytesToKiB(gzipSync(distFile).byteLength);

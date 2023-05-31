@@ -6,7 +6,7 @@ import {
   uint28ToUint7Array,
   uint32ToUint8Array,
 } from '../../src/transform.mjs';
-import ID3Writer from '../../dist/browser-id3-writer.js';
+import { ID3Writer } from '../../dist/browser-id3-writer.mjs';
 
 const imageContent = [4, 8, 15, 16, 23, 42];
 

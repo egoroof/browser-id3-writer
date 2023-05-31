@@ -2,12 +2,12 @@
   "name": "browser-id3-writer",
   "version": "5.0.0",
   "description": "JavaScript library for writing ID3 tag to MP3 files in browsers and Node.js",
-  "main": "dist/browser-id3-writer.js",
+  "main": "dist/browser-id3-writer.mjs",
   "scripts": {
     "lint": "eslint src tools test --ext js,mjs",
-    "build": "npm run build:wrap && npm run build:compress && node tools/distSize.mjs",
-    "build:wrap": "rollup -f umd -n ID3Writer -i src/ID3Writer.mjs -o dist/browser-id3-writer.js",
-    "build:compress": "terser dist/browser-id3-writer.js -o dist/browser-id3-writer.js -m -c",
+    "build": "npm run build:bundle && npm run build:compress && node tools/distSize.mjs",
+    "build:bundle": "rollup -i src/ID3Writer.mjs -o dist/browser-id3-writer.mjs",
+    "build:compress": "terser dist/browser-id3-writer.mjs -o dist/browser-id3-writer.mjs -m -c --module",
     "test": "npm run prettier:check && npm run lint && npm run build && npm run mocha",
     "mocha": "node --test --test-reporter spec test/",
     "preversion": "npm test",
@@ -34,13 +34,9 @@
   "files": [
     "LICENSE.md",
     "README.md",
-    "dist/browser-id3-writer.js"
+    "dist/browser-id3-writer.mjs"
   ],
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/egoroof/browser-id3-writer/issues"
-  },
-  "homepage": "https://github.com/egoroof/browser-id3-writer#readme",
   "devDependencies": {
     "eslint": "^8.41.0",
     "prettier": "^2.8.8",

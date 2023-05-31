@@ -17,6 +17,7 @@ Find the changelog in [CHANGELOG.md](https://github.com/egoroof/browser-id3-writ
 ## Table of Contents
 
 - [Installation](#installation)
+  - [JS modules](#js-modules)
 - [Usage](#usage)
   - [Browser](#browser)
     1. [Get ArrayBuffer of song](#get-arraybuffer-of-song)
@@ -26,6 +27,8 @@ Find the changelog in [CHANGELOG.md](https://github.com/egoroof/browser-id3-writ
   - [Node.js](#nodejs)
 - [Supported frames](#supported-frames)
 - [APIC picture types](#apic-picture-types)
+- [SYLT content types](#sylt-content-types)
+- [SYLT timestamp formats](#sylt-timestamp-formats)
 
 ## Installation
 
@@ -33,6 +36,25 @@ Take latest version [here](https://unpkg.com/browser-id3-writer) or with npm:
 
 ```
 npm install browser-id3-writer --save
+```
+
+### JS modules
+
+The library is only deployed in [native JS modules](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules), so in browsers you have to use `script` with type `module`:
+
+```html
+<script type="module">
+  import { ID3Writer } from 'https://your-host/browser-id3-writer.mjs';
+  // your code here..
+</script>
+```
+
+Or bundle the library to your code.
+
+In Nodejs it imports easily:
+
+```js
+import { ID3Writer } from 'browser-id3-writer';
 ```
 
 ## Usage
@@ -52,7 +74,9 @@ For example you can create file input and use
 
 ```html
 <input type="file" id="file" accept="audio/mpeg" />
-<script>
+<script type="module">
+  import { ID3Writer } from 'https://your-host/browser-id3-writer.mjs';
+
   document.getElementById('file').addEventListener('change', function () {
     if (this.files.length === 0) {
       return;
@@ -164,11 +188,11 @@ writer.revokeURL(); // if you have access to writer
 Simple example with blocking IO:
 
 ```js
-const ID3Writer = require('browser-id3-writer');
-const fs = require('fs');
+import { ID3Writer } from 'browser-id3-writer';
+import { readFileSync, writeFileSync } from 'fs';
 
-const songBuffer = fs.readFileSync('path_to_song.mp3');
-const coverBuffer = fs.readFileSync('path_to_cover.jpg');
+const songBuffer = readFileSync('path_to_song.mp3');
+const coverBuffer = readFileSync('path_to_cover.jpg');
 
 const writer = new ID3Writer(songBuffer);
 writer
@@ -184,7 +208,7 @@ writer
 writer.addTag();
 
 const taggedSongBuffer = Buffer.from(writer.arrayBuffer);
-fs.writeFileSync('song_with_tags.mp3', taggedSongBuffer);
+writeFileSync('song_with_tags.mp3', taggedSongBuffer);
 ```
 
 You can also create only ID3 tag without song and use it as you want:
@@ -267,7 +291,7 @@ writer.setFrame('USLT', {
 writer.setFrame('IPLS', [
   ['role', 'name'],
   ['role', 'name'],
-  ...
+  // ...
 ]);
 ```
 
@@ -275,15 +299,15 @@ writer.setFrame('IPLS', [
 
 ```js
 writer.setFrame('SYLT', {
-    type: 1,
-    text: [
-      ['lyrics here', 0],
-      ['lyrics here', 3500],
-      ...
-    ],
-    timestampFormat: 2,
-    language: 'eng',
-    description: 'description',
+  type: 1,
+  text: [
+    ['lyrics here', 0],
+    ['lyrics here', 3500],
+    // ...
+  ],
+  timestampFormat: 2,
+  language: 'eng',
+  description: 'description',
 });
 ```
 

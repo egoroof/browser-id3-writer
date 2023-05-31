@@ -18,7 +18,7 @@ import {
   getSynchronisedLyricsFrameSize,
 } from './sizes.mjs';
 
-export default class ID3Writer {
+export class ID3Writer {
   _setIntegerFrame(name, value) {
     const integer = parseInt(value, 10);
 

@@ -3,7 +3,7 @@ import { deepStrictEqual, throws } from 'assert';
 import { getEmptyBuffer, id3Header } from './utils.mjs';
 import { encodeUtf16le, encodeWindows1252 } from '../src/encoder.mjs';
 import { uint28ToUint7Array, uint32ToUint8Array } from '../src/transform.mjs';
-import ID3Writer from '../dist/browser-id3-writer.js';
+import { ID3Writer } from '../dist/browser-id3-writer.mjs';
 
 describe('Commom usage', () => {
   it('Copy data from buffer, add padding and tags', () => {
