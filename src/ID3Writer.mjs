@@ -65,7 +65,7 @@ export class ID3Writer {
         data.byteLength,
         mimeType.length,
         descriptionString.length,
-        useUnicodeEncoding
+        useUnicodeEncoding,
       ),
     });
   }
@@ -119,7 +119,7 @@ export class ID3Writer {
       value: valueString,
       size: getUserStringFrameSize(
         descriptionString.length,
-        valueString.length
+        valueString.length,
       ),
     });
   }
@@ -147,7 +147,7 @@ export class ID3Writer {
     text,
     timestampFormat,
     language,
-    description
+    description,
   ) {
     const descriptionString = description.toString();
     const languageCode = language.split('').map((c) => c.charCodeAt(0));
@@ -166,7 +166,7 @@ export class ID3Writer {
   constructor(buffer) {
     if (!buffer || typeof buffer !== 'object' || !('byteLength' in buffer)) {
       throw new Error(
-        'First argument should be an instance of ArrayBuffer or Buffer'
+        'First argument should be an instance of ArrayBuffer or Buffer',
       );
     }
 
@@ -184,7 +184,7 @@ export class ID3Writer {
         // song genres
         if (!Array.isArray(frameValue)) {
           throw new Error(
-            `${frameName} frame value should be an array of strings`
+            `${frameName} frame value should be an array of strings`,
           );
         }
         const delemiter = frameName === 'TCON' ? ';' : '/';
@@ -230,18 +230,18 @@ export class ID3Writer {
           !('lyrics' in frameValue)
         ) {
           throw new Error(
-            'USLT frame value should be an object with keys description and lyrics'
+            'USLT frame value should be an object with keys description and lyrics',
           );
         }
         if (frameValue.language && !frameValue.language.match(/[a-z]{3}/i)) {
           throw new Error(
-            'Language must be coded following the ISO 639-2 standards'
+            'Language must be coded following the ISO 639-2 standards',
           );
         }
         this._setLyricsFrame(
           frameValue.language,
           frameValue.description,
-          frameValue.lyrics
+          frameValue.lyrics,
         );
         break;
       }
@@ -254,7 +254,7 @@ export class ID3Writer {
           !('description' in frameValue)
         ) {
           throw new Error(
-            'APIC frame value should be an object with keys type, data and description'
+            'APIC frame value should be an object with keys type, data and description',
           );
         }
         if (frameValue.type < 0 || frameValue.type > 20) {
@@ -264,7 +264,7 @@ export class ID3Writer {
           frameValue.type,
           frameValue.data,
           frameValue.description,
-          !!frameValue.useUnicodeEncoding
+          !!frameValue.useUnicodeEncoding,
         );
         break;
       }
@@ -276,7 +276,7 @@ export class ID3Writer {
           !('value' in frameValue)
         ) {
           throw new Error(
-            'TXXX frame value should be an object with keys description and value'
+            'TXXX frame value should be an object with keys description and value',
           );
         }
         this._setUserStringFrame(frameValue.description, frameValue.value);
@@ -303,18 +303,18 @@ export class ID3Writer {
           !('text' in frameValue)
         ) {
           throw new Error(
-            'COMM frame value should be an object with keys description and text'
+            'COMM frame value should be an object with keys description and text',
           );
         }
         if (frameValue.language && !frameValue.language.match(/[a-z]{3}/i)) {
           throw new Error(
-            'Language must be coded following the ISO 639-2 standards'
+            'Language must be coded following the ISO 639-2 standards',
           );
         }
         this._setCommentFrame(
           frameValue.language,
           frameValue.description,
-          frameValue.text
+          frameValue.text,
         );
         break;
       }
@@ -326,7 +326,7 @@ export class ID3Writer {
           !('data' in frameValue)
         ) {
           throw new Error(
-            'PRIV frame value should be an object with keys id and data'
+            'PRIV frame value should be an object with keys id and data',
           );
         }
         this._setPrivateFrame(frameValue.id, frameValue.data);
@@ -350,7 +350,7 @@ export class ID3Writer {
           !('timestampFormat' in frameValue)
         ) {
           throw new Error(
-            'SYLT frame value should be an object with keys type, text and timestampFormat'
+            'SYLT frame value should be an object with keys type, text and timestampFormat',
           );
         }
         if (
@@ -373,7 +373,7 @@ export class ID3Writer {
           frameValue.text,
           frameValue.timestampFormat,
           frameValue.language,
-          frameValue.description
+          frameValue.description,
         );
         break;
       }
@@ -409,7 +409,7 @@ export class ID3Writer {
     const headerSize = 10;
     const totalFrameSize = this.frames.reduce(
       (sum, frame) => sum + frame.size,
-      0
+      0,
     );
     const totalTagSize = headerSize + totalFrameSize + this.padding;
     const buffer = new ArrayBuffer(this.arrayBuffer.byteLength + totalTagSize);

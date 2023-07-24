@@ -39,7 +39,7 @@ export function getPictureFrameSize(
   pictureSize,
   mimeTypeSize,
   descriptionSize,
-  useUnicodeEncoding
+  useUnicodeEncoding,
 ) {
   const headerSize = 10;
   const encodingSize = 1;
