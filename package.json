@@ -38,9 +38,9 @@
   ],
   "license": "MIT",
   "devDependencies": {
-    "eslint": "^8.45.0",
-    "prettier": "^3.0.0",
-    "rollup": "^3.26.3",
-    "terser": "^5.19.2"
+    "eslint": "^8.49.0",
+    "prettier": "^3.0.3",
+    "rollup": "^3.29.1",
+    "terser": "^5.19.4"
   }
 }
