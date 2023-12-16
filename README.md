@@ -95,34 +95,24 @@ For example you can create file input and use
 </script>
 ```
 
-##### XMLHttpRequest
+##### Fetch
 
-To get arrayBuffer from remote server you can use
-[XMLHttpRequest](https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest):
+To get arrayBuffer from a remote server you can use
+[Fetch](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API):
 
 ```js
-const xhr = new XMLHttpRequest();
-xhr.open('GET', urlToSongFile, true);
-xhr.responseType = 'arraybuffer';
-xhr.onload = function () {
-  if (xhr.status === 200) {
-    const arrayBuffer = xhr.response;
-    // go next
-  } else {
-    // handle error
-    console.error(xhr.statusText + ' (' + xhr.status + ')');
-  }
-};
-xhr.onerror = function () {
+const request = await fetch(urlToSongFile);
+if (!request.ok) {
   // handle error
-  console.error('Network error');
-};
-xhr.send();
+  console.error(`Unable to fetch ${urlToSongFile}`);
+}
+const arrayBuffer = await request.arrayBuffer();
+// go next
 ```
 
 #### Add a tag
 
-Create new `ID3Writer` instance with arrayBuffer of your song, set frames and add a tag:
+Create a new `ID3Writer` instance with arrayBuffer of your song, set frames and add a tag:
 
 ```js
 // arrayBuffer of song or empty arrayBuffer if you just want only id3 tag without song
@@ -162,7 +152,7 @@ saveAs(blob, 'song with tags.mp3');
 ```
 
 If you are writing chromium extension you can save file using
-[Downloads API](https://developer.chrome.com/extensions/downloads):
+[Downloads API](https://developer.chrome.com/docs/extensions/reference/api/downloads):
 
 ```js
 chrome.downloads.download({
