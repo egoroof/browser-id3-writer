@@ -234,7 +234,7 @@ declare module 'browser-id3-writer' {
 
     getBlob(): Blob;
 
-    getURL(): URL;
+    getURL(): string;
 
     revokeURL(): void;
   }
