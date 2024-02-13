@@ -180,7 +180,6 @@ declare module 'browser-id3-writer' {
       value: {
         readonly description: string;
         readonly data: ArrayBufferLike;
-        readonly mimeType: string;
         readonly type: ImageType;
         readonly useUnicodeEncoding?: boolean;
       },
