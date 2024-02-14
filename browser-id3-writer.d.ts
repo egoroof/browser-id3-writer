@@ -1,32 +1,34 @@
+// Hexidecimal values used to maintain consistency with the ID3v2.3
+// documentation. Refer to /tools/id3v2.3.0.txt.
 declare module 'browser-id3-writer' {
   export const enum SynchronizedLyricsType {
-    Other = 0,
-    Lyrics = 1,
+    Other = 0x00,
+    Lyrics = 0x01,
 
     /**
      * Text transcription
      */
-    TextTranscription = 2,
+    TextTranscription = 0x02,
 
     /**
      * Movement/part name (e.g. "Adagio")
      */
-    MovementPartName = 3,
+    MovementPartName = 0x03,
 
     /**
      * Events (e.g. "Don Quijote enters the stage")
      */
-    Events = 4,
+    Events = 0x04,
 
     /**
      * Chord (e.g. "Bb F Fsus")
      */
-    Chord = 5,
+    Chord = 0x05,
 
     /**
      * Trivia/'pop up' information
      */
-    Trivia = 6,
+    Trivia = 0x06,
   }
 
   export const enum SynchronizedLyricsTimestampFormat {
@@ -41,8 +43,6 @@ declare module 'browser-id3-writer' {
     Milliseconds = 0x02,
   }
 
-  // id3.org uses hex values for these. I'm keeping them as hex for consistency
-  // with the documentation.
   export const enum ImageType {
     Other = 0x00,
     /**
