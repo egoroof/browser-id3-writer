@@ -195,7 +195,7 @@ declare module 'browser-id3-writer' {
 
     setFrame(
       id: 'WCOM' | 'WCOP' | 'WOAF' | 'WOAR' | 'WOAS' | 'WORS' | 'WPAY' | 'WPUB',
-      value: URL | string,
+      value: string,
     ): this;
 
     setFrame(
