@@ -160,7 +160,15 @@ declare module 'browser-id3-writer' {
         | 'TPOS'
         | 'TPUB'
         | 'TRCK'
-        | 'TSRC',
+        | 'TSRC'
+        | 'WCOM'
+        | 'WCOP'
+        | 'WOAF'
+        | 'WOAR'
+        | 'WOAS'
+        | 'WORS'
+        | 'WPAY'
+        | 'WPUB',
       value: string,
     ): this;
 
@@ -191,11 +199,6 @@ declare module 'browser-id3-writer' {
         readonly description: string;
         readonly value: string;
       },
-    ): this;
-
-    setFrame(
-      id: 'WCOM' | 'WCOP' | 'WOAF' | 'WOAR' | 'WOAS' | 'WORS' | 'WPAY' | 'WPUB',
-      value: string,
     ): this;
 
     setFrame(
