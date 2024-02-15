@@ -346,14 +346,14 @@ See [#42](https://github.com/egoroof/browser-id3-writer/issues/42).
 | 3    | Cover (front)                       |
 | 4    | Cover (back)                        |
 | 5    | Leaflet page                        |
-| 6    | Media (e.g. lable side of CD)       |
+| 6    | Media (e.g. label side of CD)       |
 | 7    | Lead artist/lead performer/soloist  |
 | 8    | Artist/performer                    |
 | 9    | Conductor                           |
 | 10   | Band/Orchestra                      |
 | 11   | Composer                            |
 | 12   | Lyricist/text writer                |
-| 13   | Recording Location                  |
+| 13   | Recording location                  |
 | 14   | During recording                    |
 | 15   | During performance                  |
 | 16   | Movie/video screen capture          |

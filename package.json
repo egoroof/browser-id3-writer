@@ -3,6 +3,7 @@
   "version": "6.0.0",
   "description": "JavaScript library for writing ID3 tag to MP3 files in browsers and Node.js",
   "main": "dist/browser-id3-writer.mjs",
+  "types": "./browser-id3-writer.d.ts",
   "scripts": {
     "lint": "eslint src tools test --ext js,mjs",
     "build": "npm run build:bundle && npm run build:compress && node tools/distSize.mjs",
@@ -34,6 +35,7 @@
   "files": [
     "LICENSE.md",
     "README.md",
+    "browser-id3-writer.d.ts",
     "dist/browser-id3-writer.mjs"
   ],
   "license": "MIT",
