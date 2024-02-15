@@ -19,7 +19,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/egoroof/browser-id3-writer.git"
+    "url": "git+https://github.com/egoroof/browser-id3-writer.git"
   },
   "keywords": [
     "browser",
