@@ -1,5 +1,9 @@
 # Changelog
 
+## v6.1.0
+
+- Add TypeScript declaration file
+
 ## v6.0.0
 
 - **Breaking**: Now this library exports only as JS native module (not UMD) and use named export (not default export)
