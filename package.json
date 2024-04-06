@@ -5,7 +5,7 @@
   "main": "dist/browser-id3-writer.mjs",
   "types": "./browser-id3-writer.d.ts",
   "scripts": {
-    "lint": "eslint src tools test --ext js,mjs",
+    "lint": "eslint src tools test",
     "build": "npm run build:bundle && npm run build:compress && node tools/distSize.mjs",
     "build:bundle": "rollup -i src/ID3Writer.mjs -o dist/browser-id3-writer.mjs",
     "build:compress": "terser dist/browser-id3-writer.mjs -o dist/browser-id3-writer.mjs -m -c --module",
@@ -40,9 +40,10 @@
   ],
   "license": "MIT",
   "devDependencies": {
-    "eslint": "^8.56.0",
+    "@eslint/js": "^9.0.0",
+    "eslint": "^9.0.0",
     "prettier": "^3.2.5",
-    "rollup": "^4.10.0",
-    "terser": "^5.27.0"
+    "rollup": "^4.14.0",
+    "terser": "^5.30.3"
   }
 }
