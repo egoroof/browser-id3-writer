@@ -146,6 +146,7 @@ declare module 'browser-id3-writer' {
       id:
         | 'TALB'
         | 'TCOP'
+        | 'TCMP'
         | 'TDAT'
         | 'TEXT'
         | 'TIT1'

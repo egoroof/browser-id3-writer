@@ -209,6 +209,7 @@ export class ID3Writer {
       case 'TKEY': // musical key in which the sound starts
       case 'TEXT': // lyricist / text writer
       case 'TDAT': // album release date expressed as DDMM
+      case 'TCMP': // compilation flag ("1" stored as a string)
       case 'TSRC': {
         // isrc
         this._setStringFrame(frameName, frameValue);
