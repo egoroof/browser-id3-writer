@@ -40,10 +40,10 @@
   ],
   "license": "MIT",
   "devDependencies": {
-    "@eslint/js": "^9.11.1",
-    "eslint": "^9.11.1",
-    "prettier": "^3.3.3",
-    "rollup": "^4.22.4",
-    "terser": "^5.34.0"
+    "@eslint/js": "^9.19.0",
+    "eslint": "^9.19.0",
+    "prettier": "^3.4.2",
+    "rollup": "^4.32.0",
+    "terser": "^5.37.0"
   }
 }
