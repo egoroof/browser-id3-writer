@@ -1,5 +1,9 @@
 # Changelog
 
+## v6.2.0
+
+- Add `TCMP` frame support
+
 ## v6.1.0
 
 - Add TypeScript declaration file

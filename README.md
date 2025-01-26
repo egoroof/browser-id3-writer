@@ -237,6 +237,7 @@ const id3Buffer = Buffer.from(writer.arrayBuffer);
 - TDAT (album release date expressed as 'DDMM')
 - TSRC (isrc - international standard recording code)
 - TCOP (copyright message)
+- TCMP (iTunes compilation flag)
 - TEXT (lyricist / text writer)
 - WCOM (commercial information)
 - WCOP (copyright/Legal information)
