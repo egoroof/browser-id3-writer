@@ -162,6 +162,7 @@ declare module 'browser-id3-writer' {
         | 'TPUB'
         | 'TRCK'
         | 'TSRC'
+        | 'TSSE'
         | 'WCOM'
         | 'WCOP'
         | 'WOAF'

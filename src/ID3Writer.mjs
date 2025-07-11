@@ -210,6 +210,7 @@ export class ID3Writer {
       case 'TEXT': // lyricist / text writer
       case 'TDAT': // album release date expressed as DDMM
       case 'TCMP': // compilation flag ("1" stored as a string)
+      case 'TSSE': // Software/Hardware and settings used for encoding
       case 'TSRC': {
         // isrc
         this._setStringFrame(frameName, frameValue);
@@ -473,6 +474,7 @@ export class ID3Writer {
         case 'TPUB':
         case 'TCOP':
         case 'TEXT':
+        case 'TSSE':
         case 'TSRC': {
           writeBytes = [1].concat(BOM); // encoding, BOM
           bufferWriter.set(writeBytes, offset);
