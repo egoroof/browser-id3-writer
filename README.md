@@ -236,6 +236,7 @@ const id3Buffer = Buffer.from(writer.arrayBuffer);
 - TMED (media type)
 - TDAT (album release date expressed as 'DDMM')
 - TSRC (isrc - international standard recording code)
+- TSSE (software/hardware and settings used for encoding)
 - TCOP (copyright message)
 - TCMP (iTunes compilation flag)
 - TEXT (lyricist / text writer)
