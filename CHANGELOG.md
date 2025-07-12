@@ -1,5 +1,9 @@
 # Changelog
 
+## v6.3.0
+
+- Add `TSSE` frame support
+
 ## v6.2.0
 
 - Add `TCMP` frame support
