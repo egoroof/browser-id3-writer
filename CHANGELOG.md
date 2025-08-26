@@ -1,5 +1,9 @@
 # Changelog
 
+## v6.3.1
+
+- Add publish workflow
+
 ## v6.3.0
 
 - Add `TSSE` frame support
