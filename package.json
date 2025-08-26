@@ -13,7 +13,7 @@
     "mocha": "node --test --test-reporter spec",
     "preversion": "npm test",
     "version": "git add package.json package-lock.json",
-    "postversion": "git push && git push --tags && npm publish",
+    "postversion": "git push && git push --tags",
     "prettier:write": "prettier --write .",
     "prettier:check": "prettier --check ."
   },
