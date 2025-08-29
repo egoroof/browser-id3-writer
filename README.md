@@ -67,37 +67,23 @@ In browsers you should first get
 [ArrayBuffer](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer)
 of the song you would like to add ID3 tag.
 
-##### FileReader
-
-For example you can create file input and use
-[FileReader](https://developer.mozilla.org/en-US/docs/Web/API/FileReader):
+For example you can create file input and add `change` event listener:
 
 ```html
 <input type="file" id="file" accept="audio/mpeg" />
 <script type="module">
   import { ID3Writer } from 'https://your-host/browser-id3-writer.mjs';
 
-  document.getElementById('file').addEventListener('change', function () {
-    if (this.files.length === 0) {
-      return;
-    }
-    const reader = new FileReader();
-    reader.onload = function () {
-      const arrayBuffer = reader.result;
+  document.getElementById('file').addEventListener('change', async (e) => {
+    for (const file of e.target.files) {
+      const arrayBuffer = await file.arrayBuffer();
       // go next
-    };
-    reader.onerror = function () {
-      // handle error
-      console.error('Reader error', reader.error);
-    };
-    reader.readAsArrayBuffer(this.files[0]);
+    }
   });
 </script>
 ```
 
-##### Fetch
-
-To get arrayBuffer from a remote server you can use
+If you want to get arrayBuffer from a remote server you can use
 [Fetch](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API):
 
 ```js
