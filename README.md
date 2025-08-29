@@ -23,7 +23,6 @@ Find the changelog in [CHANGELOG.md](https://github.com/egoroof/browser-id3-writ
     1. [Get ArrayBuffer of song](#get-arraybuffer-of-song)
     2. [Add a tag](#add-a-tag)
     3. [Save file](#save-file)
-    4. [Memory control](#memory-control)
   - [Node.js](#nodejs)
 - [Supported frames](#supported-frames)
 - [APIC picture types](#apic-picture-types)
@@ -128,7 +127,9 @@ Now you can save it to file as you want:
 ```js
 const taggedSongBuffer = writer.arrayBuffer;
 const blob = writer.getBlob();
-const url = writer.getURL();
+
+// or if you need url
+const url = URL.createObjectURL(blob);
 ```
 
 For example you can save file using [FileSaver.js](https://github.com/eligrey/FileSaver.js/):
@@ -145,18 +146,9 @@ chrome.downloads.download({
   url: url,
   filename: 'song with tags.mp3',
 });
-```
 
-#### Memory control
-
-When you generate URLs via `writer.getURL()` you should know
-that whole file is kept in memory until you close the page or move to another one.
-So if you generate lots of URLs in a single page you should manually free memory
-after you finish downloading file:
-
-```js
-URL.revokeObjectURL(url); // if you know url or
-writer.revokeURL(); // if you have access to writer
+// when finish downloading - clean memory
+URL.revokeObjectURL(url);
 ```
 
 ### Node.js
