@@ -1,5 +1,9 @@
 # Changelog
 
+## v6.3.2
+
+- Update deps and readme
+
 ## v6.3.1
 
 - Add publish workflow
