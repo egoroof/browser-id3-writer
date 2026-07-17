@@ -40,9 +40,9 @@
     "fmt:check": "oxfmt --check"
   },
   "devDependencies": {
-    "oxfmt": "^0.53.0",
-    "oxlint": "^1.68.0",
-    "rollup": "^4.59.0",
-    "terser": "^5.46.0"
+    "oxfmt": "^0.59.0",
+    "oxlint": "^1.74.0",
+    "rollup": "^4.62.2",
+    "terser": "^5.49.0"
   }
 }
