@@ -13,9 +13,12 @@ import {
   getCommentFrameSize,
   getUserStringFrameSize,
   getUrlLinkFrameSize,
+  getUserUrlLinkFrameSize,
   getPrivateFrameSize,
   getPairedTextFrameSize,
   getSynchronisedLyricsFrameSize,
+  getChapterFrameSize,
+  getToCFrameSize,
 } from './sizes.mjs';
 
 export class ID3Writer {
@@ -44,7 +47,7 @@ export class ID3Writer {
     });
   }
 
-  _setPictureFrame(pictureType, data, description, useUnicodeEncoding) {
+  _createPictureFrame(pictureType, data, description, useUnicodeEncoding) {
     const mimeType = getMimeType(new Uint8Array(data));
     const descriptionString = description.toString();
 
@@ -54,7 +57,7 @@ export class ID3Writer {
     if (!description) {
       useUnicodeEncoding = false;
     }
-    this.frames.push({
+    return {
       name: 'APIC',
       value: data,
       pictureType,
@@ -67,7 +70,18 @@ export class ID3Writer {
         descriptionString.length,
         useUnicodeEncoding,
       ),
-    });
+    };
+  }
+
+  _setPictureFrame(pictureType, data, description, useUnicodeEncoding) {
+    this.frames.push(
+      this._createPictureFrame(
+        pictureType,
+        data,
+        description,
+        useUnicodeEncoding,
+      ),
+    );
   }
 
   _setLyricsFrame(language, description, lyrics) {
@@ -124,6 +138,32 @@ export class ID3Writer {
     });
   }
 
+  _createUserURLFrame(description, url, useUnicodeEncoding) {
+    const descriptionString = description.toString();
+    const urlString = url.toString();
+
+    if (!description) {
+      useUnicodeEncoding = false;
+    }
+    return {
+      name: 'WXXX',
+      description: descriptionString,
+      useUnicodeEncoding,
+      value: urlString,
+      size: getUserUrlLinkFrameSize(
+        descriptionString.length,
+        urlString.length,
+        useUnicodeEncoding,
+      ),
+    };
+  }
+
+  _setUserURLFrame(description, url, useUnicodeEncoding) {
+    this.frames.push(
+      this._createUserURLFrame(description, url, useUnicodeEncoding),
+    );
+  }
+
   _setUrlLinkFrame(name, url) {
     const urlString = url.toString();
 
@@ -160,6 +200,110 @@ export class ID3Writer {
       type,
       timestampFormat,
       size: getSynchronisedLyricsFrameSize(text, descriptionString.length),
+    });
+  }
+
+  _validateAPIC(frameValue) {
+    if (
+      typeof frameValue !== 'object' ||
+      !('type' in frameValue) ||
+      !('data' in frameValue) ||
+      !('description' in frameValue)
+    ) {
+      throw new Error(
+        'APIC frame value should be an object with keys type, data and description',
+      );
+    }
+    if (frameValue.type < 0 || frameValue.type > 20) {
+      throw new Error('Incorrect APIC frame picture type');
+    }
+  }
+
+  // Builds the frames embedded in a CHAP or CTOC frame. They are written
+  // exactly like top level frames, so they only differ in how their size is
+  // accounted for: it rolls up into the size of the frame containing them.
+  _createSubFrames(subFrames) {
+    return Object.entries(subFrames).map(([name, value]) => {
+      switch (name) {
+        case 'TIT2':
+        case 'TIT3': {
+          const stringValue = value.toString();
+
+          return {
+            name,
+            value: stringValue,
+            size: getStringFrameSize(stringValue.length),
+          };
+        }
+        case 'APIC': {
+          this._validateAPIC(value);
+
+          return this._createPictureFrame(
+            value.type,
+            value.data,
+            value.description,
+            !!value.useUnicodeEncoding,
+          );
+        }
+        case 'TXXX': {
+          const descriptionString = value.description.toString();
+          const valueString = value.value.toString();
+
+          return {
+            name,
+            description: descriptionString,
+            value: valueString,
+            size: getUserStringFrameSize(
+              descriptionString.length,
+              valueString.length,
+            ),
+          };
+        }
+        case 'WXXX': {
+          return this._createUserURLFrame(
+            value.description,
+            value.value,
+            !!value.useUnicodeEncoding,
+          );
+        }
+        default: {
+          throw new Error(`Unsupported sub frame ${name}`);
+        }
+      }
+    });
+  }
+
+  _setChapterFrame(chapter) {
+    const id = chapter.id.toString();
+    const subFrames = this._createSubFrames(chapter.subFrames || {});
+
+    this.frames.push({
+      name: 'CHAP',
+      id,
+      startTime: chapter.startTime,
+      endTime: chapter.endTime,
+      startOffset: chapter.startOffset,
+      endOffset: chapter.endOffset,
+      subFrames,
+      size: getChapterFrameSize(id.length, subFrames),
+    });
+  }
+
+  _setToCFrame(toc) {
+    const id = toc.id.toString();
+    const childElementIds = toc.childElementIds.map((childId) =>
+      childId.toString(),
+    );
+    const subFrames = this._createSubFrames(toc.subFrames || {});
+
+    this.frames.push({
+      name: 'CTOC',
+      id,
+      ordered: !!toc.ordered,
+      topLevel: !!toc.topLevel,
+      childElementIds,
+      subFrames,
+      size: getToCFrameSize(id.length, childElementIds, subFrames),
     });
   }
 
@@ -249,19 +393,7 @@ export class ID3Writer {
       }
       case 'APIC': {
         // song cover
-        if (
-          typeof frameValue !== 'object' ||
-          !('type' in frameValue) ||
-          !('data' in frameValue) ||
-          !('description' in frameValue)
-        ) {
-          throw new Error(
-            'APIC frame value should be an object with keys type, data and description',
-          );
-        }
-        if (frameValue.type < 0 || frameValue.type > 20) {
-          throw new Error('Incorrect APIC frame picture type');
-        }
+        this._validateAPIC(frameValue);
         this._setPictureFrame(
           frameValue.type,
           frameValue.data,
@@ -282,6 +414,24 @@ export class ID3Writer {
           );
         }
         this._setUserStringFrame(frameValue.description, frameValue.value);
+        break;
+      }
+      case 'WXXX': {
+        // user defined url
+        if (
+          typeof frameValue !== 'object' ||
+          !('description' in frameValue) ||
+          !('value' in frameValue)
+        ) {
+          throw new Error(
+            'WXXX frame value should be an object with keys description and value',
+          );
+        }
+        this._setUserURLFrame(
+          frameValue.description,
+          frameValue.value,
+          !!frameValue.useUnicodeEncoding,
+        );
         break;
       }
       case 'WCOM': // Commercial information
@@ -379,6 +529,44 @@ export class ID3Writer {
         );
         break;
       }
+      case 'CHAP': {
+        // chapter
+        if (
+          typeof frameValue !== 'object' ||
+          !('id' in frameValue) ||
+          !('startTime' in frameValue) ||
+          !('endTime' in frameValue) ||
+          !('startOffset' in frameValue) ||
+          !('endOffset' in frameValue)
+        ) {
+          throw new Error(
+            'CHAP frame value should be an object with keys id, startTime, endTime, startOffset and endOffset',
+          );
+        }
+        this._setChapterFrame(frameValue);
+        break;
+      }
+      case 'CTOC': {
+        // table of contents
+        if (
+          typeof frameValue !== 'object' ||
+          !('id' in frameValue) ||
+          !('childElementIds' in frameValue)
+        ) {
+          throw new Error(
+            'CTOC frame value should be an object with keys id and childElementIds',
+          );
+        }
+        if (!Array.isArray(frameValue.childElementIds)) {
+          throw new Error('CTOC frame childElementIds should be an array');
+        }
+        // the entry count is stored in a single byte
+        if (frameValue.childElementIds.length > 255) {
+          throw new Error('CTOC frame can not have more than 255 entries');
+        }
+        this._setToCFrame(frameValue);
+        break;
+      }
       default: {
         throw new Error(`Unsupported frame ${frameName}`);
       }
@@ -431,7 +619,9 @@ export class ID3Writer {
     bufferWriter.set(writeBytes, offset);
     offset += writeBytes.length;
 
-    this.frames.forEach((frame) => {
+    // CHAP and CTOC embed frames, which are written exactly like top level
+    // ones, so this is recursive.
+    const writeFrame = (frame) => {
       writeBytes = encodeWindows1252(frame.name); // frame name
       bufferWriter.set(writeBytes, offset);
       offset += writeBytes.length;
@@ -481,6 +671,35 @@ export class ID3Writer {
           offset += writeBytes.length;
 
           writeBytes = encodeUtf16le(frame.value); // frame value
+          bufferWriter.set(writeBytes, offset);
+          offset += writeBytes.length;
+          break;
+        }
+        case 'WXXX': {
+          writeBytes = [frame.useUnicodeEncoding ? 1 : 0]; // encoding
+          bufferWriter.set(writeBytes, offset);
+          offset += writeBytes.length;
+
+          if (frame.useUnicodeEncoding) {
+            writeBytes = [].concat(BOM); // BOM for content descriptor
+            bufferWriter.set(writeBytes, offset);
+            offset += writeBytes.length;
+
+            writeBytes = encodeUtf16le(frame.description); // content descriptor
+            bufferWriter.set(writeBytes, offset);
+            offset += writeBytes.length;
+
+            offset += 2; // separator
+          } else {
+            writeBytes = encodeWindows1252(frame.description); // descriptor
+            bufferWriter.set(writeBytes, offset);
+            offset += writeBytes.length;
+
+            offset++; // separator
+          }
+
+          // the URL is always ISO-8859-1, whatever the text encoding is
+          writeBytes = encodeWindows1252(frame.value);
           bufferWriter.set(writeBytes, offset);
           offset += writeBytes.length;
           break;
@@ -631,8 +850,55 @@ export class ID3Writer {
           });
           break;
         }
+        case 'CHAP': {
+          writeBytes = encodeWindows1252(`${frame.id}\0`); // element id
+          bufferWriter.set(writeBytes, offset);
+          offset += writeBytes.length;
+
+          writeBytes = uint32ToUint8Array(frame.startTime); // start time
+          bufferWriter.set(writeBytes, offset);
+          offset += writeBytes.length;
+
+          writeBytes = uint32ToUint8Array(frame.endTime); // end time
+          bufferWriter.set(writeBytes, offset);
+          offset += writeBytes.length;
+
+          writeBytes = uint32ToUint8Array(frame.startOffset); // start offset
+          bufferWriter.set(writeBytes, offset);
+          offset += writeBytes.length;
+
+          writeBytes = uint32ToUint8Array(frame.endOffset); // end offset
+          bufferWriter.set(writeBytes, offset);
+          offset += writeBytes.length;
+
+          frame.subFrames.forEach((subFrame) => writeFrame(subFrame));
+          break;
+        }
+        case 'CTOC': {
+          writeBytes = encodeWindows1252(`${frame.id}\0`); // element id
+          bufferWriter.set(writeBytes, offset);
+          offset += writeBytes.length;
+
+          writeBytes = [(frame.topLevel ? 2 : 0) | (frame.ordered ? 1 : 0)]; // flags
+          bufferWriter.set(writeBytes, offset);
+          offset += writeBytes.length;
+
+          writeBytes = [frame.childElementIds.length]; // entry count
+          bufferWriter.set(writeBytes, offset);
+          offset += writeBytes.length;
+
+          frame.childElementIds.forEach((childId) => {
+            writeBytes = encodeWindows1252(`${childId}\0`); // child element id
+            bufferWriter.set(writeBytes, offset);
+            offset += writeBytes.length;
+          });
+
+          frame.subFrames.forEach((subFrame) => writeFrame(subFrame));
+          break;
+        }
       }
-    });
+    };
+    this.frames.forEach((frame) => writeFrame(frame));
 
     offset += this.padding; // free space for rewriting
     bufferWriter.set(new Uint8Array(this.arrayBuffer), offset);
