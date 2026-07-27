@@ -23,6 +23,7 @@ const twoByteEncodedFrames = [
   'TSRC',
   'TCOP',
   'TEXT',
+  'TCMP',
   'TSSE',
 ];
 const urlLinkFrames = [
