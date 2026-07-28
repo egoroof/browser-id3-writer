@@ -474,6 +474,7 @@ export class ID3Writer {
         case 'TPUB':
         case 'TCOP':
         case 'TEXT':
+        case 'TCMP':
         case 'TSSE':
         case 'TSRC': {
           writeBytes = [1].concat(BOM); // encoding, BOM
