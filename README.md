@@ -311,7 +311,7 @@ writer
     id: 'chp0',
     startTime: 0, // milliseconds
     endTime: 3500,
-    startOffset: 0, // bytes
+    startOffset: 0, // bytes, optional
     endOffset: 1024,
     subFrames: {
       TIT2: 'Intro',
@@ -332,6 +332,11 @@ Both are defined by the
 the main spec. `subFrames` is optional and keyed by frame id; `TIT2`, `TIT3`,
 `TXXX`, `WXXX` and `APIC` may be embedded. A `CTOC` frame can hold at most 255
 entries because the entry count is stored in a single byte.
+
+`startOffset` and `endOffset` are optional. Byte offsets are often not known
+and stop being correct as soon as the audio is re-encoded, so when they are
+omitted they are written as `0xFFFFFFFF`, which the spec defines as "ignore
+this and use the time instead".
 
 - PRIV (private frame):
 

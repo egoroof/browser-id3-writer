@@ -21,6 +21,10 @@ import {
   getToCFrameSize,
 } from './sizes.mjs';
 
+// A CHAP offset with every byte set to 0xFF tells the reader to ignore it and
+// use the corresponding time instead.
+const IGNORED_OFFSET = 0xffffffff;
+
 export class ID3Writer {
   _setIntegerFrame(name, value) {
     const integer = parseInt(value, 10);
@@ -282,8 +286,8 @@ export class ID3Writer {
       id,
       startTime: chapter.startTime,
       endTime: chapter.endTime,
-      startOffset: chapter.startOffset,
-      endOffset: chapter.endOffset,
+      startOffset: chapter.startOffset ?? IGNORED_OFFSET,
+      endOffset: chapter.endOffset ?? IGNORED_OFFSET,
       subFrames,
       size: getChapterFrameSize(id.length, subFrames),
     });
@@ -535,12 +539,10 @@ export class ID3Writer {
           typeof frameValue !== 'object' ||
           !('id' in frameValue) ||
           !('startTime' in frameValue) ||
-          !('endTime' in frameValue) ||
-          !('startOffset' in frameValue) ||
-          !('endOffset' in frameValue)
+          !('endTime' in frameValue)
         ) {
           throw new Error(
-            'CHAP frame value should be an object with keys id, startTime, endTime, startOffset and endOffset',
+            'CHAP frame value should be an object with keys id, startTime and endTime',
           );
         }
         this._setChapterFrame(frameValue);
@@ -851,9 +853,11 @@ export class ID3Writer {
           break;
         }
         case 'CHAP': {
-          writeBytes = encodeWindows1252(`${frame.id}\0`); // element id
+          writeBytes = encodeWindows1252(frame.id); // element id
           bufferWriter.set(writeBytes, offset);
           offset += writeBytes.length;
+
+          offset++; // separator
 
           writeBytes = uint32ToUint8Array(frame.startTime); // start time
           bufferWriter.set(writeBytes, offset);
@@ -875,9 +879,11 @@ export class ID3Writer {
           break;
         }
         case 'CTOC': {
-          writeBytes = encodeWindows1252(`${frame.id}\0`); // element id
+          writeBytes = encodeWindows1252(frame.id); // element id
           bufferWriter.set(writeBytes, offset);
           offset += writeBytes.length;
+
+          offset++; // separator
 
           writeBytes = [(frame.topLevel ? 2 : 0) | (frame.ordered ? 1 : 0)]; // flags
           bufferWriter.set(writeBytes, offset);
@@ -888,9 +894,11 @@ export class ID3Writer {
           offset += writeBytes.length;
 
           frame.childElementIds.forEach((childId) => {
-            writeBytes = encodeWindows1252(`${childId}\0`); // child element id
+            writeBytes = encodeWindows1252(childId); // child element id
             bufferWriter.set(writeBytes, offset);
             offset += writeBytes.length;
+
+            offset++; // separator
           });
 
           frame.subFrames.forEach((subFrame) => writeFrame(subFrame));

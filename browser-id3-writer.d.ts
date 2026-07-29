@@ -247,8 +247,14 @@ declare module 'browser-id3-writer' {
         readonly id: string;
         readonly startTime: number;
         readonly endTime: number;
-        readonly startOffset: number;
-        readonly endOffset: number;
+
+        /**
+         * Byte offset from the beginning of the file. Omit it when it isn't
+         * known: it is then written as 0xFFFFFFFF, which tells the reader to
+         * use the time instead.
+         */
+        readonly startOffset?: number;
+        readonly endOffset?: number;
         readonly subFrames?: EmbeddedFrames;
       },
     ): this;

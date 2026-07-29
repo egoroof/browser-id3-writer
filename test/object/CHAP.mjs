@@ -37,6 +37,68 @@ describe('CHAP', () => {
     ]);
     deepStrictEqual(actual, expected);
   });
+  it('Offsets default to being ignored when omitted', () => {
+    const writer = new ID3Writer(getEmptyBuffer());
+    writer.padding = 0;
+    writer.setFrame('CHAP', {
+      id: 'chp0',
+      startTime: 0,
+      endTime: 3500,
+    });
+    writer.addTag();
+    const actual = new Uint8Array(writer.arrayBuffer);
+    const expected = new Uint8Array([
+      ...id3Header,
+      ...uint28ToUint7Array(31), // tag size without header
+      ...encodeWindows1252('CHAP'),
+      ...uint32ToUint8Array(21), // frame size without header
+      0,
+      0, // flags
+      ...encodeWindows1252('chp0'),
+      0, // separator
+      ...uint32ToUint8Array(0), // start time
+      ...uint32ToUint8Array(3500), // end time
+      0xff,
+      0xff,
+      0xff,
+      0xff, // start offset ignored
+      0xff,
+      0xff,
+      0xff,
+      0xff, // end offset ignored
+    ]);
+    deepStrictEqual(actual, expected);
+  });
+  it('A zero offset is kept, not treated as missing', () => {
+    const writer = new ID3Writer(getEmptyBuffer());
+    writer.padding = 0;
+    writer.setFrame('CHAP', {
+      id: 'chp0',
+      startTime: 0,
+      endTime: 3500,
+      startOffset: 0,
+    });
+    writer.addTag();
+    const actual = new Uint8Array(writer.arrayBuffer);
+    const expected = new Uint8Array([
+      ...id3Header,
+      ...uint28ToUint7Array(31), // tag size without header
+      ...encodeWindows1252('CHAP'),
+      ...uint32ToUint8Array(21), // frame size without header
+      0,
+      0, // flags
+      ...encodeWindows1252('chp0'),
+      0, // separator
+      ...uint32ToUint8Array(0), // start time
+      ...uint32ToUint8Array(3500), // end time
+      ...uint32ToUint8Array(0), // start offset
+      0xff,
+      0xff,
+      0xff,
+      0xff, // end offset ignored
+    ]);
+    deepStrictEqual(actual, expected);
+  });
   it('With a title sub frame', () => {
     const writer = new ID3Writer(getEmptyBuffer());
     writer.padding = 0;
@@ -175,7 +237,7 @@ describe('CHAP', () => {
     const writer = new ID3Writer(getEmptyBuffer());
     throws(() => {
       writer.setFrame('CHAP', 'chp0');
-    }, /CHAP frame value should be an object with keys id, startTime, endTime, startOffset and endOffset/);
+    }, /CHAP frame value should be an object with keys id, startTime and endTime/);
   });
   it('Throw when a required key is missing', () => {
     const writer = new ID3Writer(getEmptyBuffer());
@@ -183,10 +245,8 @@ describe('CHAP', () => {
       writer.setFrame('CHAP', {
         id: 'chp0',
         startTime: 0,
-        endTime: 3500,
-        startOffset: 0,
       });
-    }, /CHAP frame value should be an object with keys id, startTime, endTime, startOffset and endOffset/);
+    }, /CHAP frame value should be an object with keys id, startTime and endTime/);
   });
   it('Throw with an unsupported sub frame', () => {
     const writer = new ID3Writer(getEmptyBuffer());

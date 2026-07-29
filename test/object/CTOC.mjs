@@ -71,21 +71,23 @@ describe('CTOC', () => {
     writer.setFrame('CTOC', {
       id: 'toc0',
       topLevel: true,
-      childElementIds: [],
+      childElementIds: ['chp0'],
     });
     writer.addTag();
     const actual = new Uint8Array(writer.arrayBuffer);
     const expected = new Uint8Array([
       ...id3Header,
-      ...uint28ToUint7Array(17), // tag size without header
+      ...uint28ToUint7Array(22), // tag size without header
       ...encodeWindows1252('CTOC'),
-      ...uint32ToUint8Array(7), // frame size without header
+      ...uint32ToUint8Array(12), // frame size without header
       0,
       0, // flags
       ...encodeWindows1252('toc0'),
       0, // separator
       2, // top level
-      0, // entry count
+      1, // entry count
+      ...encodeWindows1252('chp0'),
+      0, // separator
     ]);
     deepStrictEqual(actual, expected);
   });
