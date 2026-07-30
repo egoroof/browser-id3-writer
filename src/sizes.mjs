@@ -108,6 +108,23 @@ export function getUserStringFrameSize(descriptionSize, valueSize) {
   );
 }
 
+export function getUserUrlLinkFrameSize(
+  descriptionSize,
+  urlSize,
+  useUnicodeEncoding,
+) {
+  const headerSize = 10;
+  const encodingSize = 1;
+  const bomSize = 2;
+  const separatorSize = 1;
+  // the URL is always ISO-8859-1, only the description follows the encoding
+  const encodedDescriptionSize = useUnicodeEncoding
+    ? bomSize + (descriptionSize + separatorSize) * 2
+    : descriptionSize + separatorSize;
+
+  return headerSize + encodingSize + encodedDescriptionSize + urlSize;
+}
+
 export function getUrlLinkFrameSize(urlSize) {
   const headerSize = 10;
 
@@ -159,5 +176,50 @@ export function getSynchronisedLyricsFrameSize(lyrics, descriptionSize) {
     descriptionUtf16Size +
     separatorSize +
     encodedLyricsSize
+  );
+}
+
+function getSubFramesSize(subFrames) {
+  return subFrames.reduce((sum, frame) => sum + frame.size, 0);
+}
+
+export function getChapterFrameSize(idSize, subFrames) {
+  const headerSize = 10;
+  const separatorSize = 1;
+  const startTimeSize = 4;
+  const endTimeSize = 4;
+  const startOffsetSize = 4;
+  const endOffsetSize = 4;
+
+  return (
+    headerSize +
+    idSize +
+    separatorSize +
+    startTimeSize +
+    endTimeSize +
+    startOffsetSize +
+    endOffsetSize +
+    getSubFramesSize(subFrames)
+  );
+}
+
+export function getToCFrameSize(idSize, childElementIds, subFrames) {
+  const headerSize = 10;
+  const separatorSize = 1;
+  const flagsSize = 1;
+  const entryCountSize = 1;
+  const childElementIdsSize = childElementIds.reduce(
+    (sum, id) => sum + id.length + separatorSize,
+    0,
+  );
+
+  return (
+    headerSize +
+    idSize +
+    separatorSize +
+    flagsSize +
+    entryCountSize +
+    childElementIdsSize +
+    getSubFramesSize(subFrames)
   );
 }

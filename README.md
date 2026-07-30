@@ -287,6 +287,57 @@ writer.setFrame('TXXX', {
 });
 ```
 
+- WXXX (user defined URL):
+
+```js
+writer.setFrame('WXXX', {
+  description: 'description here',
+  value: 'https://google.com',
+  useUnicodeEncoding: false,
+});
+```
+
+The URL is always encoded as ISO-8859-1, as the spec requires. Only the
+description follows `useUnicodeEncoding`, which behaves like it does on APIC:
+set it to `true` only when the description contains non-Western characters,
+as some readers apply the encoding to the URL as well and will not read it
+back correctly.
+
+- CHAP (chapter) and CTOC (table of contents):
+
+```js
+writer
+  .setFrame('CHAP', {
+    id: 'chp0',
+    startTime: 0, // milliseconds
+    endTime: 3500,
+    startOffset: 0, // bytes, optional
+    endOffset: 1024,
+    subFrames: {
+      TIT2: 'Intro',
+      WXXX: { description: 'chapter url', value: 'https://google.com' },
+    },
+  })
+  .setFrame('CTOC', {
+    id: 'toc0',
+    ordered: true,
+    topLevel: true,
+    childElementIds: ['chp0'],
+    subFrames: { TIT2: 'Table of contents' },
+  });
+```
+
+Both are defined by the
+[ID3v2 Chapter Frame Addendum](https://id3.org/id3v2-chapters-1.0) rather than
+the main spec. `subFrames` is optional and keyed by frame id; `TIT2`, `TIT3`,
+`TXXX`, `WXXX` and `APIC` may be embedded. A `CTOC` frame can hold at most 255
+entries because the entry count is stored in a single byte.
+
+`startOffset` and `endOffset` are optional. Byte offsets are often not known
+and stop being correct as soon as the audio is re-encoded, so when they are
+omitted they are written as `0xFFFFFFFF`, which the spec defines as "ignore
+this and use the time instead".
+
 - PRIV (private frame):
 
 ```js

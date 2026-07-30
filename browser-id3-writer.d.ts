@@ -137,6 +137,42 @@ declare module 'browser-id3-writer' {
     PublisherLogotype = 0x14,
   }
 
+  export interface UserUrlLinkFrame {
+    readonly description: string;
+
+    /**
+     * Always written as ISO-8859-1, as the spec requires, whatever the
+     * description is encoded as.
+     */
+    readonly value: string;
+
+    /**
+     * Encodes the description as unicode. Only set this when the description
+     * contains non-Western characters: some readers apply the encoding to the
+     * URL too and will not read it back correctly.
+     */
+    readonly useUnicodeEncoding?: boolean;
+  }
+
+  /**
+   * Frames embedded in a CHAP or CTOC frame, keyed by frame id.
+   */
+  export interface EmbeddedFrames {
+    readonly TIT2?: string;
+    readonly TIT3?: string;
+    readonly TXXX?: {
+      readonly description: string;
+      readonly value: string;
+    };
+    readonly WXXX?: UserUrlLinkFrame;
+    readonly APIC?: {
+      readonly description: string;
+      readonly data: ArrayBufferLike;
+      readonly type: ImageType;
+      readonly useUnicodeEncoding?: boolean;
+    };
+  }
+
   export class ID3Writer {
     constructor(buffer: ArrayBufferLike);
 
@@ -200,6 +236,41 @@ declare module 'browser-id3-writer' {
       value: {
         readonly description: string;
         readonly value: string;
+      },
+    ): this;
+
+    setFrame(id: 'WXXX', value: UserUrlLinkFrame): this;
+
+    setFrame(
+      id: 'CHAP',
+      value: {
+        readonly id: string;
+        readonly startTime: number;
+        readonly endTime: number;
+
+        /**
+         * Byte offset from the beginning of the file. Omit it when it isn't
+         * known: it is then written as 0xFFFFFFFF, which tells the reader to
+         * use the time instead.
+         */
+        readonly startOffset?: number;
+        readonly endOffset?: number;
+        readonly subFrames?: EmbeddedFrames;
+      },
+    ): this;
+
+    setFrame(
+      id: 'CTOC',
+      value: {
+        readonly id: string;
+
+        /**
+         * At most 255 entries: the entry count is stored in a single byte.
+         */
+        readonly childElementIds: readonly string[];
+        readonly ordered?: boolean;
+        readonly topLevel?: boolean;
+        readonly subFrames?: EmbeddedFrames;
       },
     ): this;
 
