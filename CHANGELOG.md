@@ -1,5 +1,10 @@
 # Changelog
 
+## v6.4.0
+
+- Add `CHAP`, `CTOC` and `WXXX` frame support. Thanks to @mattbasta
+- Fix `TCMP` frame
+
 ## v6.3.2
 
 - Update deps and readme
